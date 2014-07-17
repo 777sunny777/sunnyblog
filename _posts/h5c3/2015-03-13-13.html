@@ -1,0 +1,30 @@
+---
+layout: default
+title: css2补充学习(3):应用技巧
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.css选择符的命名</p>
+            <img src="/sunnyblog/img/25.png" class="codeimg">
+            <img src="/sunnyblog/img/26.png" class="codeimg">
+            <p class="my-p my-h">2.css代码缩写</p>
+            <p class="my-p">background: #ffffff url(img/bg.png) no-repeat 30% 20px;</p>
+            <img src="/sunnyblog/img/27.png" class="codeimg">
+            <p class="my-p my-h">3.css hack</p>
+            <p class="my-p">a.@import</p>
+            <p class="my-p">例如，@import url("test.css")这种写法，这个test.css只能被IE5+识别，IE4及以下版本不会解析，这样可以用来区分IE4.</p>
+            <p class="my-p">例如，@import url("test.css") screen这种写法，IE系列浏览器对设备类型不支持，所以这个test.css在IE中都不会被解析</p>
+            <p class="my-p">b.注释</p>
+            <img src="/sunnyblog/img/28.png" class="codeimg">
+            <p class="my-p">c.+hack</p>
+            <img src="/sunnyblog/img/29.png" class="codeimg">
+            <p class="my-p">d._hack</p>
+            <img src="/sunnyblog/img/30.png" class="codeimg">
+        </div><!-- /.blog-main -->
+    </div>
+</div>

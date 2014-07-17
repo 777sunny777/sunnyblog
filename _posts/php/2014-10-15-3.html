@@ -13,6 +13,26 @@ category: php
             <p class="my-p"> git checkout origin/dev -b dev </p>
             <p class="my-p my-h">2.rebase后冲突，回到rebase之前的状态</p>
             <p class="my-p"> git rebase --abort</p>
+            <p class="my-p my-h">如何用git reflog和git cherry-pick找回已删除的commit记录</p>
+            <p class="my-p">
+                <pre>
+                commit2: add test2.c
+                commit1: add test1.c
+                模拟丢失commit记录的情况，执行git reset --hard HEAD~1,删除了commit3,同时test3.c文件已经在working tree里看不到了,如果要恢复commit3,就要使用git reflog和git cherry-pick.
+                $ git reflog
+                502dd0f HEAD@{0}: HEAD~1: updating HEAD
+                147b3b5 HEAD@{1}: commit: test3
+                502dd0f HEAD@{2}: commit: test2
+                0692c03 HEAD@{3}: commit (initial): test1
+                HEAD@{0}: HEAD~1: updating HEAD
+                红色加粗的即是被删除了的 commit3，运行git log则没有这一行记录,可以使用git reset --hard 502dd0f
+                将红色记录删除，恢复cmmit3，需要用git cherry-pick.
+                $ git cherry-pick 147b3b5
+                [master 02c1e69] test3
+                0 files changed, 0 insertions(+), 0 deletions(-)
+                create mode 100644 test3.c
+                </pre>
+            </p>
         </div><!-- /.blog-main -->
     </div>
 </div>
