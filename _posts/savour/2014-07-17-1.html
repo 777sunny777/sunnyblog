@@ -1,0 +1,31 @@
+---
+layout: default
+title: 对于backbone的一点理解1
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_xmlschema }}</p>
+            <p class="my-p">题目写成“对于backbone的一点理解1”，这样写的原因有两点。首先，我自己依然是backbone的初学者，只是在做savour的时候用了这个框架有了些感悟，但是可能也有不对的地方，不要误导了看到的人。其次，提高自己的同时肯定会对之前有不一样的理解，到时可能会继续写篇部分修正这个的blog</p>
+            <p class="my-p">我最早接触backbone是从去年接手一个叫<a href="http://www.playdata.cn/" target="_blank">playdata</a>的项目开始的。这个项目的牛逼之处是它的页面运用了很多牛逼的前端技术。诸如bootstrap，backbone，seajs，coffee，juicer，grunt，nodejs等等一系列英文单词冲击了我菜鸟一般的心。当时公司前端的牛人很多(比我牛逼的都算)，所以学习东西动力比较强。那个时候我们都以看懂lalala的前端代码为牛逼指标。扯得有点远了，再拉回到backbone</p>
+            <p class="my-p">Backbone是一个前端MVC框架。有人说它是轻量级有人说他是重量级，这个我现在也不是很能区分，我想轻量级应该是从源码上说的，1000多行，16k多的大小，重量级是从它的逻辑性，或者说是从用途上说的，他不是随便什么地方都能用的，引用一句就是单个网页上有非常复杂的业务逻辑，那么用它很合适。</p>
+            <p class="my-p">Backbone的优点大概有这么几条。</p>
+            <p class="my-p"> 1.（引用御剑神兵大神的话）可以轻松将页面中的数据、逻辑、视图解耦，依照Backbone进行代码结构组织。（这里是我的）也就是说可以提供一个逻辑清晰的架构将数据、逻辑、视图分开来写，这样肯定比js写成一坨要好看的多，但是我个人感觉，即使大家都使用了backbone，100个人写backbone，也会有100种写法。利用backbone能不能写出清晰的代码结构和这个人得代码水平直接相关，比如lalala大神的代码咋一看就很牛逼，每一处逻辑串联都让领悟的人赞叹不已，但是我写的savour感觉也很好(自我鼓励一下)，但是就是没有牛逼的感觉。</p>
+            <p class="my-p"> 2.（我自己觉得）快速的新页面扩展性。因为每个view是针对页面上的单个模块来进行渲染的，那么这个模块就很容易复用了，如果写好了很多模块，需要在页面上渲染什么东西，就变成了简单的模块们的排列组合，扩展新页面的人很快就可以完成页面工作，即使他不怎么懂得backbone。</p>
+            <p class="my-p"> 3.（我自己觉得）页面无刷，因为backbone适用于单页面模式，所以必然用它就是无刷得，其实就是ajax的功劳，他的save()/fetch()就相当于post/get</p>
+            <p class="my-p">4. 如果你去看了playdata，我觉得你会发现，playdata其实并没有发挥backbone最大的好处，是什么呢？我先引用 the5fire 的一段话，如下：</p>
+            <p class="my-p">通过backbone，你可以把你的数据当作Models，通过Models你可以创建数据，进行数据验证，销毁或者保存到服务器上。当界面上的操作引起model中属性的变化时，model会触发change的事件;那些用来显示model状态的views会接受到model触发change的消息，进而发出对应的响应，并且重新渲染新的数据到界面。在一个完整的backbone应用中，你不需要写那些胶水代码来从DOM中通过特殊的id来获取节点，或者手工的更新HTML页面，因为在model发生变化时，views会很简单的进行自我更新。</p>
+            <p class="my-p">看完了，你就会发现，backbone最大的好处其实是，model的变化引起view的自我更新，这个model怎么变化的呢，绝不是和后台发个异步请求改变的，这事ajax就能干，用backbone干什么。这个model的变化来自页面，更进一步说，它是缓存在浏览器的model在前端页面发生了改变后出发了view的更新，还不懂？去看下官方实例吧<a href="http://documentcloud.github.io/backbone/examples/todos/index.html" target="_blank">Todos</a>。实际上用户在页面输入，引发了model的变化，进而view进行了重新渲染，这期间和后端没啥关系。</p>
+            <p class="my-p">playdata是一个报表展示为主的单页面，所以他的model其实并没有怎么用到，唯一有代表性的一点利用应该就是左导航吧。</p>
+            <p class="my-p">最后，链几个学习backbone有用的资料。
+                <a href="http://yujianshenbing.iteye.com/blog/1748447" target="_blank">神兵大神的blog，入门必备</a>
+                <a href="http://www.the5fire.com/touch-backbone-js.html" target="_blank">the5fire的blog，全面</a>
+                <a href="http://documentcloud.github.io/backbone/#Collection-where" target="_blank">backbone的API</a>
+                <a href="http://documentcloud.github.io/backbone/examples/todos/index.html" target="_blank">再次，Todos</a>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
