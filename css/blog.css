@@ -172,4 +172,8 @@ h6, .h6 {
   text-indent:2em;
 }
 
-
+.codeimg {
+  vertical-align: middle;
+  display: block;
+  margin: 20px auto;
+}
