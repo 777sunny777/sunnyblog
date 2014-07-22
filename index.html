@@ -14,6 +14,13 @@ title: Sunny's Blog
             {% endfor %}
             </ul>
 
+            <p>web性能优化相关</p>
+            <ul>
+            {% for post in site.categories.performance %}
+                <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
+            {% endfor %}
+            </ul>
+
             <p>前端基础知识理解</p>
             <ul>
             {% for post in site.categories.basic %}

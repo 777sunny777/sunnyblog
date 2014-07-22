@@ -1,0 +1,25 @@
+---
+layout: default
+title: 浏览器渲染原理简述
+category: performance
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">我面试中遇到过这个问题，当时说的不是特别清楚，细细想一下，这个问题确实可大可小，每个人都能多少说一下，估计有说不完全，所以我baidu了下，找到了一篇神文<a href="http://news.cnblogs.com/n/178402/" target="_blank">浏览器的渲染原理简介</a>,以及一篇更神的英文神文<a href="http://taligarsiel.com/Projects/howbrowserswork1.htm" target="_blank">How Browsers Work</a>。这两篇基本上把问题说的很详细了。我下面再精简总结一下，并补充了一些内容</p>
+            <p class="my-p">浏览器渲染页面的工作流程：</p>
+            <p class="my-p">1.浏览器解析文件。浏览器会解析三种文件，1)是html/SVG/xhtml（这些都是可扩展标记语言），解析他们会产生一个DOM tree，2)是css，解析生成css rule tree，3)是javascript脚本，它主要是通过DOM API和CSSOM API来操作DOM tree 和 css rule tree。</p>
+            <p class="my-p">2.解析完成之后，浏览器引擎会通过 DOM Tree 和 CSS rule Tree 来构造 Rendering Tree。Render tree 中一些像 Header 或 display:none 的东西会被去掉。</p>
+            <p class="my-p">3.render tree构建完之后，就开始layout和reflow了。下面说一下几个概念：</p>
+            <p class="my-p">Layout – 定位坐标和大小，是否换行，各种 position, overflow， z-index 属性 ……</p>
+            <p class="my-p">Repaint——屏幕的一部分要重画，比如某个 CSS 的背景色变了。但是元素的几何尺寸没有变。</p>
+            <p class="my-p">Reflow——意味着元件的几何尺寸变了，我们需要重新验证并计算 Render Tree。是 Render Tree 的一部分或全部发生了变化。这就是 Reflow，或是 Layout。（HTML 使用的是 flow based layout，也就是流式布局，所以，如果某元件的几何尺寸发生了变化，需要重新布局，也就叫 reflow）reflow 会从 html 这个 root frame 开始递归往下，依次计算所有的结点几何尺寸和位置，在 reflow 过程中，可能会增加一些 frame，比如一个文本字符串必需被包装起来。</p>
+            <p class="my-p">4.通过调用操作系统 Native GUI 的 API 绘制。</p>
+
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>
