@@ -9,7 +9,14 @@ category: basic
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p>Cum sociis natoque penatibus et magnis <a href="#">dis parturient montes</a>, nascetur ridiculus mus. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.</p>
+            <p class="my-p">闭包是js中的一个重点问题，这个概念其实不难，重在理解。下面是一个闭包的例子，通过这个例子，对闭包能有更深刻的认识。</p>
+            <img src="/sunnyblog/img/4.png" class="codeimg">
+            <p class="my-p">闭包理解1：函数定义时的作用域链，在函数执行时依然有效。见上例，f2中return num的作用域链，首先查找f2，没有向上查找f1，找到返回的就是1，如果没找到会继续向上找那个全局的num=8。这个f2是在f1中定义的，在f1外执行bb(即f2)的时候作用域链依然有效。</p>
+            <p class="my-p">闭包理解1：闭包就是能够读取其他函数内部变量的函数。见上例，bb函数在f1外执行，但是他仍然可以调用到f1中得变量num</p>
+            <p class="my-p">
+                关于闭包的用途有缓存，实现封装，实现面向对象中的对象等，具体可以看下这篇blog了。
+                <a href="http://blog.csdn.net/sunlylorn/article/details/6534610" target="_blank">js闭包的用途</a>
+            </p>
         </div><!-- /.blog-main -->
     </div>
 </div>
