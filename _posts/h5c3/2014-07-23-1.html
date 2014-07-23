@@ -1,0 +1,79 @@
+---
+layout: default
+title: css1:文字与字体相关样式 
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">主要包括text-shadow; word-break; word-wrap; web Font/ @font-face; font-size-adjust这些属性，我都进行了测试。下面是style的内容，看下里面的注释基本就可以搞清楚他的用法了。</p>
+            <p class="my-p">
+                <pre>
+    .t1{
+        color: navy;
+        font-size: 50px;
+        font-weight: bold;
+        font-family: 宋体;
+        /*text-shadow sfco都支持*/
+        /*参数1：阴影离开文字横方向的距离*/
+        /*参数2：阴影离开文字纵方向的距离*/
+        /*参数3：阴影的模糊半径*/
+        /*参数4：阴影的颜色*/
+        -ms-text-shadow: 5px 5px 5px gray;
+        text-shadow: 5px 5px 5px gray;
+    }
+    .t2{
+        color: navy;
+        font-size: 50px;
+        font-weight: bold;
+        font-family: 宋体;
+        /*text-shadow 多个阴影的呈现方式*/
+        text-shadow: 5px 5px 5px gray,
+                     15px 15px 5px red,
+                     25px 25px 5px green;
+    }
+    .t3{
+        margin-top: 100px;
+        /*word-break: 自己来决定换行的方法*/
+        /*参数：normal或break-all或keep-all，其中keep-all，sc不支持*/
+        /*normal方式*/
+        /*中文：浏览器可以在任何一个中字后换行，但是行首不会出现标点*/
+        /*英文：单词中间不会强制换行*/
+        /*break-all方式*/
+        /*外文可以在单词内换行,这样段落感觉比较整齐*/
+        word-break: break-all;
+    }
+    .t4{
+        /*这两个属性都是英文长单词断句的，区别可以看下例子*/
+        /*word-break: break-all;是粗暴式的断句，利用每一处空间*/
+        /*word-wrap: break-word;相对温柔，他会先另起一行把你挤下去，如果新的一行还放不下，他再给你断开*/
+        word-wrap: break-word;
+    }
+    /*web Font/ @font-face;可以显示服务器端的字体，用得比较少，这里略过*/
+    .t6{
+        /*在不加font-size-adjust的时候，字体类型改变的时候，会产生布局上得变化*/
+        /*firefox支持，chrome mac上是不支持的*/
+        font-family: Tahoma;
+        font-size: 16px;
+        font-size-adjust: 0.40;
+    }
+    .t7{
+        font-family: Arial;
+        font-size: 16px;
+        font-size-adjust: 0.40;
+    }
+    .t8{
+        font-family: Times New Roman;
+        font-size: 16px;
+        font-size-adjust: 0.40;
+    }
+
+                </pre>
+            </p>
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>

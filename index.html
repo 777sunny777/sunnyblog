@@ -7,9 +7,24 @@ title: Sunny's Blog
 <div class="row">
     <div class="col-sm-12 blog-main">
         <div class="blog-post">
+
+            <p>前端基础知识理解</p>
+            <ul>
+            {% for post in site.categories.basic %}
+                <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
+            {% endfor %}
+            </ul>
+
             <p>Savour相关</p>
             <ul>
             {% for post in site.categories.savour %}
+                <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
+            {% endfor %}
+            </ul>
+
+            <p>html5 and css3</p>
+            <ul>
+            {% for post in site.categories.h5c3 %}
                 <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
             {% endfor %}
             </ul>
@@ -21,12 +36,7 @@ title: Sunny's Blog
             {% endfor %}
             </ul>
 
-            <p>前端基础知识理解</p>
-            <ul>
-            {% for post in site.categories.basic %}
-                <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
-            {% endfor %}
-            </ul>
+
         </div><!-- /.blog-main -->
     </div>
 </div>
