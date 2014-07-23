@@ -8,28 +8,28 @@ title: Sunny's Blog
     <div class="col-sm-12 blog-main">
         <div class="blog-post">
 
-            <p class="ulp">前端基础知识理解</p>
+            <p class="ulp alert alert-success"><span class="glyphicon glyphicon-plus"></span>前端基础知识理解</p>
             <ul class="pul">
             {% for post in site.categories.basic %}
                 <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
             {% endfor %}
             </ul>
 
-            <p class="ulp">Savour相关(前端架构和php)</p>
+            <p class="ulp alert alert-info"><span class="glyphicon glyphicon-plus"></span>Savour相关(前端架构和php)</p>
             <ul class="pul">
             {% for post in site.categories.savour %}
                 <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
             {% endfor %}
             </ul>
 
-            <p class="ulp">html5 and css3</p>
+            <p class="ulp alert alert-warning"><span class="glyphicon glyphicon-plus"></span>html5 and css3</p>
             <ul class="pul">
             {% for post in site.categories.h5c3 %}
                 <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
             {% endfor %}
             </ul>
 
-            <p class="ulp">web性能优化相关</p>
+            <p class="ulp alert alert-danger"><span class="glyphicon glyphicon-plus"></span>web性能优化相关</p>
             <ul class="pul">
             {% for post in site.categories.performance %}
                 <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
