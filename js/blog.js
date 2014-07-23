@@ -6,7 +6,7 @@ $(function(){
     $(".ulp").click(function(){
 
         $(".pul").slideUp("normal");
-        $(this).children('.pul').slideDown("normal");
+        $(this).next().slideDown("normal");
 
     });
 });
