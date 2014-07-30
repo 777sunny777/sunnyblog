@@ -171,6 +171,10 @@ h6, .h6 {
 .my-p {
   text-indent:2em;
 }
+.my-h{
+  font-weight: bold;
+  color: red;
+}
 
 .codeimg {
   width: 66%;
