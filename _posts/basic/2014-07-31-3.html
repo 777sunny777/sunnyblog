@@ -1,0 +1,87 @@
+---
+layout: default
+title: DOM(2)操作技术及扩展(selectors API Level 1)
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">这里主要总结下DOM动态加载javaScript和css的方法，封装成函数以后可以直接用。另外对于DOM的专用扩展，总结一个selector API，它是由W3C发起制定的一个标准，致力于让浏览器原生支持css查询，目前五大浏览器都支持（IE8+）。</p>
+            <p class="my-p">
+                <pre>
+                    
+                    //动态加载一个外部js文件
+                    function loadScript( url ){
+
+                        var script = document.createElement("script");
+                        script.type = "text/javascript";
+                        script.src = url;
+                        document.body.appendChild(script);
+                    }
+
+                    //loadScript("./sunny.js");
+
+                    //动态加载一个内部js文件
+                    //IE不允许DOM访问script或是style的子节点，所以用到了text或是csstext属性
+
+                    function loadScriptString( code ){
+
+                        var script = document.createElement("script");
+                        script.type = "text/javascript";
+                        try{
+                            script.appendChild( document.createTextNode(code) );
+                        }catch(ex){
+                            script.text = code;
+                        }
+                        document.body.appendChild(script);
+                    }
+
+                    //loadScriptString("alert(\"111\")");
+
+
+                    //动态加载一个外部css文件
+
+                    function loadStyles( url ){
+
+                        var link = document.createElement("link");
+                        link.rel = "stylesheet";
+                        link.type = "text/css";
+                        link.href = url;
+                        var head = document.getElementsByTagName("head")[0];
+                        head.appendChild(link);
+                    }
+
+                    //loadStyles("./sunny.css");
+
+
+                    //动态加载一个内部的css文件
+
+                    function loadStyleString( css ){
+
+                        var style = document.createElement("style");
+                        style.type = "text/css";
+                        try{
+                            style.appendChild( document.createTextNode(css) );
+                        }catch(ex){
+                            style.styleSheet.cssText = css;
+                        }
+                        var head = document.getElementsByTagName("head")[0];
+                        head.appendChild(style);
+                    }
+
+                    //loadStyleString("body{ background-color: red; }");
+
+                    //Selector API
+                    //querySelector() and  querySelectorAll() 使用在document和element类型节点上
+                    var find = document.querySelector(".text");
+                    console.log(find);
+
+                </pre>
+            </p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>
