@@ -1,0 +1,129 @@
+---
+layout: default
+title: css3(2):盒子相关样式 
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">主要包括inline-block;overflow;text-overflow;box-shadow;box-sizing;这些属性，我都进行了测试。下面是style的内容，看下里面的注释基本就可以搞清楚他的用法了。</p>
+            <p class="my-p">
+                <pre>
+                    /*盒子的display相关*/
+                    /***************************************************************************/
+                    .inlineBlock{
+                        display: inline-block;
+                        background-color: red;
+                        /*width和height属性中能用在block上，在inline上无效果*/
+                        /*inline-block兼具inline效果，又能改宽高*/
+                        width: 300px;
+                    }
+                    .inline{
+                        display: inline;
+                        background-color: yellow;
+                        /*无效果*/
+                        width: 300px; 
+                    }
+
+                    /*菜单的写法*/
+                    ul{
+                        margin: 0;
+                        padding: 0;
+                        /*表格前后没有换行符*/
+                        display: inline-table 
+                    }
+                    /*菜单用inline-block*/
+                    .ib{
+
+                        background-color: #00ccff;
+                        border: solid 1px #666666;
+                        text-align: center;
+                        /*here*/
+                        display: inline-block;
+                        width: 200px;
+
+                    }
+                    /*菜单用block和float*/
+                    .b{
+
+                        background-color: #00ccff;
+                        border: solid 1px #666666;
+                        text-align: center;
+                        /*here 传统的做法*/
+                        display: block;
+                        float: left;
+                        width: 200px;
+                    }
+                    a{
+                        text-decoration: none;
+                        color: #000000;
+                    }
+
+                    /*盒子容纳不下内容的显示*/
+                    /***************************************************************************/
+
+                    .testoverflow{
+                        width: 200px;
+                        height: 100px;
+                        border: solid 1px red;
+                        /* hidden: 多出的部分遮住了 */
+                        /* scroll: 出现y轴滚动条  同auto*/
+                        /* visible: 和没加overflow一样 */
+                        overflow: auto;
+ 
+                        }
+                    .showX{
+                        /* 想把x搞出来需要div套div，里面的div要比外面的width大。 */
+                        /* 这个showX写在外面的div中 */
+                        overflow-x: scroll;
+                        overflow-y: scroll; 
+                        width: 150px; 
+                        border: solid 1px red;
+                    }
+                    /* 一句话在一行，超过宽度省略为...的样式设置 */
+                    .sheng{
+                        width: 150px; 
+                        border: solid 1px red;
+                        /*不让他换行*/
+                        white-space: nowrap;
+                        /*把多出来的遮住*/
+                        overflow: hidden; 
+                        /*加上省略号*/
+                        -webkit-text-overflow: ellipsis;
+                        -o-text-overflow: ellipsis;
+                        -ms-text-overflow: ellipsis;
+                        -moz-text-overflow: ellipsis;
+                        text-overflow: ellipsis;
+                        
+                    }
+                    /*对盒子使用阴影*/
+                    /***************************************************************************/
+                    /* box-shadow: x y 阴影 颜色  同text-shadow; */
+
+                    /*控制盒子的总宽度*/
+                    /***************************************************************************/
+                    /*两个盒子各占50%*/
+                    .left, .right{
+                        border: solid 1px red;
+                        float: left;
+                        width: 50%;
+                        padding: 30px;
+                        /*这个很有用，不用自己调了*/
+                        -webkit-box-sizing: border-box;
+                        -o-box-sizing: border-box;
+                        -ms-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                    }
+                    .right{
+                        border-left: none;
+                    }
+                </pre>
+            </p>
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>
