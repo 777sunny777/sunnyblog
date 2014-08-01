@@ -1,0 +1,136 @@
+---
+layout: default
+title: 事件(1) 跨浏览器的事件处理程序总结
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">这块是前端比较重要的地方，需要深刻理解。我们说js与HTML之间的交互是通过事件实现的。页面接收事件是按照一个顺序的，也就是有相应的事件流，有意思的是，IE和其他浏览器的事件流正相反，IE是事件冒泡流，讲究从具体到一般；其他浏览器是事件捕获流，讲究从一般到具体。</p>
+            <p class="my-p">对于事件处理程序来讲，目前有4种方式，其中HTML事件处理方式，就是直接在标签上绑个onclick之类的，因为缺点太多，尽量不用了。DOM0(不是标准，只是个时间点，IE4支持的DHTML)的方式比较简单，可以跨浏览器，但是不支持同时绑定多个事件处理程序，DOM2 IE8-不支持，IE也有一套自己的方式，我在下面都做了测试，例子的注释也比较详细。</p>
+            <p class="my-p">对于事件对象，所有浏览器都有的属性包括1，判断event的类型；2.获取event的目标；3.阻止冒泡；4.阻止默认行为，当然IE和其他浏览器属性的获取方式也不一样的，下面同样进行了测试。</p>
+            <p class="my-p my-h">EventUtil是编写的可以跨浏览器的事件工具，可以直接用</p>
+            <p class="my-p">
+                <pre>
+                    //跨平台事件工具
+                    var EventUtil = {
+
+
+                        // 说明：只考虑DOM2方法和IE8-的方法即可包含现代全部浏览器
+                        // 绑定事件
+                        addEventFunction: function(element, type, funcName){
+                            if ( element.addEventListener ) {
+                                element.addEventListener( type, funcName, false );
+                            }else{
+                                element.attachEvent("on"+type, funcName );
+                            };
+                        },
+                        //得到事件对象event
+                        getEvent: function(event){
+                            return event ? event : window.event;
+                        },
+                        //得到事件目标
+                        getTarget: function(event){
+                            return event.target || event.srcElement;
+                        },
+                        //取消事件的默认行为
+                        preventDefault: function(event){
+                            if ( event.preventDefault ) {
+                                event.preventDefault();
+                            }else{
+                                event.returnValue = false;
+                            };
+                        },
+                        //取消事件冒泡
+                        stopBubble: function(event){
+                            if (event.stopPropagation) {
+                                event.stopPropagation();
+                            }else{
+                                event.cancelBubble = true;
+                            };
+                        },
+                        // 解除事件
+                        removeEventFunction: function(element, type, funcName){
+                            if ( element.removeEventListener ) {
+                                element.removeEventListener( type, funcName, false );
+                            }else{
+                                element.detachEvent("on"+type, funcName );
+                            };
+                        }
+                    };
+
+                    //绑定事件例子1
+                    var div = document.getElementById("testDiv");
+                    var testfunc = function(event){
+                        //获取Event
+                        var eventObj = EventUtil.getEvent(event);
+                        //console.log(eventObj.type);
+                        //获取事件目标
+                        var target = EventUtil.getTarget(event);
+                        //console.log(target);
+                        alert("div");
+                        //取消事件冒泡
+                        EventUtil.stopBubble(event);
+
+                    }
+                    //绑定事件例子2
+                    var a = document.getElementById("testa");
+                    var testfunc2 = function(event){
+                        //取消事件的默认行为
+                        EventUtil.preventDefault(event);
+                        alert("111");
+                    }
+                    //绑定事件例子2
+                    var testfunc3 = function(event){
+                        alert("body");
+                    }
+
+
+                    EventUtil.addEventFunction(div, "click", testfunc );
+                    EventUtil.addEventFunction(a, "click", testfunc2 );
+                    EventUtil.addEventFunction( document.body , "click", testfunc3 );
+
+                    //////////////////////////////////////////////////////////////////////////
+                    //事件处理程序
+                    //DOM0 写法简单，跨浏览器的优势,不能添加多个事件处理程序，只执行最后一个
+                    // var div = document.getElementById("testDiv");
+                    // div.onclick = function(){
+                    //     alert("111");
+                    // }
+                    // div.onclick = null;
+
+
+                    //DOM2 IE8不支持，可以添加多个事件处理程序
+                    // var div = document.getElementById("testDiv");
+                    // div.addEventListener("click",function(){
+                    //     alert("222");
+                    // }, false);
+                    // div.addEventListener("click",function(){
+                    //     alert("333");
+                    // }, false);
+                    //如果解除绑定的话，函数不能写成匿名函数。
+                    //类似：div.removeEventListener("click", 函数名, false );才有效
+
+
+                    //IE事件处理程序，和DOM0的区别：会在全局运行，this==window，
+                    //和DOM2的区别：可以添加多个事件处理程序，但是顺序和DOM2的是相反的。
+                    //IE8及以下都是5，4；IE9，10是4，5；IE11不支持了
+                    // var div = document.getElementById("testDiv");
+                    // div.attachEvent("onclick",function(){
+                    //     alert("444");
+                    // });
+                    // div.attachEvent("onclick",function(){
+                    //     alert("555");
+                    // });
+                    //如果解除绑定的话，函数不能写成匿名函数。
+                    //类似：div.detachEvent("onclick",handler);才有效
+
+                </pre>
+            </p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

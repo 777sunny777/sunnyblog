@@ -1,0 +1,48 @@
+---
+layout: default
+title: 事件(2) onload事件
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">
+                <pre>
+                    //onload事件总结
+                    //window加载完后触发
+                    EventUtil.addEventFunction(window, "load", function(){
+                        alert("111");
+                    });
+                    //动态添加图片，并在图片加载完后触发
+                    EventUtil.addEventFunction(window, "load", function(){
+                        var img = document.createElement("img");
+                        EventUtil.addEventFunction(img, "load", function(){
+                            alert(EventUtil.getTarget(event).src );
+                        });
+                        document.body.appendChild(img);
+                        //必须在指定src前指定事件
+                        img.src = "http://s1.bdstatic.com/r/www/cache/static/home/img/logo_7809e161.png";
+
+                    });
+                    //动态添加script，并判断是否添加完成
+                    EventUtil.addEventFunction(window, "load", function(){
+                        var script = document.createElement("script");
+                        EventUtil.addEventFunction(script, "load", function(){
+                            alert("done!");
+                        });
+                        document.body.appendChild(script);
+                        //这个顺序就不重要了
+                        //图片只要设置了src就会开始下载
+                        //脚本必须要设置了src，并添加到文档才开始下载
+                        script.src = "./sunny.js";
+                    });
+
+                </pre>
+            </p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>
