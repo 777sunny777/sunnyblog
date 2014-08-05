@@ -1,0 +1,96 @@
+---
+layout: default
+title: 表单验证（validate插件扩展）纯js，不依赖框架，支持到IE6
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">
+                现在在HTML5中简单的写几个属性就可以对表单进行验证，不再需要什么验证插件了。尤其是移动端的浏览器都是很高级的，更不需要费时考虑验证的问题。但是PC上IE8的消亡毕竟还需要一段时间，况且直到现在还有IE6的存在，这些都制约着HTML5的发展。所以一个前端还是有必要学习一种跨浏览器的验证插件的，以后需要的时候使用。
+            </p>
+            <p class="my-p">另外插一句，javascript是自95年诞生的，最早的目的就是为了在客户端完成一些基本的验证任务，可以说js最初就是因表单验证而生的。我为什么选择<a href="http://rickharrison.github.io/validate.js/" target="_blank">validate插件</a>。是因为他是纯js所写，不依赖于任何框架，支持到IE6,最重要的是逻辑简单可以很容易的自定义扩展。下面就是我的html结构和扩展的js代码，以后用到会很方便。</p>
+            <img src="/sunnyblog/img/7.png" class="codeimg">
+            <p class="my-p">
+                <pre>
+                    /*
+                     * validate.js扩展
+                     * 纯js，不依靠框架，支持到IE6
+                     *
+                     * modified: 
+                     * 1.金额，电话号码验证
+                     * 2.优化体验，validate之前先清空上次验证的记录
+                     * 3.在验证位置插入错误信息 
+                     *
+                     * author: sunny
+                     * thanks for http://rickharrison.github.io/validate.js/
+                     */
+
+                    var validator = new FormValidator( "testF", 
+                    [
+                        { name:"req", rules:"required|min_length[6]",depends: "checkForempty" },
+                        { name:"pass", rules:"required", depends: "checkForempty"},
+                        { name:"passagain", rules:"matches[pass]",depends: "checkForempty" },
+                        { name:"email", rules:"valid_email",depends: "checkForempty" },
+                        { name:"url", rules:"valid_url",depends: "checkForempty" },
+                        { name:"money", rules:"callback_check_yuan",depends: "checkForempty" },
+                        { name:"phone", rules:"callback_check_phone",depends: "checkForempty" }
+
+                    ], function( errors, event ){
+                        if ( errors.length > 0 ) {
+                            //console.log(errors);
+                            for (var i = 0, errorLength = errors.length; i < errorLength; i++) {
+                                
+                                var id = errors[i].id ? errors[i].id : errors[i].name ;
+                                var message = errors[i].message;
+                                var selector = document.getElementById( id+"error" );
+                                selector.innerHTML = message;
+
+                            }
+                        };
+                    });
+
+                    validator.setMessage('required', '不能为空！');
+                    validator.setMessage('min_length', '必须大于6个字符！');
+                    validator.setMessage('matches', '密码不一致！');
+                    validator.setMessage('valid_email', 'email不正确！');
+                    validator.setMessage('valid_url', 'url不正确！');
+
+                    //优化体验--validate之前先清空上次验证的记录
+                    validator.registerConditional('checkForempty', function(field) {
+                        var id = field.id ? field.id : field.name ;
+                        var selector = document.getElementById( id+"error" );
+                        selector.innerHTML = "";
+                        return true;
+                    });
+
+
+                    //自定义金额验证
+                    validator.registerCallback('check_yuan', function(value) {
+
+                        var yuan = /^(([1-9]\d{0,9})|0)(\.\d{1,2})?$/;
+                        if ( yuan.test(value) ) {
+                            return true;
+                        }else{
+                            return false;
+                        };
+                    }).setMessage('check_yuan', '金额输入有误!');
+
+                    //自定义电话号码
+                    validator.registerCallback('check_phone', function(value) {
+
+                        var phone = /^(13[0-9]|15[0|3|6|7|8|9]|18[8|9])\d{8}$/;
+                        if ( phone.test(value) ) {
+                            return true;
+                        }else{
+                            return false;
+                        };
+                    }).setMessage('check_phone', '电话号码输入有误!');
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
