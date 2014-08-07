@@ -1,0 +1,32 @@
+---
+layout: default
+title: js何如判断页面一个节点加载完成
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">
+                <pre>
+                    // 测试一个节点是否已经加载
+                    // 方法一 看看它是不是存在
+                    var hasThis = document.getElementById("testDiv");
+                    console.log( hasThis == null );
+
+                    // 方法二，特定标签下，绑定load事件，加载完成后提示
+                    // 支持该事件的 HTML 标签：
+                    // body, frame, frameset, iframe, img, link, script
+                    
+                    window.onload = function(){
+
+                        console.log("window done!");
+
+                    };
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

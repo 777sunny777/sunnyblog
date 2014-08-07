@@ -1,0 +1,20 @@
+---
+layout: default
+title: 高性能建站1 -- 减少HTTP请求
+category: performance
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">《高性能网站建设指南》一书中经典的一段话：只有10% ~ 20%的最终用户响应时间花在接受所请求的HTML文档上。剩下80% ~ 90%时间花在了为HTML文档所引用的所有组件（图片，脚本，样式表，flash等）进行的HTTP请求上。因此，改善响应时间最简单途径就是减少组件的数量，并由此减少HTTP请求的数量。 </p>
+            <p class="my-p">这里减少HTTP请求主要指的是页面初始加载的时候HTTP的请求数量。主要方法有图片地图，CSS Sprites, 内联图片，脚本、样式表的合并。图片地图和css Sprites的原理都是一样的，就是把多个图融合到一个图里面，两者相比分离的图片，性能上的提高时一样的，我用过的是Css Sprites，下面就把这个说一下</p>
+            <p class="my-p">Css Sprites讲究的是将多个图片合并到一个单独的图片中，使用background-position属性来进行定位。它通过合并图片减少HTTP请求，并且还降低了下载量（对于这个我没有亲自验证过，我把原因先写在下面，有机会后面验证）。我们认为合并后的图片比分离的图片的总和要大，因为合并的图片中包含附加的空白区域，实际上，合并的图片会比分离的图片总和要小，这是因为它降低了图片自身的开销（颜色表，格式信息等等）。我后面要做个对比验证下这句话。</p>
+            <p class="my-p">内联图片的方法在IE中不支持，我之前也没用过，原理就是将图片的base64编码直接放到img的src或者css中的background-image中，这样可以节省一个HTTP请求。</p>
+            <p class="">脚本、样式表的合并是比较常见的减少HTTP请求的方法，一般来讲，一个页面有一个私有的js文件和css样式表就够了。
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
