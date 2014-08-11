@@ -10,12 +10,11 @@
 <link rel="stylesheet" type="text/css" href="/sunnyblog/css/blog.css">
 </head>
 <body>
-
+    <div id="savour">Savour</div>
     <div class="blog-masthead">
       <div class="container">
         <nav class="blog-nav">
-          <a class="blog-nav-item active" href="#">Home</a>
-          <a class="blog-nav-item" href="#">Savour coming...</a>
+          <a class="blog-nav-item active" href="http://777sunny777.github.io/sunnyblog/">Home</a>
         </nav>
       </div>
     </div>
@@ -40,5 +39,11 @@
     <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
     <script src="js/blog.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var savour = document.getElementById("savour");
+        savour.onclick = function(){
+          window.open("https://github.com/savour/savour");
+        } 
+    </script>
 </body>
 </html>

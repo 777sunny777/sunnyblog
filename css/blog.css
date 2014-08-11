@@ -192,3 +192,19 @@ top: 13px;
 font-size: 50px;
 line-height: 0;
 }
+
+/*打广告*/
+#savour{
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    background-image: url(/sunnyblog/1.png);
+    background-repeat: no-repeat;
+    background-size: 100px;
+    width: 100px;
+    height: 120px;
+    font-size: 18px;
+    font-weight: bolder;
+    text-align: center;
+    line-height: 11;
+}
