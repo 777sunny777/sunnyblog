@@ -10,7 +10,7 @@ category: performance
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
             <p class="my-p">浏览器缓存中保留了组件的一个副本，这个副本中存有组件的最后修改时间，浏览器会将这个时间发送给服务器，如果这个组件自生成日期没有改变过，服务器就返回一个“304 Not Modified”状态码并不再发送响应体。从而得到一个更小更快的响应。我们这里说的添加expires是另一种情形。我们可以让状态码为“200 ok ( from cache )”，直接使用本地缓存文件，根本不向浏览器发送请求。这样会用更快速的响应。下面就说一下它在apache中的配置方法。</p>
-            <p class="my-p">这里要插一句，万分感谢我的同事<a href="http://tracylee.iteye.com/">tracy(不是她的照片，是她的blog)</a>。因为我对apache是菜鸟中的菜鸟，所以找个强有力地后端提供技术支持是很重要的。</p>
+            <p class="my-p">这里要插一句，万分感谢我的同事<a href="http://tracylee.iteye.com/" target="_blank">tracy(不是她的照片，是她的blog)</a>。因为我对apache是菜鸟中的菜鸟，所以找个强有力地后端提供技术支持是很重要的。</p>
             <p class="my-p">配置httpd.conf步骤如下：1）# 启用缓存模块
             LoadModule expires_module modules/mod_expires.so 2）要注意在Directory标签中设置“Options Indexes FollowSymLinks Includes ExecCGI”、“AllowOverride All”、
             “Order deny,allow”、“Allow from all”。3）# mod_expires.conf 缓存配置

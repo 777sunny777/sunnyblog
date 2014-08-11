@@ -1,0 +1,20 @@
+---
+layout: default
+title: 高性能建站(4) -- 压缩组件(gzip)
+category: performance
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">首先，先总结一下，之前学的几种方法，css Sprites，内联图片，减少页面的js、css数量，包括cache-control头等等方法原理都是通过减少不必要的http请求来减少响应时间的。cdn是通过减少物理距离来减少响应时间的。这里的压缩组件，是通过减少http请求的大小来减少http请求的时间的。</p>
+            <p class="my-p">具体在apache中的配置步骤如下：1）# 启动压缩模块 LoadModule deflate_module modules/mod_deflate.so。2）在Directory 中填写AddOutputFilterByType DEFLATE text/html text/css application/javascript。这个是将html，js，css全部压缩了，一般情况下大于1k的文件进行压缩都可以有很好的效果（注意：压缩也是需要考虑成本的---服务器端会花费额外的cpu资源，客户端要对压缩文件进行解压。这里面门道很多，这里暂时只是讲了个皮毛）。另外，给一个链接<a href="http://httpd.apache.org/docs/2.0/mod/mod_deflate.html" target="_blank">apache关于压缩的文档，有很多可选的参数，有机会要好好研究的。</a></p>
+            <p class="my-p my-h">最后，对比一下来看，第一张是为未压缩的文件，注意Content-Length，它告诉浏览器报文中实体主体的大小。这个大小是包含了内容编码的，比如对文件进行了gzip压缩，Content-Length就是压缩后的大小。</p>
+            <img src="/sunnyblog/img/10.png" class="codeimg">
+            <p class="my-p my-h">下面是第二张为压缩过的文件，压缩了近3倍多，非常厉害。</p>
+            <img src="/sunnyblog/img/11.png" class="codeimg">
+        </div><!-- /.blog-main -->
+    </div>
+</div>
