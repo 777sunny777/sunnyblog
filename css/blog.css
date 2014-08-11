@@ -206,6 +206,7 @@ line-height: 0;
     font-size: 18px;
     font-weight: bolder;
     text-align: center;
-    line-height: 11;
+    line-height: 9;
     cursor: pointer;
+    z-index: 999;
 }
