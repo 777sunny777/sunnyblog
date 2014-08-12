@@ -1,0 +1,25 @@
+---
+layout: default
+title: 高性能建站 --- 一点小总结
+category: performance
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">《高性能网站建设指南》这本书让我学到了初步的前端网站优化知识，总共有14条规则（最后一条是使ajax可缓存---它基于前13条优化），我前面都有相应的记录，这里做一个小的总结。</p>
+            <p class="my-p my-h">优化原理1：减少HTTP请求响应的时间</p>
+            <p class="my-1">规则1,3,8,12,13---从减少初始页面HTTP请求个数的角度，减少总的HTTP请求响应的时间。</p>
+            <p class="my-1">规则2---从减少客户端服务器物理距离的角度，减少每个HTTP请求响应的时间。</p>
+            <p class="my-1">规则4,10---从减少单个HTTP请求大小的角度，减少每个HTTP请求响应的时间。</p>
+            <p class="my-p my-h">优化原理2：让用户感觉页面快起来</p>
+            <p class="my-1">规则5,6,7,11---根据浏览器渲染页面原理，使页面尽量逐步呈现，减少用户干等的时间，让用户感觉页面快起来</p>
+            <p class="my-p my-h">优化原理3：减少DNS服务器查找的时间</p>
+            <p class="my-1">规则9---减少DNS服务器查找的时间，来加快页面的呈现</p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+
