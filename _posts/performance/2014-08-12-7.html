@@ -1,0 +1,18 @@
+---
+layout: default
+title: 高性能建站(9) -- 减少DNS查找
+category: performance
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">通过使用Keep-Alive和较少的域名来减少DNS查找</p>
+            <p class="my-p">1.确保服务器支持Keep-Alive可以减少DNS查找。</p>
+            <p class="my-p">2.减少主机名的数量可以减少DNS查找，但是会减少并行下载进而增加响应时间。也就是说并行下载需要一定的主机名数量，但是过多的主机名数量又会增加DNS查找总时间，这两者会有个均衡点。一般建议是组件分别放到2~4个主机名下。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+

@@ -1,0 +1,24 @@
+---
+layout: default
+title: 高性能建站(11,12,13) -- 重定向，重复脚本，ETag
+category: performance
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.避免重定向</p>
+            <p class="my-p">1）什么是重定向？</p>
+            <p class="my-p">重定向是用户从一个url重新路由到另一个url。有两个常见的状态码：301 and 302。301表示永久重定向，302表示临时重定向。对于一般的用户而言，可能你还无法体会出来他们的区别，因为横竖都是要重定向的。但对于搜索引擎而言意义就非凡。我们都知道，搜索引擎是需要不定期对网站资源进行爬网，以便完善对应的索引结构的。当某个资源被永久重定向（301），搜索引擎会聪明地知道，在索引中应该记录就是永久重定向之后的新地址，而不是老地址，这样就可以避免用户通过搜索引擎来查询的时候，每次还需要先到老地址，再重定向到新地址。而对于临时重定向（302），则不会这么做。</p>
+            <p class="my-p">2）重定向带来的影响？</p>
+            <p class="my-p">重定向会使你的页面变慢，因为重定向会延迟整个HTML文档的传输。在HTML文档到达前，页面不会呈现出任何东西，也没有任何的组件会被下载。前端要注意的是：1）在定义链接地址的href属性的时候，尽量使用最完整的、直接的地址。eg：使用www.google.com.hk 而不是google.com。</p>
+            <p class="my-p my-h">2.确保脚本只能被包含一次</p>
+            <p class="my-p">这个没啥说的，注意检查。</p>
+            <p class="my-p my-h">3.配置ETag</p>
+            <p class="my-p">ETag是在HTTP1.1中引入的，是唯一标识了一个组件的一个特定版本的字符串。和last-modified一样，ETag是另一种验证方式，如果匹配就返回304状态码。但是有一个问题是ETag状态码和获取组建的服务器有关，也就是说从不同服务器获取相同的组件，ETag也是不能匹配的。<a href="http://blog.csdn.net/eroswang/article/details/8302191" target="_blank">浏览器缓存详解:expires,cache-control,last-modified,etag详细说明</a></p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+

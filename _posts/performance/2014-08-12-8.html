@@ -1,0 +1,17 @@
+---
+layout: default
+title: 高性能建站(10) -- 精简javaScript
+category: performance
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">这里面的精简主要指的是从代码中移除不必要的字符，原理还是减少组件（js，css）本身的大小。另外还有一个混淆的概念，指的是将函数和变量的名字替换为更短的字符串，同样可以减少组件大小，并且减少的可能更多，还具有了防反编译的好处（如果有需要的话）。但是这个混淆本身容易出错，一般没有必要这么做。</p>
+            <p class="my-p">js的精简会去掉注释，和多余的空格等等。我之前用过的工具只有grunt，我会详细的用grunt再配置一下，写篇blog放在savour目录下。相当于是项目管理工具。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+
