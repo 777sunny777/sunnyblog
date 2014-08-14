@@ -36,7 +36,7 @@ title: Sunny's Blog
             {% endfor %}
             </ul>
 
-            <p class="ulp alert alert-primary"><span class="glyphicon glyphicon-plus"></span>各种配置及php</p>
+            <p class="ulp alert btn-primary"><span class="glyphicon glyphicon-plus"></span>各种配置及php</p>
             <ul class="pul">
             {% for post in site.categories.php %}
                 <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>

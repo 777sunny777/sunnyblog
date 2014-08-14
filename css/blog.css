@@ -188,9 +188,9 @@ h6, .h6 {
 }
 
 .glyphicon {
-top: 13px;
-font-size: 50px;
-line-height: 0;
+  top: 5px;
+  font-size: 33px;
+  line-height: 0;
 }
 
 /*打广告*/
