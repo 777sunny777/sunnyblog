@@ -1,0 +1,44 @@
+---
+layout: default
+title: apache虚拟主机配置
+category: php
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">我得赶紧记录以下，apache虚拟主机配置是<a href="http://tracywen.iteye.com/" target="_blank">牛逼的tracy三分钟帮我搞定的，访问她的blog吧！</a>下面记录详细的步骤：</p>
+            <p class="my-p">1.找到你的httpd.conf(我的目录：E:\Apache2.2\conf )，开启虚拟主机需要的模块---LoadModule vhost_alias_module modules/mod_vhost_alias.so</p>
+            <p class="my-p">2.同时引入文件（Virtual hosts） 
+Include conf/extra/httpd-vhosts.conf</p>
+            <p class="my-p">3.打开文件httpd-vhosts.conf，其中虚拟主机的配给详情如下：
+            <pre>
+                &lt;VirtualHost *:80 &gt;
+                ServerName www.ssp.me
+                DocumentRoot "E:\Apache2.2\htdocs\ssp"
+                &lt;Directory "E:\Apache2.2\htdocs\ssp" &gt;
+                    Options FollowSymLinks +Includes
+                    AllowOverride All
+                    Order allow,deny
+                    Allow from all
+                    Header set Access-Control-Allow-Origin http://777sunny777.github.io/sunnyblog/
+                    AddOutputFilterByType DEFLATE text/html text/css application/javascript
+
+                &lt;/Directory &gt;
+                DirectoryIndex  test.html
+
+                ErrorLog "| E:/Apache2.2/bin/rotatelogs E:/Apache2.2/htdocs/ssp/logs/%Y%m%d%H_ssp_error.log 3600 480"
+                CustomLog "| E:/Apache2.2/bin/rotatelogs E:/Apache2.2/htdocs/ssp/logs/%Y%m%d%H_ssp_access.log 3600 480" common
+
+            &lt;/VirtualHost &gt;
+
+            </pre>
+            </p>
+            <p class="my-p">另外，在这个文件中的Directory中对http头的设置只作用于这个域中，在httpd中的Directory的设置会作用于全部虚机中。</p>
+            <p class="my-p">4.最后，在C:\Windows\System32\drivers\etc下找到hosts，添加127.0.0.1       www.ssp.me。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+
