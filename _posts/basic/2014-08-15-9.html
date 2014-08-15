@@ -1,0 +1,39 @@
+---
+layout: default
+title: 一次点击，同时提交多个表单方法
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">工作中最近遇到这样的问题，我们知道一次点击，多次提交表单是会造成错误的，基本上只有最后提交的那个表单的数据过去了，其他的都会丢失。类似于下面的方式是行不通的：
+                <pre>
+                    $("#sub").click(function(){
+                        $("#test1").submit();
+                        $("#test2").submit();
+                    }
+                </pre>
+            有一种解决方式是设置隐藏域，把test1表单中的内容隐藏个副本，放到test2中去。这样相当于是提交了1个表单，但是这样有一个问题，就是所有表单的提交地址必须相同才行。如果地址不同怎么办呢？
+            </p>
+            <p class="my-p my-h">所以用POST请求来提交表单就很重要了</p>
+            <p class="my-p">这种方式提交时异步的，不同表单可以提交到不同地址去，并且后端取值方式和表单取值方式是一致的。如果是原生的ajax写法，需要注意的是下图请求头中的content-Type的设置，如果是基于jquery的ajax post，那么就不用管了。写法如下，主要用到了serialize()函数，将表单序列化成字符串形式，eg：name=sunny&age=101 。<pre>
+                var test1=$("#test1").serialize();
+                $.ajax({
+                    url: './index.html',
+                    type: 'POST',
+                    data: test1
+                });
+                var test2=$("#test2").serialize();
+                $.ajax({
+                    url: './test.html',
+                    type: 'POST',
+                    data: test2
+                });
+            </pre></p>
+            <img src="/sunnyblog/img/13.png" class="codeimg">
+        </div><!-- /.blog-main -->
+    </div>
+</div>

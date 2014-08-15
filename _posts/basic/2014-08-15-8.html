@@ -1,0 +1,43 @@
+---
+layout: default
+title: 跨域请求方法，原理及测试
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.跨域请求遇到的问题</p>
+            <p class="my-p">ajax技术的核心是XMLHttpRequest对象（XHR），XHR实现ajax通信的一个主要限制就是跨域问题，默认情况下，XHR对象只能访问与包含他的页面在同一个域中的资源（注意是同一个域，不是同一个ip）。这种安全策略是为了预防某些恶意行为。</p>
+            <p class="my-p my-h">2.解决跨域的方法</p>
+            <p class="my-p">1)目前最好的解决方式就是CORS（跨域资源共享），原理是通过使用Origin这个HTTP头，让浏览器与服务器进行沟通，从而决定请求或响应是应该成功还是失败。请求头中的origin和服务器配置的Access-Control-Allow-Origin的值会进行对比。apache使用虚拟主机技术，可以使多个域名可以对应同一个IP地址，通过这样的方式进行跨域请求测试。在apache中设置Access-Control-Allow-Origin的步骤：<pre>
+                # 在httpd中，激活HTTP头的设置，跨域问题
+                LoadModule headers_module modules/mod_headers.so
+                # 在&lt;Directory&gt;中
+                Header set Access-Control-Allow-Origin http://www.ssp3.me
+                # 当然，你也可以设置成 *
+            </pre>
+            在未设置之前，去访问会报错，如下：
+            <pre>
+                 $("#ky").click(function(event) {
+                     $.ajax({
+                         url: 'http://www.ssp.me/test.json',
+                         type: 'POST',
+                         dataType: 'json',
+                         success: function(data){
+                             console.log( data );
+                         }
+                     });
+                 });
+            </pre>
+            <img src="/sunnyblog/img/12.png" class="codeimg">
+            设置之后就会取到数据了。
+            </p>
+            <p class="my-p">2）图像ping方法，原理是&lt;img&gt;标签可以从任何网页加载图像，不用担心跨域问题。动态生成图像+利用onload、onerror函数，但是只能发get请求，并单向通信。</p>
+            <p class="my-p">3）JSONP，JSONP的最基本的原理是：动态添加一个&lt;script&gt;标签，而script标签的src属性是没有跨域的限制的。并且jquery不支持post方式跨域。<a href="http://www.nowamagic.net/librarys/veda/detail/224/" target="_blank">这里有详细的解释，服务器端也要做一些工作，整体比较复杂。</a></p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>
