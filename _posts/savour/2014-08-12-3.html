@@ -11,7 +11,11 @@ category: savour
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
             <p class="my-p my-h">1.在线检测网站是否引用了jQuery</p>
             <p class="my-p">打开调试工具，在console输入jQuery(),输出[],表示该页面引入了jquery，否则会输出 ReferenceError: jQuery is not defined</p>
-            
+            <p class="my-p my-h">2.重定向页面</p>
+            <p class="my-p">&lt;meta http-equiv="refresh" content="5; url=http://www.baidu.com/"&gt; 5秒后定向到百度去，当然你可以把content设为0。</p>
+            <p class="my-p my-h">3.jquery判断元素是否处于动画状态</p>
+            <p class="my-p">$(element).is(":animated") 返回true or false</p>
+
         </div><!-- /.blog-main -->
     </div>
 </div>
