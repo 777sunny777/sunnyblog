@@ -1,0 +1,39 @@
+---
+layout: default
+title: 编写jQuery插件(抄自《锋利的jQuery2》)
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">这周二有的想法，想写个jQuery插件玩玩，到现在写了一个jQuery的轮播图插件，写了3天有点惭愧。为啥写轮播图的插件呢，因为公司之前有个叫刘伟的前端大神，在本科还没毕业，实习生的时候写了playdata首页上的轮播图，没事的话你可以去playdata上看看。你没看错，这哥没用什么插件，直接自己写了一个，我着实崇拜了一阵。所以我也想写个试试。我抱着学习的心态去看了下，说实话没怎么看懂，心想算了，自己写吧。后来我去查看轮播图原理，再结合了自己的一些想法，就有了现在这个插件，嘿嘿。</p>
+            <p class="my-p">说正题，所有jquery插件中95%以上都是封装对象方法的插件。就是$("element").xxx()这样的插件，这里主要说这样插件的写法。</p>
+            <p class="my-p">
+                <pre>
+                    ;(function($){  //;是为了更好的兼容性，$是匿名函数的形参
+                        $.fn.extend({   //该方法专用于封装对象方法的插件
+                            "funcName": function(value){
+                                //这里写插件代码
+
+                                return this; //为了链式表达 
+                            }
+                        });
+                    })(jQuery);   //jQuery是传递给匿名函数的实参，通过()来执行
+                </pre>
+            </p>
+            <p class="my-p">
+                <pre>
+                    //jQuery.extend()的方法有扩展已有Object的功能，它可以用来自定义默认参数。例如
+                    options = $.extend({
+                        widthLBT: 600,
+                        heightLBT: 400
+                    },options);
+                    //取值的方式是options.widthLBT即可。
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

@@ -1,0 +1,20 @@
+---
+layout: default
+title: savour-carousel轮播图插件原理
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">只说原理，不讲代码，<a href="https://github.com/777sunny777/savour-carousel" target="_blank"></a>项目在这</p>。
+            <p class="my-p my-h">轮播图主要功能有三块：1.定时轮播；2.左右点击；3.快速导航</p>
+            <p class="my-p">1.定时轮播。所有轮播图要float成一行，播放窗口的div要overflow。定时用setInterval配合animate。</p>
+            <p class="my-p">2.左右点击。左点击时，要把第一个图插到最后一个，这个步骤建议在动画前完成（考虑到只有一个图的情况），多图的话就无所谓了。右点击时，要把最后一个图插到第一个，这个步骤必须在动画前完成。</p>
+            <p class="my-p">3.快速导航（就是图下方那几个点）。这个稍微复杂一点，我的实现方式是，左右点击的时候根据start，end，active类来定位，比如左点击了，找到active，把他的next添加active，再把第一个active去掉，到end了就返回到start，右点击相反的。</p>
+            <p class="my-p">快速导航之间点击的时候，用到index()这个参数，计算点击的this和现在的active之间的序号差，根据这个序号差来决定for几次左右点击，类似于triggle()，但是你可以把动画的slow改为fast。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
