@@ -1,0 +1,124 @@
+---
+layout: default
+title: grunt常用配置（绝对硬货）
+category: php
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">没用过grunt做项目管理的前端已经out了，用它可以做很多事情，具体你去关注他的文档<a href="http://www.gruntjs.net/docs/getting-started/" target="_blank">快速上手</a>，他同时提供了很多插件，我有一个好地方找得到几乎全部，是几乎啊，还有些特殊的你要到github上自己去搜<a href="https://github.com/gruntjs" target="_blank">grunt插件大全</a>。</p>
+            <p class="my-p my-h">前端的项目管理常用的有哪些？1.文件合并，比如多个js文件合并，为啥？减少HTTP请求，具体去看我的Web性能优化的blog。2.文件压缩，包括去注释、空格等等。为了减少HTTP请求大小，在这个基础上用个gzip，效果刚刚的。3.文件中内容的替换，比如js，css目录的替换。其他还有复制，清除等等功能。这些只是grunt做的很基本的一点事，但是一般的项目应该就够用了，下面我就把我配置的文件展示出来大家做参考。</p>
+            <img src="/sunnyblog/img/14.png" class="codeimg">
+            <p class="my-p">上面是我的目录图，解释一下，假设一般开发阶段，你写的js统一放在了dev-js目录下，css放在了dev-css下，你的页面是demo.html。上线前，你需要把你写的所有js做个合并，压缩，并且导入到对应的pro-js下面，css也一样的，然后你的页面demo中相应的文件路径也要改变。这是最最基本的一些操作，你希望一次配好，交给grunt去automation吧。配置的package.js 和 Gruntfile.js如下。另外，你知道运行grunt前要装好nodejs及npm吧，呵呵。
+            </p>
+            <p class="my-p"><pre>
+                // package.js
+                {
+                  "name": "testgrunt",
+                  "version": "1.0.0",
+                  "description": "sth",
+                  "repository": "sth",
+                  "author": "sunny_sun",
+                  "license": "sth",
+                  "devDependencies": {
+                    "grunt": "~0.4.2",
+                    "grunt-contrib-concat":  "~0.5.0",
+                    "grunt-contrib-uglify":  "~0.5.1",
+                    "grunt-regex-replace":   "~0.2.5",
+                    "grunt-contrib-clean":   "~0.4.1",
+                    "grunt-contrib-copy":    "~0.4.1"
+                  }
+                }
+            </pre></p>
+            <p class="my-p"><pre>
+                // Gruntfile.js
+                module.exports = function(grunt) {
+                  grunt.initConfig({
+                    pkg: grunt.file.readJSON('package.json'),
+                    //清空pro-js中的文件
+                    clean: ["pro-js/*.js"],
+                    //工作流1：合并js文件（如果需要的话，不需要就别写）
+                    //工作流2：去掉合并之后文件中的注释，当然在uglify会自动做这个事
+                    concat: {
+                      options: {
+                        //banner：在合并后的文件头部加一些额外信息
+                        //footer：在合并后的文件尾部加一些额外信息
+                        // 定义一个用于插入合并输出文件之间的字符
+                        separator: ';',
+                        // 除掉注释,这个方法不能将全部的/**/去掉，也不能将//去掉，不是很靠谱
+                        stripBanners: {
+                            block: true,
+                            line: true
+                        }  
+                      },
+                      dist: {
+                        // 将要被合并的文件
+                        src: ['dev-js/*.js'],
+                        // 合并后的JS文件的存放位置
+                        dest: 'pro-js/<%= pkg.name %>.js'
+                      }
+                    },
+                    //工作流3：压缩刚才合并的文件,压缩就会将注释全去掉的
+                    uglify: {
+                      options: {
+                        //在压缩后的文件头部加一些额外信息
+                        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+                      },
+                      dist: {
+                        files: {
+                          'pro-js/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+                        }
+                      }
+                    },
+                    // 将css文件复制到pro-css路径下
+                    copy: {
+                      main: {
+                        expand:true,
+                        cwd: './dev-css/',
+                        src: '*.css',
+                        dest: 'pro-css/'          
+                      }
+                    },
+                    //工作流4：替换html文件中的js路径
+                    "regex-replace": {
+                        findhtml: { //specify a target with any name
+                            src: ['./*.html'],
+                            actions: [
+                                {
+                                    name: 'first',
+                                    search: 'dev-js/test.js',
+                                    replace: 'pro-js/<%= pkg.name %>.min.js',
+                                    flags: 'g'
+                                },{
+                                    name: 'second',
+                                    search: 'dev-css',
+                                    replace: 'pro-css',
+                                    flags: 'g'
+                                }
+                            ]
+                        }
+                    },
+                    // Deletes all .js files, but skips min.js files
+                    clean: {
+                      js: ["pro-js/*.js", "!pro-js/*.min.js"]
+                    }
+
+                  });
+                  //加载所需要的Grunt插件
+                  grunt.loadNpmTasks('grunt-contrib-clean');
+                  grunt.loadNpmTasks('grunt-contrib-concat');
+                  grunt.loadNpmTasks('grunt-contrib-uglify');
+                  grunt.loadNpmTasks('grunt-regex-replace');
+                  grunt.loadNpmTasks('grunt-contrib-copy');
+                  //设置default任务
+                  grunt.registerTask('default', ['clean','concat','uglify','regex-replace','copy','clean']);
+
+                };
+            </pre></p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+
