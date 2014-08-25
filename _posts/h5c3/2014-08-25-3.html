@@ -1,0 +1,73 @@
+---
+layout: default
+title: css3(3):背景与边框相关样式 
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">主要包括;background-clip; background-origin; background-size; border-radius; border-image;详细如下：</p>
+            <p class="my-p">
+                <pre>
+                    /*background-clip用来修饰背景(color+img)的显示范围*/
+                    .div1,.div2,.div3,.div4,.div5{
+                        background-color: black;
+                        background-image: url(./test1.jpg);
+                        background-repeat: no-repeat;
+                        /*background-size定义背景图片的尺寸*/
+                        background-size: auto 100px;
+                        border: dashed 15px green;
+                        padding: 30px;
+                        height: 200px;
+                    } 
+                    .div1{
+                        /*范围包括border*/
+                        /*如果不定义的话，background-color默认是包括border的*/
+                        -moz-background-clip: border;
+                        -webkit-background-clip: border;
+                        background-clip: border;
+                    }
+                    .div2{
+                        /*范围只包括到内距*/
+                        -moz-background-clip: padding;
+                        -webkit-background-clip: padding;
+                        background-clip: padding;
+                    }
+                    /*background-origin用来修饰背景图像(img)的绘制起点*/
+                    .div3{
+                        -moz-background-origin: border;
+                        -webkit-background-origin: border;
+                        background-origin: border; 
+                    }
+                    .div4{
+                        -moz-background-origin: padding;
+                        -webkit-background-origin: padding;
+                        background-origin: padding;
+                    }
+                    .div5{
+                        -moz-background-origin: content;
+                        -webkit-background-origin: content;
+                        background-origin: content;
+                    }
+                    /*一个div中方多个img的方式*/
+                    .div6{
+                        background-color: black;
+                        background-image: url(./test1.jpg),url(./test2.jpg);
+                        background-repeat: no-repeat, no-repeat;
+                        background-position: left, top; 
+                        height: 200px;
+                    }
+                    /*border-radius设置圆角*/
+                    /*其他略，当border为none时，设置了border-radius会使得背景变圆角*/
+
+                    /*border-image图像边框*/
+                    /*这部分东西很多，我现在没有需求，以后用到再详细学一下*/
+                </pre>
+            </p>
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>

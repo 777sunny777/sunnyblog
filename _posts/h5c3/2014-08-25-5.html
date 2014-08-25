@@ -1,0 +1,99 @@
+---
+layout: default
+title: css3(5): css3动画Transitions和Animations 
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">
+                <pre>
+                        .clickme{
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 17px;
+                        background-color: yellow;
+                        margin: 200px auto;
+                        line-height: 6;
+                        font-size: 14px;
+                        font-weight: bold;
+                        text-align: center;
+                        cursor: pointer;
+                /*        -moz-transform:rotate(0deg);
+                        -moz-transition: -moz-transform 1s linear;
+                        -webkit-transform:rotate(0deg);
+                        -webkit-transition: -webkit-transform 1s linear;
+                        transform:rotate(0deg);
+                        transition: transform 1s linear;*/
+                        transition: margin-top 0.5s linear
+                    }
+
+                    .clickme:hover{
+                /*        -moz-transform:rotate(45deg);
+                        -webkit-transform:rotate(45deg);
+                        transform:rotate(45deg);*/
+                        margin-top: 100px;
+                    }
+
+                    /*实现页面淡入效果*/
+                    @-webkit-keyframes fadein{
+                        0%{
+                            opacity: 0;
+                        }
+                        100%{
+                            opacity: 1;
+                        }
+                    }
+                    body{
+                        -webkit-animation-name: fadein;
+                        -webkit-animation-duration: 5s;
+                        -webkit-animation-timing-function: linear;
+                        -webkit-animation-iteration-count: 1;
+                    }
+                    /*有个div来回移动*/
+                    @-webkit-keyframes autocar{
+                        0%{
+                            left: 50px;
+                            top: 50px;
+                        }
+                        20%{
+                            left: 200px;
+                            top: 50px;
+                        }
+                        50%{
+                            left: 200px;
+                            top: 200px;
+                        }
+                        70%{
+                            left: 50px;
+                            top: 200px;
+                        }
+                        100%{
+                            left: 50px;
+                            top: 50px;
+                        }
+                    }
+
+                    .car{
+                        display: inline-block;
+                        width: 200px;
+                        height: 150px;
+                        background-color: red;
+                        position: relative;
+                        top: 50px;
+                        left: 50px;
+                        -webkit-animation-name: autocar;
+                        -webkit-animation-duration: 10s;
+                        -webkit-animation-timing-function: linear;
+                        -webkit-animation-iteration-count: infinite;
+                    }
+
+                </pre>
+            </p>
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>
