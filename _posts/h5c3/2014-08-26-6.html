@@ -1,0 +1,56 @@
+---
+layout: default
+title: css3(6):div屏幕居中方法(传统js方式和css3方式)
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">div屏幕居中，主要考虑的是垂直居中，传统的方式可以用js来实现，而css3提供了更为方便的方法</p>
+            <p class="my-p">
+                <pre>
+                    //传统的js方法，稍微用了点数学技巧，我用jquery写的
+                    //text就是要居中的div，这个relative是相对body的
+                    $(document).ready(function() {
+                       
+                        var textHeight = $(".text").height();
+                        $(".text").css({
+                            position: "relative",
+                            top: "50%", 
+                            marginTop: "-"+(textHeight/2)+"px"
+                        });
+
+                    });
+                </pre>
+            </p>
+            <p class="my-p">
+                <pre>
+                    //css3方式更简单
+                    //注意是在body中设置的样式
+                    html,body{
+                        width: 100%;
+                        height: 100%;
+                    }
+                    body{
+                        display: -moz-box;
+                        display: -webkit-box;
+                        -moz-box-align:center;
+                        -webkit-box-align:center;
+                        -moz-box-pack:center;
+                        -webkit-box-pack:center;
+                    }
+                    .text{
+                        height: 400px;
+                        width: 400px;
+                        border: solid 1px black;
+                        margin: 0 auto;  
+                    }
+                </pre>
+            </p>
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>

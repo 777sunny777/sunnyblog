@@ -1,0 +1,45 @@
+---
+layout: default
+title: css3(8):其他重要样式和属性(长期更新)
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.outline</p>
+            <p class="my-p">
+            <pre>
+                &lt;input class="check" type="checkbox"&gt;
+                
+                .check{
+                    margin: 50px;
+                    /*增加轮廓线*/
+                    outline: medium solid red;
+                    /*形成双轮廓的效果*/
+                    outline-offset:2px;
+                }
+            </pre>
+            </p>
+            <p class="my-p my-h">2.resize</p>
+            <p class="my-p">
+            <pre>
+                &lt;div class="test1"&gt;&lt;/div&gt;
+                
+                .test1{
+                    width: 100px;
+                    height: 100px;
+                    border: solid 1px red;
+                    /*可以拉伸宽高和overflow配合使用*/
+                    /*resize可选：both，none，horizontal，vertical，inherit*/
+                    resize:both;
+                    overflow: auto;
+                }
+            </pre>
+            </p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

@@ -1,0 +1,34 @@
+---
+layout: default
+title: css3(7):Media Query
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">这篇blog部分参考了<a href="http://www.moke8.com/article-5657-1.html" target="_blank">CSS3 Media Query实现响应布局</a>这个文章，你也可以直接去看他，忽略下面的文字。</p>
+            <p class="my-p my-h">一、什么是响应式布局？</p>
+            <p class="my-p">响应式布局是Ethan Marcotte在2010年5月份提出的一个概念，简而言之，就是一个网站能够兼容多个终端——而不是为每个终端做一个特定的版本。这个概念是为解决移动互联网浏览而诞生的。</p>
+            <p class="my-p my-h">二、响应式布局有哪些优点和缺点？</p>
+            <p class="my-p">优点：1.面对不同分辨率设备灵活性强；2.能够快捷解决多设备显示适应问题</p>
+            <p class="my-p">缺点：1.兼容各种设备工作量大，效率低下；2.代码累赘，会出现隐藏无用的元素，加载时间加长；3.其实这是一种折衷性质的设计解决方案，多方面因素影响而达不到最佳效果；4.一定程度上改变了网站原有的布局结构，会出现用户混淆的情况</p>
+            <p class="my-p my-h">三、使用方式？</p>
+            <p class="my-p">1.提前指定窗口宽度 &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</p>
+            <p class="my-p">2. @media 设备类型 and （设备特性）{ 样式代码 }</p>
+            <img src="/sunnyblog/img/15.png" class="codeimg">
+            <img src="/sunnyblog/img/16.png" class="codeimg">
+            <p class="my-p">
+                <pre>
+                    /*除了and 还有 not 、only等逻辑*/
+                    @media screen and (max-width: 639px){
+                        /*样式代码*/
+                    }
+                </pre>
+            </p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>
