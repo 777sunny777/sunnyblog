@@ -1,0 +1,98 @@
+---
+layout: default
+title: json的stringify和parse
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">ajax从后台取回的json数据是一个object，所以在success返回的data是可以直接取得他的属性的。stringify可以将object序列化，并且他还有筛选，改值等功能。parse可以将序列化的字符串解析成object，同样的他也有改值的功能</p>
+            <p class="my-p">
+                <pre>
+                    //我测试用的json串
+                    {
+                        "title": "test json",
+                        "author": [
+                            "sunny", "stella"
+                        ],
+                        "edition": 3,
+                        "year": 2014,
+                        "response": true
+                    }
+                </pre>
+            </p>
+            <p class="my-p"><pre>
+                    //js代码及结果
+                        $.ajax({
+                            url: './test.json',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {name: 'sunny'},
+                            success: function(data){
+                                var book = data;//data传过来的是object
+                                console.log(book); //object
+
+                                //序列化json成字符串
+                                var jsonstringify = JSON.stringify(book);
+                                console.log(jsonstringify);
+                                //{"title":"test json","author":["sunny","stella"],"edition":3,"year":2014,"response":true} 
+                                $(".jsontext").text(jsonstringify);
+                                //筛选字符串,只要author和year
+                                var jsonchoose = JSON.stringify(book,["author","year"]); 
+                                console.log(jsonchoose);
+                                //{"author":["sunny","stella"],"year":2014} 
+
+                                //可以在序列化的同时，改变其key的value方法，这里面相当于有个each
+                                var jsonchoose1 = JSON.stringify(book,function(key, value){
+                                    if ( key == "author") {
+                                        value.push("smile");
+                                        return value;
+                                    }else if ( key == "year"){
+                                        return 2013;
+                                    }else{
+                                        return value;
+                                    };
+                                });
+                                console.log(jsonchoose1);
+                                //{"title":"test json","author":["sunny","stella","smile"],"edition":3,"year":2013,"response":true} 
+
+                                //为了好看，还可以缩进个格式
+                                var jsonchoose2 = JSON.stringify(book,null,4);
+                                console.log(jsonchoose2);
+                                //console可以看出来，但是页面是没有的
+                                $(".jsontext").text(jsonchoose2);
+                                
+                                //将序列化的字符串解析为对象
+                                console.log(book.year); //2014
+                                console.log(jsonchoose2.year);//undefined
+                                var bookcopy = JSON.parse(jsonchoose2);
+                                console.log(bookcopy);
+                                //在parse的同时，改变其key的value方法,这里面相当于有个each
+                                var bookcopy2 = JSON.parse(jsonchoose2, function(key, value){
+                                    if ( key == "author") {
+                                        value.push("tiger");
+                                        return value;
+                                    }else if ( key == "year"){
+                                        return 2015;
+                                    }else{
+                                        return value;
+                                    };
+                                });
+                                console.log(bookcopy2);
+
+                            }
+                        
+                        });
+
+            </pre></p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+
+
+
+
+
