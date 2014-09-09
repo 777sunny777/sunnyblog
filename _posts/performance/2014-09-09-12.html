@@ -1,0 +1,106 @@
+---
+layout: default
+title: js的Array和string常用方法小结
+category: performance
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">js的Array和string常用方法小结：</p>
+            <p class="my-p">
+                <pre>
+                    //Array常用方法小结
+                    var testArray1 = [1,2,3,4,5,6,7,6,5,4,3,2,1];
+                    var testArray2 = ["red","blue","green","pink"];
+                    var testArray3 = [3,1,4,7,2];
+                    //转换方法
+                    //1.toString:转化为字符串，逗号为分隔符的一个字符串
+                    console.log(testArray1.toString());
+                    //=1,2,3,4,5,6,7,6,5,4,3,2,1
+                    //2.join:转化为字符串，可以自定义分隔符
+                    console.log(testArray1.join("||"));
+                    //=1||2||3||4||5||6||7||6||5||4||3||2||1
+
+                    //栈和队列方法
+                    //1.push和pop：最后一位推和取
+                    testArray2.push("sunny","stella");
+                    console.log(testArray2);
+                    //=["red", "blue", "green", "pink", "sunny", "stella"] 
+                    console.log(testArray2.pop());
+                    //=stella
+                    //2.shift和unshift:第一位取和推
+                    console.log(testArray2.shift());
+                    //=red
+                    testArray2.unshift("aaa","bbb");
+                    console.log(testArray2);
+                    //=["aaa", "bbb", "blue", "green", "pink", "sunny"]
+                    //这里注意unshift("aaa","bbb")不等于unshift("aaa")，unshift("bbb");
+
+                    //重排序方法
+                    //1.reverse:队列反转
+                    testArray3.reverse();
+                    console.log(testArray3);
+                    //=[2, 7, 4, 1, 3]
+                    //2.sort:按字符串排序，如果要按数值大小排序需要定义函数
+                    function compare(v1,v2){
+                        return v2 - v1; //从大到小排
+                    }
+                    testArray3.sort(compare);
+                    console.log(testArray3);
+                    //=[7, 4, 3, 2, 1]
+
+                    //删除插入替换
+                    //1.slice：从a到b-1取值，不影响原数组
+                    var testArray21 = testArray2.slice(1,3);
+                    console.log(testArray21);
+                    //=["bbb", "blue"]
+                    //2.splice: 删除，插入，替换
+                    testArray21.splice(0,1,"ggg");//起始位置，要删的项，插入的项
+                    console.log(testArray21);
+                    //=["ggg", "blue"] 
+
+                    //下面的方法是IE9+才支持的
+                    //获取索引方法
+                    //1.indexOf和lastIndexOf
+                    console.log(testArray2);
+                    //=["aaa", "bbb", "blue", "green", "pink", "sunny"]
+                    console.log(testArray2.indexOf("pink"));
+                    //=4
+
+                    //迭代方法
+                    //every，some，map，filter，foeeach
+
+                    //缩小方法
+                    //reduce()
+                    //求数组的各项和、积用
+
+                    ///////////////////////////////////////////////////////////////
+                    ////////////**************************************/////////////
+                    ///////////////////////////////////////////////////////////////
+
+                    //string常用方法小结
+                    var testString1 = "Whello WORLD!";
+                    //1.charAt,indexOf,lastIndexOf:用来找到字符串字符位置
+                    console.log(testString1.charAt(5));//在5的位置是o
+                    //=o
+                    console.log(testString1.indexOf("W"));
+                    //=0,只记录第一个
+                    //2.concat拼接
+                    var testString2 = "sunny";
+                    console.log(testString1.concat(testString2));
+                    //=Whello WORLD!sunny 
+                    //3.slice,substr,substring按位置截取
+                    //4.trim()去掉前后空格
+                    //5.toLowerCase和toUpperCase转换大小写
+                    //6.split：按分隔符转换成数组
+                    //7.localeCompare:比较字符串，在判断相等的时候用
+                    //8.charCodeAt和fromCharCode字符编解码用
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+
