@@ -1,0 +1,85 @@
+---
+layout: default
+title: IE浏览器下css的条件注释
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">IE浏览器下css的条件注释利用的是浏览器hack，适用范围是从IE5（包含）到IE9（包含），IE10及以上就不会识别这样的写法了。</p>
+            <p class="my-p">其原理就是条件注释的基本结构和HTML的注释(&lt;!-- --&gt;)是一样的。因此IE以外的浏览器将会把它们看作是普通的注释而完全忽略它们。但是IE将会根据if条件来解析条件注释里的内容。</p>
+            <p class="my-p"><pre>
+                //一个例子
+                &lt;html&gt;
+                    &lt;head&gt;
+                        &lt;title&gt;css条件注释&lt;/title&gt;
+                        &lt;meta charset="UTF-8"&gt;
+                        &lt;style type="text/css"&gt;
+                            .test{
+                                margin: 20px auto;
+                                width:200px;
+                                height: 200px;
+                                border: solid 1px black;
+                                background-color: yellow;
+                            }
+                        &lt;/style&gt;  
+                        &lt;!--[if lte IE 6]&gt;
+                        &lt;style type="text/css"&gt;
+                            .test{
+                                margin: 20px auto;
+                                width:200px;
+                                height: 200px;
+                                border: solid 1px black;
+                                background-color: red;
+                            }
+                        &lt;/style&gt;  
+                        &lt;![endif]--&gt;
+                        &lt;!--[if IE 7]&gt;
+                        &lt;style type="text/css"&gt;
+                            .test{
+                                margin: 20px auto;
+                                width:200px;
+                                height: 200px;
+                                border: solid 1px black;
+                                background-color: blue;
+                            }
+                        &lt;/style&gt;  
+                        &lt;![endif]--&gt;
+                        &lt;!--[if IE 8]&gt;
+                        &lt;style type="text/css"&gt;
+                            .test{
+                                margin: 20px auto;
+                                width:200px;
+                                height: 200px;
+                                border: solid 1px black;
+                                background-color: green;
+                            }
+                        &lt;/style&gt;  
+                        &lt;![endif]--&gt;
+                        &lt;!--[if gt IE 8]&gt;
+                        &lt;style type="text/css"&gt;
+                            .test{
+                                margin: 20px auto;
+                                width:200px;
+                                height: 200px;
+                                border: solid 1px black;
+                                background-color: black;
+                            }
+                        &lt;/style&gt;  
+                        &lt;![endif]--&gt;
+
+                    &lt;/head&gt;
+                    &lt;body&gt;
+                        &lt;div class="test"&gt;&lt;/div&gt;
+                    &lt;script type="text/javascript"&gt;
+                    &lt;/script&gt;
+                    &lt;/body&gt;
+                    &lt;/html&gt;
+
+            </pre></p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
