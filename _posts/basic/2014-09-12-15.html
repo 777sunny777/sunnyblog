@@ -12,7 +12,11 @@ category: basic
             <p class="my-p">IE浏览器下css的条件注释利用的是浏览器hack，适用范围是从IE5（包含）到IE9（包含），IE10及以上就不会识别这样的写法了。</p>
             <p class="my-p">其原理就是条件注释的基本结构和HTML的注释(&lt;!-- --&gt;)是一样的。因此IE以外的浏览器将会把它们看作是普通的注释而完全忽略它们。但是IE将会根据if条件来解析条件注释里的内容。</p>
             <p class="my-p"><pre>
-                //一个例子
+                // 一个例子
+                // gt : greater than，选择条件版本以上版本，不包含条件版本
+                // lt : less than，选择条件版本以下版本，不包含条件版本
+                // gte : greater than or equal，选择条件版本以上版本，包含条件版本
+                // lte : less than or equal，选择条件版本以下版本，包含条件版本
                 &lt;html&gt;
                     &lt;head&gt;
                         &lt;title&gt;css条件注释&lt;/title&gt;

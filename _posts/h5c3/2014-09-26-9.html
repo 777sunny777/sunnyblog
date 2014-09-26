@@ -1,0 +1,59 @@
+---
+layout: default
+title: web storage简单小结
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h"></p>
+            <p class="my-p">
+            <pre>
+                //IE8及以上都可以使用
+                //html5中的Web Storage包括了两种存储方式：sessionStorage和localStorage
+                //sessionStorage用于本地存储一个会话（session）中的数据,
+                //在页面不关闭（刷新不会擦掉数据）的情况下，数据会一直存在。不跨页面
+                //localStorage用于持久化的本地存储，除非主动删除数据，否则数据是永远不会过期的，不跨浏览器
+                //Cookie的大小是受限的(4kb)，http请求中始终带着，无形中浪费了带宽，get，set方法
+                //需要自己封装
+                //Web Storage拥有setItem,getItem,removeItem,clear等方法
+
+
+                // //function group
+                // //sessionStorage
+                function saveSession(className){
+                    var $value = $(className).val();
+                    sessionStorage.setItem("message",$value);
+                }
+                function loadSession(className){
+                    var $value = sessionStorage.getItem("message");
+                    $(className).text($value);
+                }
+
+                //localStorage
+                function saveLocal(className){
+                    var $value = $(className).val();
+                    localStorage.setItem("message",$value);
+                }
+                function loadLocal(className){
+                    var $value = localStorage.getItem("message");
+                    $(className).text($value);
+                }
+
+                //test code
+                $(".save").click(function(event) {
+                    /* Act on the event */
+                    saveLocal(".inmess");
+                });
+                $(".get").click(function(event) {
+                    /* Act on the event */
+                    loadLocal(".message");
+                });
+            </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
