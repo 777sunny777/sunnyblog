@@ -128,6 +128,63 @@ category: basic
                     //如果解除绑定的话，函数不能写成匿名函数。
                     //类似：div.detachEvent("onclick",handler);才有效
 
+
+                    //add 2014-10-09
+                    //现代浏览器DOM事件总结
+                    //gt IE8
+                    //监听事件
+                    var listenButton = document.getElementById("listen");
+                    function callback(){
+                        alert("listen success!");
+                    }
+                    //你可以吧callback写成匿名函数的，
+                    //但是如果你要以后移除的话，就不能写成匿名函数
+                    listenButton.addEventListener("click",callback);
+
+                    //事件移除
+                    listenButton.removeEventListener("click",callback);
+
+                    //维护函数上下文
+                    var weihuButton = document.getElementById("weihu");
+                    var user = {
+                        name: 'sunny',
+                        say: function(){
+                            alert("my name is "+this.name);
+                        }
+                    };
+                    //优雅的写法：这里bind一个新的函数，保持user上下文关系
+                    user.say = user.say.bind(user);
+                    //或者用匿名函数，比较丑
+                    weihuButton.addEventListener("click",user.say);
+
+                    //事件在DOM中的流动过程包括IE9+
+                    //DOM事件被触发的时候会经历三个阶段。
+                    //1.从文档的根节点流向目标对象（捕获阶段）
+                    //2.在目标对象上被触发（目标阶段）
+                    //3.再回溯到文档的根节点（冒泡阶段）。
+                    var outside = document.getElementById("outside");
+                    var inside = document.getElementById("inside");
+                    //开启捕获模式
+                    outside.addEventListener("click",function(){
+                        alert("outside-capture");
+                        //用来阻止事件流中的后续事件
+                        //event.stopPropagation();
+                        //更猛烈的阻止同一个元素上绑定的其他事件
+                        //event.stopImmediatePropagation();
+                        //用来阻止浏览器默认事件，比如a
+                        //event.preventDefault();
+                    },true);
+                    inside.addEventListener("click",function(){
+                        alert("inside-capture");
+                    },true);
+                    //开启冒泡模式
+                    inside.addEventListener("click",function(){
+                        alert("inside-bubble");
+                    },false);
+                    outside.addEventListener("click",function(){
+                        alert("outside-bubble");
+                    },false);
+                    
                 </pre>
             </p>
 
