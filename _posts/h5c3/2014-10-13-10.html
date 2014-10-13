@@ -1,0 +1,178 @@
+---
+layout: default
+title: Modernizr库来检测html5功能及结果
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h"></p>
+            <p class="my-p">
+            <pre>
+            &lt;script type="text/javascript" src="./modernizr_html5.min.js"&gt;&lt;/script&gt;
+
+            //Modernizr 是用于检测浏览器是否支持HTML5及CSS3特性
+            //download: http://modernizr.com/
+            //demo只下载了检测html5的功能，压缩后12k
+            //2014/10/13 15:31
+            //测试,结果贴在最后
+            //chrome:37.0.2062.124 m
+            //IE8, IE9+
+            //firefox:31.0
+
+            //支持canvas画布功能
+            if ( Modernizr.canvas ) {
+                document.write("支持canvas画布功能&lt;br/&gt;");
+            }else{
+                document.write("不支持canvas画布功能&lt;br/&gt;");
+            };
+            //支持canvas画布文本功能
+            if ( Modernizr.canvastext ) {
+                document.write("支持canvas画布文本功能&lt;br/&gt;");
+            }else{
+                document.write("不支持canvas画布文本功能&lt;br/&gt;");
+            };
+            //支持视频功能
+            if ( Modernizr.video ) {
+                document.write("支持播放视频&lt;br/&gt;");
+                //If video support is detected, Modernizr assesses which formats the current browser will play.
+                //Currently, Modernizr tests ogg, webm and h264.
+                if ( Modernizr.video.ogg) {
+                    document.write("支持播放视频格式ogg&lt;br/&gt;");
+                }else{
+                    document.write("不支持播放视频格式ogg&lt;br/&gt;");
+                };
+                if ( Modernizr.video.webm) {
+                    document.write("支持播放视频格式webm&lt;br/&gt;");
+                }else{
+                    document.write("不支持播放视频格式webm&lt;br/&gt;");
+                };
+                if ( Modernizr.video.h264) {
+                    document.write("支持播放视频格式h264&lt;br/&gt;");
+                }else{
+                    document.write("不支持播放视频格式h264&lt;br/&gt;");
+                };
+            }else{
+                document.write("不提供video原生支持，用QuickTime或Flash&lt;br/&gt;");
+            };
+            //支持本地存储
+            if ( Modernizr.localstorage ) {
+                document.write("支持本地存储&lt;br/&gt;");
+            }else{
+                document.write("不支持本地存储&lt;br/&gt;");
+            };
+            //支持web workers
+            if ( Modernizr.webworkers ) {
+                document.write("支持web workers&lt;br/&gt;");
+            }else{
+                document.write("不支持web workers&lt;br/&gt;");
+            };
+            //支持离线web应用
+            if ( Modernizr.applicationcache ) {
+                document.write("支持离线web应用&lt;br/&gt;");
+            }else{
+                document.write("不支持离线web应用&lt;br/&gt;");
+            };
+            //支持地理位置
+            if ( Modernizr.geolocation ) {
+                document.write("支持地理位置&lt;br/&gt;");
+            }else{
+                document.write("不支持地理位置&lt;br/&gt;");
+            };
+            //支持输入框类型13种
+            if ( Modernizr.inputtypes.search ) {
+                document.write("支持search输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持search输入框&lt;br/&gt;");
+            };
+            if ( Modernizr.inputtypes.number ) {
+                document.write("支持number输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持number输入框&lt;br/&gt;");
+            };
+            if ( Modernizr.inputtypes.range ) {
+                document.write("支持range输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持range输入框&lt;br/&gt;");
+            };
+            if ( Modernizr.inputtypes.color) {
+                document.write("支持color输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持color输入框&lt;br/&gt;");
+            };
+            if ( Modernizr.inputtypes.tel ) {
+                document.write("支持tel输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持tel输入框&lt;br/&gt;");
+            };
+            if ( Modernizr.inputtypes.url ) {
+                document.write("支持url输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持url输入框&lt;br/&gt;");
+            };
+            if ( Modernizr.inputtypes.email ) {
+                document.write("支持email输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持email输入框&lt;br/&gt;");    
+            };
+            if ( Modernizr.inputtypes.date ) {
+                document.write("支持date输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持date输入框&lt;br/&gt;");    
+            };
+            if ( Modernizr.inputtypes.month ) {
+                document.write("支持month输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持month输入框&lt;br/&gt;");    
+            };
+            if ( Modernizr.inputtypes.week ) {
+                document.write("支持week输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持week输入框&lt;br/&gt;");    
+            };
+            if ( Modernizr.inputtypes.time ) {
+                document.write("支持time输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持time输入框&lt;br/&gt;");    
+            };
+            if ( Modernizr.inputtypes.datetime ) {
+                document.write("支持datetime输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持datetime输入框&lt;br/&gt;");    
+            };
+            if ( Modernizr.inputtypes.datetimelocal ) {
+                document.write("支持datetime-local输入框&lt;br/&gt;");
+            }else{
+                document.write("不支持datetime-local输入框&lt;br/&gt;");    
+            };
+            //支持占位文本
+            if ( Modernizr.input.placeholder ) {
+                document.write("支持占位文本&lt;br/&gt;");
+            }else{
+                document.write("不支持占位文本&lt;br/&gt;");
+            };
+            //支持表单自动聚焦
+            if ( Modernizr.input.autofocus ) {
+                document.write("支持表单自动聚焦&lt;br/&gt;");
+            }else{
+                document.write("不支持表单自动聚焦&lt;br/&gt;");
+            };
+            //支持微数据，还不能用Modernizr来检测
+            function has_microdata_api(){
+                var sign = document.getItems;
+                if ( typeof(sign) === 'function' ) {    
+                    document.write("支持微数据&lt;br/&gt;");
+                }else{
+                    document.write("不支持微数据&lt;br/&gt;");
+                };
+            }
+            has_microdata_api();
+            </pre>
+            </p>
+            <img src="/sunnyblog/img/17.png" class="codeimg">
+        </div><!-- /.blog-main -->
+    </div>
+</div>
