@@ -1,0 +1,16 @@
+---
+layout: default
+title: 对于backbone的一点理解2
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">对于什么是backbone带来的最大好处这个问题，之前一直有点纠结，原因在于我也知道model变化带来view变化这点，但是我一直感受不到这是他最大的好处。今天和tracy聊到这个话题，从这点出发深入了一下，有了些感悟。</p>
+            <p class="my-p">在第一次页面加载的时候，后端会把几乎所有东西扔给浏览器，这些组件不仅仅包含数据资源，js，css，图片等等都是。用backbone后，model(初次加载页面传过来的页面渲染用的数据)变化触发了view变化，这时后端只是ajax传来了数据，其他部分浏览器自己就可以对应渲染，这就减少了其他组件(css,js,图片等)的http请求，这个量在页面交互频繁的情况下是非常大的，避免重复发这些http请求会大大提高用户感受。这就是backbone的最大好处，极大的提高了页面性能。当然这个前提就是要适合单页面，交互的越频繁，相对性能提高的也越多。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
