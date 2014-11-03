@@ -1,0 +1,27 @@
+---
+layout: default
+title: ThinkPHP小程序段---持续更新
+category: php
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.查看get参数,并中断运行</p>
+            <p class="my-p">print_r($_GET);die();或者var_dump($_GET);die;</p>
+            <p class="my-p my-h">2.判断是否有get请求中的某个参数，没有设置相应值</p>
+            <p class="my-p">$control = isset($_GET['m']) ? $_GET['m'] : 'Index';</p>
+            <p class="my-p my-h">3.合并数组的方法</p>
+            <p class="my-p">array_merge($array1,$array2);</p> 
+            <p class="my-p my-h">4.检测一个常量是否存在</p>
+            <p class="my-p">var_dump(defined('__ROOT__'));</p> 
+            <p class="my-p my-h">5.U方法常用</p>
+            <p class="my-p">U('Index/index',array('aid'=> 1,'uid'=> 10),'asp')</p>
+            <p class="my-p">第一个参数是访问地址模块/方法，第二个是传递的参数可以用数组，第三个是伪静态后缀，不写默认是html；还有第四个参数，1为页面跳转，0为不跳转；第五个参数是true/false或1/0，表示是否要加上域名。</p>       
+        </div><!-- /.blog-main -->
+    </div>
+
+
+</div>

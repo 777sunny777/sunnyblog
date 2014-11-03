@@ -1,0 +1,26 @@
+---
+layout: default
+title: backbone用save发送请求php如何获取
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">php不能通过$_POST获取参数？</p>
+            <p class="my-p">save默认提交的是post方式，application/json的content-type，但是php的$_post只能接收Content-Type: application/x-www-form-urlencoded提交的数据，因此不能使用该方式获取参数。而采用file_get_contents("php://input")来获取。</p>
+            <p class="my-p">$test=json_decode(file_get_contents("php://input")); 原理应该是data和content-type不匹配造成的，下面是相关原理的链接。</p>
+            <p class="my-p"><a href="http://www.alixixi.com/web/a/2014031192641.shtml" target="_blank">ajax post data获取不到数据</a></p>
+            <p class="my-p">
+                <pre>
+                经测试：
+                //contentType: "application/json; charset=utf-8",//(不可以)
+                //contentType: "text/xml",//(不可以)
+                contentType:"application/x-www-form-urlencoded",//(可以)
+                总结一下吧：本来get/post方式都是知道的，但注意，contentType与传递数据匹配（本文data）
+                </pre></p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
