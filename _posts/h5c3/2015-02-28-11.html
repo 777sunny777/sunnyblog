@@ -1,0 +1,32 @@
+---
+layout: default
+title: css基础(1):
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">css基础问题记录</p>
+            <p class="my-p my-h">1.样式优先权问题</p>
+            <p class="my-p">a.从样式的写入位置来看：行内样式表大于内部样式表大于外部样式表</p>
+            <p class="my-p">b.从选择符的优先权上看：id大于class大于类型选择符</p>
+            <p class="my-p">c.两行相同类型的css样式定义中，后面的优先级更高，但是可以通过!important来提升</p>
+            <p class="my-p my-h">2.XHTML标签与功能简述</p>
+            <img src="/sunnyblog/img/18.png" class="codeimg">
+            <img src="/sunnyblog/img/19.png" class="codeimg">
+            <p class="my-p my-h">3.几种页面布局方式的div+css实现</p>
+            <p class="my-p">a.一列固定(自适应)宽度(居中的话用margin:0 auto)</p>
+            <p class="my-p">b.两列固定宽度(注意用到float浮动，可以使浏览器自调节)</p>
+            <p class="my-p">c.两列自适应宽度(注意加起来width不是100%)</p>
+            <p class="my-p">d.两列左列固定右列自适应(固定列采用float，自适应列不加width属性，两列都要有height，这样自适应列只有div的block属性，独占一行)</p>
+            <p class="my-p">e.两列固定居中，外面再包一个div</p>
+            <p class="my-p">f.三列浮动中间列宽度自适应，左右两列(宽度固定)用绝对定位，中间自适应列不加width，将左右两列的宽度用margin隔出来</p>
+            <p class="my-p">g.高度自适应，要从html，body来继承</p>
+            <p class="my-p my-h">4.关于float(clear)</p>
+            <p class="my-p">float相当于是一个浮层，但是还要占位。clear属性用于清除浮动</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
