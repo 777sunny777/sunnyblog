@@ -1,0 +1,26 @@
+---
+layout: default
+title: css基础(2):页面元素设计
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.背景控制</p>
+            <p class="my-p">a.透明背景transparent。这个是background-color默认的透明背景。</p>
+            <p class="my-p">b.background缩写方式</p>
+            <img src="/sunnyblog/img/20.png" class="codeimg">
+            <p class="my-p my-h">2.列表</p>
+            <img src="/sunnyblog/img/21.png" class="codeimg">
+            <p class="my-p">ul列表符号替换成图片写法如下，前者写法简单但是不能调图片和文字间的距离，后者可以</p>
+            <img src="/sunnyblog/img/22.png" class="codeimg">
+            <p class="my-p">display的几种常用属性解释，这里在细说一下inline是指和p和a一样的，不独占一行，但是里面是不能设置本身高度的，他的高度就是里面文字的高度。block要独占一行，可以设置宽高。inline-block同时具有两者的特性。可以设置宽高但是又不独占一行。float应该是属于浮动但是没有完全脱离文本流，如果是写在一行的文本的话，我觉得用inline而不用float会更好。</p>
+            <img src="/sunnyblog/img/23.png" class="codeimg">
+            <p class="my-p my-h">3.表单</p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

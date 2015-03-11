@@ -1,0 +1,43 @@
+---
+layout: default
+title: git使用总结
+category: php
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.基本概念</p>
+            <p class="my-p">Git库中由三部分组成(索引，仓库，工作目录),.git目录就是仓库，里面存放的就是文档索引内容，.git目录位于工作目录内。</p>
+            <p class="my-p">a.工作目录：用户本地的目录</p>
+            <p class="my-p">b.Index（索引）：将工作目录下所有文件（包含子目录）生成快照，存放到一个临时的存储区域，Git 称该区域为索引</p>
+            <p class="my-p">c.仓库：将索引通过commit命令提交至仓库中，每一次提交都意味着版本在进行一次更新</p>
+            <p class="my-p my-h">2.Git初始化配置</p>
+            <p class="my-p">配置git仓库使用人员姓名：git config --global user.name "Your Name Comes Here"</p>
+            <p class="my-p">配置使用git仓库的人员email：git config --global user.email you@yourdomain.example.com</p>
+            <p class="my-p">查看所有配置信息：git config --list</p>
+            <p class="my-p">或者你如果想看某个项目的仓库的详细信息，可以cd .git,然后vim config文件。</p>
+            <p class="my-p my-h">3.Git文档的忽略机制</p>
+            <p class="my-p">在工作目录下有.gitignore文件。里面可以写需要忽略的文件或文件夹</p>
+            <p class="my-p my-h">4.Git help</p>
+            <p class="my-p">eg: git help add</p>
+            <p class="my-p my-h">5.git init(创建一个空的Git库)</p>
+            <p class="my-p">在当前目录中产生一个.git 的子目录。以后所有的文件变化信息都会保存到这个目录下。在.git目录下有一个config文件，可以修改其中的配置信息。</p>
+            <p class="my-p my-h">6.git add(将当前工作目录中更改或者新增的文件加入到Git的索引中，加入到Git的索引中就表示记入了版本历史中，这也是提交之前所需要执行的一步)</p>
+            <p class="my-p">添加当前目录下的所有文件和子目录: git add .</p>
+            <p class="my-p">添加dir1这个目录: git add dir1</p>
+            <p class="my-p">添加f1，f2文件: git add f1.txt f2.txt</p>
+            <p class="my-p my-h">7.git rm(从当前的工作目录中和索引中删除文件)</p>
+            <p class="my-p">暴力删除文件3.txt，包含本地目录和index中: git rm -f 3.txt</p>
+            <p class="my-p">删除文件1.txt，不会删除本地目录文件，只删除index中的文件记录: git rm --cached 1.txt</p>
+            <p class="my-p">删除文件目录f1，不会删除本地目录文件，只删除index中的文件记录: git rm -r --cached f1</p>
+            <p class="my-p">删除index中的所有文件，相当于要重新add：git rm -r --cached .（有点）</p>
+            <p class="my-p my-h">8.git commit(提交当前工作目录的修改内容)</p>
+            <p class="my-p">常用：git commit -m "xxxxxx",每一次提交，git就会为全局代码建立一个唯一的commit标识代码，用户可以通过git reset命令恢复到任意一次提交时的代码(后面会说)。</p>
+            <p class="my-p">在一个commit id上不断修改提交的内容：git commit --amend –m "message",这个会在你最近一次修改上改动，包括你的注释</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+
