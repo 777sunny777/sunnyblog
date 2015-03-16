@@ -13,7 +13,7 @@ category: php
             <p class="my-p"> git checkout origin/dev -b dev </p>
             <p class="my-p my-h">2.rebase后冲突，回到rebase之前的状态</p>
             <p class="my-p"> git rebase --abort</p>
-            <p class="my-p my-h">如何用git reflog和git cherry-pick找回已删除的commit记录</p>
+            <p class="my-p my-h">3.如何用git reflog和git cherry-pick找回已删除的commit记录</p>
             <p class="my-p">
                 <pre>
                 commit2: add test2.c
@@ -33,7 +33,25 @@ category: php
                 create mode 100644 test3.c
                 </pre>
             </p>
+            <p class="my-p my-h">4.git stash 可用来暂存当前正在进行的工作</p>
+            <p class="my-p">
+                <pre>
+                比如想pull 最新代码， 又不想加新commit， 或者另外一种情况，为了fix 一个紧急的bug,  先stash, 使返回到自己上一个commit, 改完bug之后再stash pop, 继续原来的工作。
+                基础命令：
+                $git stash
+                $do some work
+                $git stash pop
+                </pre>
+            </p>
         </div><!-- /.blog-main -->
     </div>
 </div>
+
+
+
+
+
+
+
+
 
