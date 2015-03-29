@@ -13,6 +13,7 @@ title: Sunny's Blog
                   <h3 class="panel-title" >置顶推荐</h3>
                 </div>
                 <div class="panel-body">
+                  <a href="http://www.ruanyifeng.com/blog/" target="_blank">阮一峰的网络日志</a><br/>   
                   <a href="http://tracywen.iteye.com/" target="_blank">身心不坚强的blog</a><br/>  
                   <a href="http://777sunny777.github.io/sunnyblog/php/2014/08/22/2.html" target="_blank">文章：grunt常用配置(绝对硬货)</a><br/>
                   <a href="http://777sunny777.github.io/sunnyblog/performance/2014/09/05/11.html" target="_blank">浏览器的内核分为几种[转]</a><br/>
@@ -29,7 +30,7 @@ title: Sunny's Blog
             {% endfor %}
             </ul>
 
-            <p class="ulp alert alert-info"><span class="glyphicon glyphicon-plus"></span>Savour相关(前端架构)</p>
+            <p class="ulp alert alert-info"><span class="glyphicon glyphicon-plus"></span>前端架构</p>
             <ul class="pul">
             {% for post in site.categories.savour %}
                 <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
@@ -50,7 +51,7 @@ title: Sunny's Blog
             {% endfor %}
             </ul>
 
-            <p class="ulp alert btn-primary"><span class="glyphicon glyphicon-plus"></span>各种配置及php</p>
+            <p class="ulp alert btn-primary"><span class="glyphicon glyphicon-plus"></span>杂项</p>
             <ul class="pul">
             {% for post in site.categories.php %}
                 <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>

@@ -1,0 +1,21 @@
+---
+layout: default
+title: sass(1):sass,compass--window环境下安装
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">一共分三步</p>
+            <p class="my-p my-h">1.安装ruby</p>
+            <p class="my-p">sass依赖ruby环境，所以先安装ruby，我的经验一定要安装最新版本的ruby，要不后续用到gem的时候会报错。<a href="http://rubyinstaller.org/downloads" target="_blank">ruby的下载地址</a>。</p>
+            <p class="my-p my-h">2.安装sass</p>
+            <p class="my-p">首先推荐一篇很好的sass安装文章<a href="http://www.w3cplus.com/sassguide/install.html" target="_blank">点击</a>。在ruby的命令行中输入gem install sass即可，（同样有sass -v，sass -h and update your sass version:gem update sass.）</p>
+            <p class="my-p my-h">3.安装compass</p>
+            <p class="my-p">同样：gem install compass.介绍一个命令：compass watch。compass watch命令会检控Sass文件的更改（保存更改），并且自动将Sass编译成CSS</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

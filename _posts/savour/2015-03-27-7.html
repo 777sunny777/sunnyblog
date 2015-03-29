@@ -1,0 +1,22 @@
+---
+layout: default
+title: sass(2):sass,compass项目如何建立和编译，调试
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">本文只适合快速阅读，查找用，是多篇文章和自己理解的结合。详细学习推荐阮一峰老师的文章<a href="http://www.ruanyifeng.com/blog/2012/11/compass.html" target="_blank">Compass用法指南</a>。</p>
+            <p class="my-p my-h">1.compass项目的建立</p>
+            <p class="my-p">compass create myproject,当前目录中就会生成一个myproject子目录。里面有一个config.rb文件，这是你的项目的配置文件。还有两个子目录sass和stylesheets，前者存放Sass源文件，后者存放编译后的css文件。也可以改变sass和stylesheets的名字和路径，只要在config里面配置好。</p>
+            <p class="my-p my-h">2.Compass的编译命令</p>
+            <p class="my-p">compass compile --output-style compressed（css文件压缩，:expanded模式表示编译后保留原格式，其他值还包括:nested、:compact和:compressed）。compass还有自动编译命令compass watch</p>
+            <p class="my-p my-h">3.sass的调试</p>
+            <p class="my-p">利用sourcemap的cmd命令，sass --sourcemap --style compact --watch assets/style/sass:assets/style/css，chrome开启F12打开调试面板，点击调试面板右上角的齿轮图标打开设置，在general选项中勾选Enable CSS source map 和 Auto-reload generated CSS。在chrome中就可以调试scss了，并且可以直接保存。</p>
+            <p class="my-p my-h">但是这里有遇到一个问题还没有解决，就是在scss文件中如果有@import "compass";那么在sourcemap的时候会报错:file to import not found or unreadable:compass.这里待续。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
