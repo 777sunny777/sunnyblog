@@ -1,0 +1,25 @@
+---
+layout: default
+title: IE下hack总结
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.IE4</p>
+            <p class="my-p">1.@import url("test.css")这种写法，这个test.css只能被IE5+识别，IE4及以下版本不会解析，这样可以用来区分IE4.</p>
+            <p class="my-p my-h">2.IE6</p>
+            <p class="my-p">_nowamagic:1px</p>
+            <p class="my-p my-h">3.IE7,IE8,IE9</p>
+            <img src="/sunnyblog/img/31.png" class="codeimg">
+            <p class="my-p my-h">4.IE10，IE11</p>
+            <p class="my-p">ie10不支持条件注释了,给个链接<a href="http://www.csswang.com/code/5115.html" target="_blank">ie10 hack</a>  </p>
+            <p class="my-p my-h">8.其他</p>
+            <p class="my-p">1.区分IE和其他浏览器</p>
+            <p class="my-p">@import url("test.css") screen这种写法，IE系列浏览器对设备类型不支持，所以这个test.css在IE中都不会被解析</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
