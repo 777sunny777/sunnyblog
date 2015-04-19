@@ -23,6 +23,13 @@ title: Sunny's Blog
                 </div>
             </div>
 
+            <p class="ulp alert alert-success"><span class="glyphicon glyphicon-plus"></span>前端基础知识理解</p>
+            <ul class="pul">
+            {% for post in site.categories.basic %}
+                <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
+            {% endfor %}
+            </ul>
+
             <p class="ulp alert alert-info"><span class="glyphicon glyphicon-plus"></span>前端架构</p>
             <ul class="pul">
             {% for post in site.categories.savour %}

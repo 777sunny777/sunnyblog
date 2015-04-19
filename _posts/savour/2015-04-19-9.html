@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 对于浏览器并行串行，js同步异步的一些看法
+title: 对于浏览器并行串行，js同步异步的一些看法(未完待续)
 category: savour
 ---
 
@@ -14,10 +14,6 @@ category: savour
 但是脚本的并行是禁止的，反回来再看一下js，一个js下载完了以后，浏览器就会对他解析并相应渲染的。css为什么并行不禁止呢，css也可以有依赖关系啊，因为浏览器在加载完样式表之前是什么也不会做的，没法渲染页面。</p>
             <p class="my-p my-h">2.同步异步是从组件加载时间上考虑的</p>
             <p class="my-p">脚本并行禁止，所以有了所谓的异步加载，就是需要的时候再加载。</p>
-            <p class="my-p my-h">3.sass的调试</p>
-            <p class="my-p">利用sourcemap的cmd命令，sass --sourcemap --style compact --watch assets/style/sass:assets/style/css，chrome开启F12打开调试面板，点击调试面板右上角的齿轮图标打开设置，在general选项中勾选Enable CSS source map 和 Auto-reload generated CSS。在chrome中就可以调试scss了，并且可以直接保存。</p>
-            <p class="my-p my-h">但是这里有遇到一个问题还没有解决，就是在scss文件中如果有@import "compass";那么在sourcemap的时候会报错:file to import not found or unreadable:compass.这里待续。</p>
-
         </div><!-- /.blog-main -->
     </div>
 </div>
