@@ -1,0 +1,23 @@
+---
+layout: default
+title: Web app的性能瓶颈[转]
+category: performance
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">Web app的性能瓶颈，主要有以下原因。</p>
+            <p class="my-p">（1）Web基于DOM，而DOM很慢。浏览器打开网页时，需要解析文档，在内存中生成DOM结构，如果遇到复杂的文档，这个过程是很慢的。可以想象一下，如果网页上有上万个、甚至几十万个形状（不管是图片或CSS），生成DOM需要多久？更不要提与其中某一个形状互动了。</p>
+            <p class="my-p">（2）DOM拖慢JavaScript。所有的DOM操作都是同步的，会堵塞浏览器。JavaScript操作DOM时，必须等前一个操作结束，才能执行后一个操作。只要一个操作有卡顿，整个网页就会短暂失去响应。浏览器重绘网页的频率是60FPS（即16毫秒/帧），JavaScript做不到在16毫秒内完成DOM操作，因此产生了跳帧。用户体验上的不流畅、不连贯就源于此。</p>
+            <p class="my-p">（3）网页是单线程的。现在的浏览器对于每个网页，只用一个线程处理。所有工作都在这一个线程上完成，包括布局、渲染、JavaScript执行、图像解码等等，怎么可能不慢？</p>
+            <p class="my-p">（4）网页没有硬件加速。网页都是由CPU处理的，没用GPU进行图形加速。
+            上面这些原因，对于PC还不至于造成严重的性能问题，但是手机的硬件资源相对有限，用户互动又相对频繁，结果跟Native app一比，就完全落在了下风。</p>
+            <p class="my-p">电脑显示器刷新频率是60HZ，相当于1秒重绘60次，也就是大约16ms一次，所以浏览器会对重绘操作加以限制，不超过显示器的重绘频率，所以最平滑动画的循环间隔就是16ms，JavaScript做不到在16毫秒内完成DOM操作，因此产生了跳帧。用户体验上的不流畅、不连贯就源于此。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+
+

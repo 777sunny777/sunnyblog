@@ -17,6 +17,9 @@ category: savour
             <p class="my-p my-h">3.sass的调试</p>
             <p class="my-p">利用sourcemap的cmd命令，sass --sourcemap --style compact --watch assets/style/sass:assets/style/css，chrome开启F12打开调试面板，点击调试面板右上角的齿轮图标打开设置，在general选项中勾选Enable CSS source map 和 Auto-reload generated CSS。在chrome中就可以调试scss了，并且可以直接保存。</p>
             <p class="my-p my-h">但是这里有遇到一个问题还没有解决，就是在scss文件中如果有@import "compass";那么在sourcemap的时候会报错:file to import not found or unreadable:compass.这里待续。</p>
+            <p class="my-p my-h">(2014/04/19)这个问题有一个解决方法：在config.rb里面添加，enable_sourcemaps=true和sass_options = {:sourcemap => true},然后用命令compass watch命令，不用sass --sourcemap了，也可以在浏览器直接调sass样式。</p>
+
+
         </div><!-- /.blog-main -->
     </div>
 </div>
