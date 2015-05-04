@@ -118,6 +118,55 @@ category: php
 
                 };
             </pre></p>
+            <p class="my-p my-h">2015/05/04,这里补充一下grunt-sass的配置</p>
+            <p class="my-p">
+              <pre>
+              module.exports = function(grunt) {
+
+                  // Project configuration.
+                  grunt.initConfig({
+
+                      //Read the package.json (optional)
+                      pkg: grunt.file.readJSON('package.json'),
+
+                      // Metadata.
+                      meta: {
+                          basePath: './',
+                          srcPath: 'sass/',
+                          deployPath: 'css/'
+                      },
+                      // Task configuration.
+                      sass: {
+                          dist: {
+                              options: {
+                                  style: 'expanded'
+                              },
+                              files: [{
+                                  expand: true,
+                                  cwd: '<%= meta.srcPath %>',
+                                  src: ['*.scss'],
+                                  dest: '<%= meta.deployPath %>',
+                                  ext: '.css'
+                              }]
+                          }
+                      },
+                      watch: {
+                          css: {
+                              files: ['<%= meta.srcPath %>*.scss'],
+                              tasks: ['sass']
+                          }
+                      }
+                  });
+
+                  // These plugins provide necessary tasks.
+                  grunt.loadNpmTasks('grunt-contrib-sass');
+                  grunt.loadNpmTasks('grunt-contrib-watch');
+
+                  // Default task.
+                  grunt.registerTask('default', ['sass']);
+              };
+              </pre>  
+            </p>
         </div><!-- /.blog-main -->
     </div>
 </div>

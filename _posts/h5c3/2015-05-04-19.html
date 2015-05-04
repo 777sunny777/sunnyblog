@@ -1,0 +1,44 @@
+---
+layout: default
+title: vertical-align的使用
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.用于内联元素</p>
+            <p class="my-p">下面以图像的垂直对齐为例子说明一下vertical-align属性的用法。</p>
+            <p class="my-p">
+                <pre>
+
+                    img{ vertical-align:middle;}
+                    &lt;div&gt;&lt;img src="http://pic2.58.com/ui7/job/hire/pic4.png" /&gt;看看我的位置&lt;/div&gt;
+
+                </pre>
+            </p>
+            <p class="my-p my-h">2.用于表格</p>
+            <p class="my-p">vertical-align属性可以直接用于表格单元格，效果相当于HTML中的valign属性。</p>
+            <p class="my-p">
+                <pre>
+            
+                    td{ height:40px; vertical-align:middle;}
+                    &lt;table&gt;&lt;tr&gt;&lt;td&gt;这是一个测试&lt;/td&gt;&lt;td&gt;这是一个测试&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;这是一个测试&lt;/td&gt;&lt;td&gt;这是一个测试&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+            </pre></p>
+            <p class="my-p my-h">3.用于块元素</p>
+            <p class="my-p">vertical-align属性是不适用于块元素的，这就是为什么有些人使用vertical-align属性无效的原因。但是我们可以使用display属性，设置其值为table-cell，将块元素转化为单元格，然后再使用vertical-align属性。</p>
+            <p class="my-p">
+                <pre>
+                    需要注意的是，上面这种方法是存在兼容性问题的。IE6/IE7以及以IE为核心的浏览器如世界之窗、360、遨游等浏览器不支持这种用法，而Chrome、火狐却能支持。
+                    为了兼容ie6/7可以为div添加以下属性
+                    div{
+                    *display:block; *font-size:175px;/*高度为200px，  则200*0.873约为175px* 撑开/  }
+                </pre>
+            </p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>
