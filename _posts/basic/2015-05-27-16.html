@@ -1,0 +1,73 @@
+---
+layout: default
+title: 类的封装和继承最佳方法和解析
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.最佳的封装方式--组合模式，构造函数模式和原型模式混合</p>
+            <p class="my-p">
+                <pre>
+                    function Person(name, age, job){
+                        this.name = name;
+                        this.age = age;
+                        this.job = job;
+                        this.friends = ["aaa","bbb","ccc"];
+                    }
+
+                    Person.prototype = {
+                        constructor: Person,
+                        sayName: function(){
+                            return this.name;
+                        }
+                    }
+
+                    var person1 = new Person("sunny","11","nnn");
+                    var person2 = new Person("stella","12","ppp");
+                    person1.friends.push("ddd");
+                    console.log(person1.friends);
+                    //["aaa", "bbb", "ccc", "ddd"]
+                    console.log(person2.friends);   
+                    //["aaa", "bbb", "ccc"]
+                    console.log(person1.sayName());
+                    console.log(person2.sayName());
+                    console.log(person1.sayName == person2.sayName);
+                    //true
+                </pre>
+            </p>
+            <p class="my-p">
+                这种方式中，将构造函数模式用于对象属性，使得每个实例的属性都私有化。将原型模式用于对象方法，使得实例的对象可以共享。
+            </p>
+            <p class="my-p my-h">2.最佳的继承方式--组合模式</p>
+            <p class="">
+                <pre>
+                    //继承Person
+                    function Sub(name, age, job, id){
+                        //调用Person函数
+                        Person.call(this,name,age,job);
+                        this.id = id;
+                    }
+                    //子类的原型去继承父类的实例
+                    Sub.prototype = new Person();
+
+                    //如果用字面量的方式定义的话，会导致上一行代码无效，所以要用下面的方式添加方法
+                    Sub.prototype.sayAge = function(){
+                        return this.age;
+                    }
+
+                    var sub1 = new Sub("first","33","sss",9);
+                    var sub2 = new Sub("second","77","sss",7);
+                    console.log(sub1.name);
+                    console.log(sub2.name);
+                    console.log(sub2.id);
+                    console.log(sub1.sayName());
+                    console.log(sub1.sayAge());
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
