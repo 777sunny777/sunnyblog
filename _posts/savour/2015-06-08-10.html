@@ -1,0 +1,26 @@
+---
+layout: default
+title: 我对于React的一点理解
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">React是Facebook开源的JavaScript库,用于构建用户的界面。说到他为什么出现，根据<a href="http://www.ruanyifeng.com/blog/2015/03/react.html" target="_blank">阮一峰老师的说法</a>，是因为facebook对市场上所有的js MVC框架都不满意，所以自己就搞了一套,用来架设Instagram的网站。做出来以后，发现这套东西很好用，就在2013年5月开源了。到今天为止，确定的说法是Facebook和Instagram都在用它做UI的components.</p>
+            <p class="my-p">根据Pete Hunt(开发Rect团队人员之一)（<a href="http://codewinds.com/podcast/004.html" target="_blank">如果你愿意看下pete的照片</a>）的<a href="http://facebook.github.io/react/blog/2013/06/05/why-react.html" target="_blank">说法</a>，React isn't an MVC framework. React is a library for building composable user interfaces. It encourages the creation of reusable UI components which present data that changes over time.也就是说，React是用来做前端页面组件化的工具，这些组件一定是可复用的，并且其中的数据是要随时间变化而变化的才好。（这里我想到header和footer有必要用React来封成组件么？我个人的意见是可以啊，如果你喜欢这个风格，静态组件为什么不可以呢。）</p>
+            <p class="my-p">如果你去看<a href="http://reactjs.cn/react/index.html" target="_blank">中文网站</a>--copy的<a href="http://facebook.github.io/react/index.html" target="_blank">英文官网</a>，你会发现header下面说了react的三个特征，1.仅仅是UI（上一段已经提过了），这里再补充一句，因为仅仅是UI，所以你可以自由方便的和各种js库融合，比如backbone，比如jquery（不过这种融合我目前感觉是有点low）。2.虚拟DOM，我想这个才是React牛逼的地方，下段会说的。3.单向数据流</p>
+            <p class="my-p">先说下虚拟DOM，先看下Pete是咋说的，Reactive updates are dead simple. </p>
+            <p class="my-p">In a traditional JavaScript application, you need to look at what data changed and imperatively make changes to the DOM to keep it up-to-date. Even AngularJS, which provides a declarative interface via directives and data binding requires a linking function to manually update DOM nodes.</p>
+            <p class="my-p">React takes a different approach.When your component is first initialized, the render method is called, generating a lightweight representation of your view. From that representation, a string of markup is produced, and injected into the document. When your data changes, the render method is called again. In order to perform updates as efficiently as possible, we diff the return value from the previous call to render with the new one, and generate a minimal set of changes to be applied to the DOM. </p>
+            <p class="my-p">The data returned from render is neither a string nor a DOM node -- it's a lightweight description of what the DOM should look like. We call this process reconciliation.Because this re-render is so fast (around 1ms for TodoMVC), the developer doesn't need to explicitly specify data bindings. We've found this approach makes it easier to build apps.</p>
+            <p class="my-p">为了能理解的更透彻我这边翻译下，首先pete先说了我们传统的js数据渲染方式，我们第一步需要知道那些数据发生了变化，然后将这个变化以指令的形式告诉DOM让他更新数据。这里其实是在说一个从model到view的数据绑定过程，而AngularJS，我们知道它是帮我们做好了一个双相的数据绑定，也就是说，当你的view变化的时候，同样会改变你的model。我们可以列举一个例子来说明这个问题，比如一个组件由两部分构成，上面是一个input输入框，下面是一个p，你在input里面输入什么，在p中就显示什么。首先你输入了abc, 当你在input输入完成后，可能是一个点击事件告诉model，我完成了，然后数据传给model,这个abc传到数据层改变了text这个属性的值，这就是相当于一个从view到model的数据绑定; 然后model把数据显示到你要显示的p里面（这个是一个从model到view的数据绑定，数据和p的这个联系逻辑，就是一个双相的数据绑定--注意我是说双相的数据绑定，不是说双相数据流）。</p>
+            <p class="my-p">React用了一种不同的方法，在你的组件初始化的时候，会调用render方法，生成一个映射关系(我个人的理解是0.0，0.0.1这种markup)。当你数据改变的时候，render会重新调用一次，为了尽可能的提高性能，react会计算当前render和上一次render两次虚拟dom的不同点（我个人认为这个是靠markup来快速查找的）。render返回的数据既不是字符串也不是DOM支点。他就是虚拟dom，一种标记了的dom结构，这个过程叫reconciliation，再次render的速度非常快，所以你不需要数据绑定。</p>
+            <p class="my-p">最后要说的是单向数据流，这是React组件的一种流动方式，没有什么神秘的，他是从父组件向着子组件传递数据的，不管是props，还是state，都是这样的，但是如果你想要数据回传，你可以用React.addons.LinkedStateMixin，数据流双向绑定插件，但是ReactLink仅仅是一个onChange/setState()模式的简单包装和约定。它不会从根本上改变数据在你的React应用中如何流动。不过可以少些一些代码。</p>
+            <p class="my-p">特征都说完了，最后要说的一个就是jsx，React的目标是要把模板，样式，脚本三者有逻辑的写在一个文件中（传统方式一个组件有三个文件，css，js和tpl），现在会继承在一个jsx中（css目前还没有集成在jsx中，但是已经在进行这方面的融合了，见https://speakerdeck.com/vjeux/react-css-in-js）。jsx就是一个看起来很像 XML 的 JavaScript 语法扩展。你不需要为了 React 使用 JSX，可以直接使用纯粹的 JS。但我们更建议使用 JSX , 因为它能定义简洁且我们熟知的包含属性的树状结构语法。</p>
+            <p class="my-p">最最后，要说一下React的编译，如果你只是test，你可以直接用JSXTransformer.js来转换，在页面用script引入就可以了。如果在开发环境中，你最好编译好，直接线上传js代码，工具有两个，官网推荐的react-tool(https://www.npmjs.com/package/react-tools),如果你用grunt，我推荐grunt-react。完了。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
