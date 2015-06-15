@@ -1,0 +1,110 @@
+---
+layout: default
+title: React--Top-Level API
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">
+                <pre>
+                    
+                    //1.React.Component--using ES6 classes to defined react components
+                    //you have to lower to es5 with babel
+                    // class Hello extends React.Component {
+                    //  render(){
+                    //    return(
+                    //      &lt;h1&gt;Hello!&lt;/h1&gt;
+                    //    );
+                    //  }
+                    // }
+
+                    //2.React.createClass--Create a component class, given a specification
+                    // render method return must be one single child
+                    // var Hello = React.createClass({
+                    //  render:function(){
+                    //    return(
+                    //      &lt;h1&gt;Hello!&lt;/h1&gt;
+                    //    );
+                    //  }
+                    // });
+
+                    //3.React.createElement
+                    //if you use jsx ,need not use it
+
+                    //4.React.cloneElement
+                    //New children will replace existing children. 
+                    //Unlike React.addons.cloneWithProps, 
+                    //key and ref from the original element will be preserved.
+
+                    //5.React.createFactory
+                    //if you use jsx ,need not use it
+
+                    var Hello = React.createClass({
+                      //13.React.PropTypes
+                      //When an invalid value is provided for a prop, a warning will be shown in the JavaScript console
+                      propTypes:{
+                        title: React.PropTypes.string.isRequired,
+                      },
+                      deleteP: function(){
+                        //7.React.unmountComponentAtNode
+                        //Returns true if a component was unmounted and false if there was no component to unmount.
+                        // var hereP = document.getElementById("test1");
+                        // React.unmountComponentAtNode(hereP);
+
+                        //???if you delete hereP ,it is not work,because you can not find hereP. you can use another way like setState to control hereP
+
+                        //11.React.findDOMNode
+                        //This method is useful for reading values out of the DOM, such as form field values and performing DOM measurements
+                        //or you can do like below--no use just reading values
+                        //you can use React.findDOMNode to acheve text/value but no delete  
+                        var hereP = React.findDOMNode(this.refs.hereP);
+                        console.log(hereP.innerHTML);
+                      },
+                      render:function(){
+                        return(
+                          &lt;div&gt;
+                            &lt;h1&gt;{this.props.title}&lt;/h1&gt;
+                            &lt;h1 onClick={this.deleteP}&gt;Delete P!!!&lt;/h1&gt;
+                            &lt;p id="hereP" ref="hereP"&gt;test deleteMe!!!&lt;/p&gt;
+                          &lt;/div&gt;
+                        );
+                      }
+                    });
+
+                    //10.React.isValidElement--Verifies the object is a ReactElement.
+                    //there is no use,why?
+                    //you check just element can work like below, it print true
+                    //here you do not set title prop,so you have s warning in console
+                    var elementHello = &lt;Hello /&gt;;
+                    //console.log( "111:"+React.isValidElement(elementHello) );
+
+                    //6.React.render
+                    //it has the third parameter callback
+                    //If the optional callback is provided, it will be executed after the component is rendered or updated.
+                    var title="I come from props";
+                    React.render(
+                      &lt;Hello title={title}/&gt;,
+                      document.getElementById("test1")
+                    );
+
+                    //8.React.renderToString--This should only be used on the server
+                    //9.React.renderToStaticMarkup Similar like 8
+
+                    //12.React.DOM
+                    //if you use jsx ,need not use it
+
+                    //14.React.initializeTouchEvents 
+                    //waiting...
+
+                    //15.this.props.children 取得当前组件的子元素
+                    //有map/forEach/count/only 四个方法
+
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

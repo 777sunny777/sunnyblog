@@ -1,0 +1,140 @@
+---
+layout: default
+title: React--Component Specs and Lifecycle
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">
+                <pre>
+
+                    //Component Specifications
+
+                    //1.render
+                    //The render() method is required.
+
+                    //2.getInitialState
+                    //we define the origin state in this api
+
+                    //3.getDefaultProps
+                    // we define some default props in there
+
+                    //4.propTypes
+                    //he propTypes object allows you to validate props being passed to your components.
+
+                    //5.mixins
+                    //in my opinion, mixins like plugin,but we clould not use in es6 maybe.
+
+                    //6.statics
+                    //如果在一个方法前，加上static关键字，就表示该方法不会被实例继承，
+                    //而是直接通过类来调用，这就称为“静态方法”。
+                    // var MyComponent = React.createClass({
+                    //   statics: {
+                    //     customMethod: function(foo) {
+                    //       return foo === 'bar';
+                    //     }
+                    //   },
+                    //   render: function() {
+                    //   }
+                    // });
+
+                    // MyComponent.customMethod('bar');  // true
+
+                    //7.displayName
+                    //if you use jsx ,need not use it
+
+
+                    //Lifecycle Methods
+
+                    var Hello = React.createClass({
+                        getInitialState: function () {
+                            console.log("getInitialState");
+                            return {
+                                count: 0,  
+                            };
+                        },
+                        getDefaultProps: function () {
+                            console.log("getDefaultProps");
+                            return {
+                                title: "this is a default props",  
+                            };
+                        },
+                        componentWillMount: function () {
+                            console.log("componentWillMount"); 
+                            //Invoked once
+                            //if you call setState within this method,render() will update state but only once
+                        },
+                        componentDidMount: function () {
+                            console.log("componentDidMount");
+                            //Invoked once
+                            //immediately after the initial rendering occurs.
+                            //you can integrate with other js library,like ajax,jQuery and so on
+                        },
+                        componentWillUnmount: function () {
+                            //Invoked immediately before a component is unmounted from the DOM.
+                            //Perform any necessary cleanup in this method
+
+                        },
+                        shouldComponentUpdate: function(){
+                            console.log(shouldComponentUpdate);
+                            //This method is not called for the initial render or when forceUpdate is used.
+                            //Invoked before rendering when new props or state are being received.
+                            //return true to call render() and false to not
+                            //in parent component is use to state,according to state you can choose true or not
+                            //but in sub component you can use both props and state
+                        },
+                        clickH: function(){
+                            this.setState({
+                                count: this.state.count + 1,
+                            });
+                        },
+                        render:function(){
+                            return(
+                              &lt;div&gt;
+                                &lt;h1 onClick={this.clickH}&gt;{this.props.title}&lt;/h1&gt;
+                                &lt;Sub subtitle={this.state.count}/&gt;
+                              &lt;/div&gt;
+                            );
+                        }
+                    });
+
+                    var Sub = React.createClass({
+                        componentWillReceiveProps: function(nextProps){
+                            console.log("componentWillReceiveProps");
+                            //This method is not called for the initial render.
+                            //Invoked when a component is receiving new props
+                            //it always use in sub component, which recive props form parent component
+                            //but in parent component it is a state,that guarantee props change
+                        },
+                        componentWillUpdate: function(){
+                            //This method is not called for the initial render.
+                            //Invoked immediately before rendering when new props or state are being received.
+                            //You cannot use this.setState() in this method.
+                            //in some times, can use componentWillReceiveProps instead.
+                        },
+                        componentDidUpdate: function(){
+                            //This method is not called for the initial render.
+                            //Invoked immediately after the component's updates are flushed to the DOM.
+                            //Use this as an opportunity to operate on the DOM when the component has been updated.
+                        },
+                        render: function(){
+                            return(
+                                &lt;h3&gt;{this.props.subtitle}&lt;/h3&gt;
+                            );
+                        }
+                    });
+
+                    React.render(
+                      &lt;Hello/&gt;,
+                      document.getElementById("test1")
+                    );
+
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

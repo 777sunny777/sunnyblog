@@ -1,0 +1,78 @@
+---
+layout: default
+title: React--Component API
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">
+                <pre>
+                    
+                    //1.setState
+                    //a.There is no guarantee of synchronous operation of calls to setState
+                    //b.setState() will always trigger a re-render unless conditional rendering logic is implemented in shouldComponentUpdate()
+                    var Hello = React.createClass({
+                      getInitialState:function(){
+                        return{
+                          text: "first",
+                        }
+                      },
+                      clickH: function(){
+                        this.setState({
+                          text: "second",
+                        });
+                        //it will be first,that means no synchronous
+                        console.log(this.state.text);
+                      },
+                      forceUpdateP: function(){
+                        this.state.text = "third";
+                        console.log(this.state.text);
+                        //3.forceUpdate
+                        //it is third, but no render, so you need forceUpdate
+                        this.forceUpdate();
+                        //it will call render method force.less use!
+                      },
+                      render:function(){
+                        return(
+                          &lt;div&gt;
+                            &lt;h1 onClick={this.clickH}&gt;{this.state.text}&lt;/h1&gt;
+                            &lt;p onClick={this.forceUpdateP}&gt;test deleteMe!!!&lt;/p&gt;
+                          &lt;/div&gt;
+                        );
+                      }
+                    });
+
+                    //2.replaceState
+                    //It may be removed entirely in a future version of React.
+
+                    //3.getDOMNode
+                    //getDOMNode is deprecated and has been replaced with React.findDOMNode().
+                    //It may be removed entirely in a future version of React.
+
+                    //4.isMounted
+                    //isMounted() returns true if the component is rendered into the DOM, false otherwise
+                    //You can use this method to guard asynchronous calls to setState() or forceUpdate().
+
+                    //5.setProps
+                    //It may be removed entirely in a future version of React.
+
+                    //6.replaceProps
+                    //It may be removed entirely in a future version of React.
+
+
+                    React.render(
+                      &lt;Hello /&gt;,
+                      document.getElementById("test1")
+                    );
+
+                    //just 2 APIs can stay: setState and forceUpdate
+
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

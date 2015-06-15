@@ -21,6 +21,8 @@ category: savour
             <p class="my-p">最后要说的是单向数据流，这是React组件的一种流动方式，没有什么神秘的，他是从父组件向着子组件传递数据的，不管是props，还是state，都是这样的，但是如果你想要数据回传，你可以用React.addons.LinkedStateMixin，数据流双向绑定插件，但是ReactLink仅仅是一个onChange/setState()模式的简单包装和约定。它不会从根本上改变数据在你的React应用中如何流动。不过可以少些一些代码。</p>
             <p class="my-p">特征都说完了，最后要说的一个就是jsx，React的目标是要把模板，样式，脚本三者有逻辑的写在一个文件中（传统方式一个组件有三个文件，css，js和tpl），现在会继承在一个jsx中（css目前还没有集成在jsx中，但是已经在进行这方面的融合了，见https://speakerdeck.com/vjeux/react-css-in-js）。jsx就是一个看起来很像 XML 的 JavaScript 语法扩展。你不需要为了 React 使用 JSX，可以直接使用纯粹的 JS。但我们更建议使用 JSX , 因为它能定义简洁且我们熟知的包含属性的树状结构语法。</p>
             <p class="my-p">最最后，要说一下React的编译，如果你只是test，你可以直接用JSXTransformer.js来转换，在页面用script引入就可以了。如果在开发环境中，你最好编译好，直接线上传js代码，工具有两个，官网推荐的react-tool(https://www.npmjs.com/package/react-tools),如果你用grunt，我推荐grunt-react。完了。</p>
+            <p class="my-p my-h">2015/06/15 补充</p>
+            <p class="my-p">setState过后会改变render但是并不会马上render，(不保证同步)，他要把整个函数内的逻辑都跑完才可以决定怎么render,比如父组件和子组件都需要render的情况下，也许父组件render后就不用子组件再render了。</p>
         </div><!-- /.blog-main -->
     </div>
 </div>
