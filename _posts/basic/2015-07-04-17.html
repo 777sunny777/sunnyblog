@@ -1,0 +1,72 @@
+---
+layout: default
+title: ES6--Promise对象
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">Promise对象 （es6中是一个构造函数）</p>
+            <p class="my-p">定义： 代表了某个未来才会知道的结果事件，并提供统一的接口</p>
+            <p class="my-p">作用： 将异步操作以同步操作的流程表达出来，避免了层层嵌套的回掉函数</p>
+            <p class="my-p my-h">1.一个用promise对象实现的ajax操作</p>
+            <p class="my-p">
+                <pre>
+                    function getAjax(url, data) {
+
+                        return new Promise((resolve, reject) => {
+                            $.ajax({
+                                url: url,
+                                data: data,
+                                dataType: 'json',
+                                method: 'GET',
+                            }).then(function(data) {
+                                resolve(data);
+                            }).fail(function(error) {
+                                //resolve(data); if has this, catch no use
+                                reject(error);
+                            });
+                        });
+
+                    }
+
+                    getAjax("fake/es6Promise.json","author=sunny").then(function(data){
+                        console.log(data);
+                    },function(error){
+                        console.log(error);
+                    });
+                    //? 实例的状态应该这么去check？ pending/fulfilled/rejected/resolved
+                </pre>
+            </p>
+            <p class="my-p my-h">2.Promise.prototype.then()</p>
+            <p class="my-p">用法： 两个参数--接受两个回掉函数，第一个是Promise对象状态为resolve时的回掉函数第二个是Promise对象状态为rejected时的回掉函数</p>
+            <p class="my-p">特点： 可以链式写法，第一个回调函数完成以后，会将返回结果作为参数，传入第二个回调函数</p>
+            <p class="my-p">
+                <pre>
+                    getAjax("fake/es6Promise.json","author=sunny").then(function(data){
+                        console.log(data);
+                        //这个return要为第二个then返回参数
+                        return data.author;
+                    }).then(function(data){
+                        console.log(data);
+                        //Sunny
+                    });
+                </pre>
+            </p>
+            <p class="my-p my-h">3.Promise.prototype.catch()</p>
+            <p class="my-p">定义： 是Promise.prototype.then(null, rejection)的别名，用于指定发生错误时的回调函数。</p>
+            <p class="my-p">
+                <pre>
+                    //wrong url
+                    getAjax("fake/es6Promise1.json","author=sunny").catch(function(error){
+                        console.log(error);
+                    });
+                    //但是如果在catch中有了resolve（"sss"）,那么就catch不到了
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

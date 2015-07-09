@@ -1,0 +1,34 @@
+---
+layout: default
+title: 我在学习flux过程中的一点理解
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">                
+            flux的<a href="https://facebook.github.io/flux/docs/overview.html#content" target="_blank">官方文档</a>相当的概念化，你读完了Overview后感觉只是记住了几个概念，但是怎么用毫无头绪，然后去看todo list的代码，确实可以理解的更深入点，但是你仍然不知道该怎么用。不得不说，这个数据流思想的学习成本是比较高的。建议要想真正理解，在todo list的基础上自己用代码走一下这个流程。另外还有一篇好的中文文章<a href="http://zhuanlan.zhihu.com/FrontendMagazine/19900243" target="_blank">Flux傻瓜教程</a>，会帮你理解的更透彻。好了，现在言归正传。
+            </p>
+            <p class="my-p">
+            先看一下官方对flux的描述，Flux is the application architecture that Facebook uses for building client-side web applications. It complements React's composable view components by utilizing a unidirectional data flow. It's more of a pattern rather than a formal framework, and you can start using Flux immediately without a lot of new code. 其实这个读了不如不读，你还是搞不清他要表达的意思。说说我的理解，不要把flux和MVC框架比较（比如backbone），这是两回事，flux说白了是一种解决问题的思想，解决的是react组件中数据流的传递问题（ 这种传递问题就好比在说把大象装进冰箱总共分几步，那么数据从产生到传递给view去渲染总共分几步？），这些数据最好是动态数据，如果他们还在几个组件中共享，就再好不过了。完了。
+            </p>
+            <p class="my-p my-h">现在分析一下flux的几个相关概念。</p>
+            <p class="my-p my-h">1.action.</p>
+            <p class="my-p">1)产生： action最直接的产生就是用户与view的交互，这是问题产生的根源。</p>
+            <p class="my-p">2）实质： action实质就是dispatcher提供的一个方法dispatch(),通过它允许我们向store进行分发。</p>
+            <p class="my-p">3）优化： （引用了Flux傻瓜教程）你可以在view交互事件中触发dispatch，不过，如果View中有很多地方都需要触发这个事件，这就冗余大了。而且，所有的 View 都需要知道事件对象的特定格式。这有些别扭不是。Flux提出一个抽象的层，叫做行为创建器（ActionCreator），其实就是把上面的代码放到一个函数中。</p>
+            <p class="my-p my-h">2.dispatcher.</p>
+            <p class="my-p">1)实质： 就是一个用来向store分发action的机器。不过这个是整个flux的中枢。</p>
+            <p class="my-p my-h">3.store.</p>
+            <p class="my-p">1)吐槽： 学习store最坑的地方就是store本身是没有event的（该选择哪一个event类库，有什么优劣取舍？）你可以选择backbone的event，也可以选择Microevent，我建议后者，这样使得我们的代码引入量更少，更好理解。</p>
+            <p class="my-p">2）实质： 我的理解store至少不等于model，因为没有event，但是是不是model的一部分，这个不确定，还要继续学习理解。但是有一定是肯定的，你要在store中存储数据的状态。</p>
+            <p class="my-p">3）运行： 首先store中有一个dispatcher提供的一个方法register（），作用就是相应分发出来的action，其次判断这个action是不是给自己的，方法是通过register的参数payload，paylaod中是这个action的信息，通过action的name和传统的switch方法，搞定了这件事。确定action是自己的以后，基本还要做两件事，一件是更新数据，另一件就是通知view，老娘有变化了，你快行动。（通知的方式和你绑定的event提供的api有关，实质就是trigger）</p>
+            <p class="my-p my-h">4.view.</p>
+            <p class="my-p">1)实质： 就是react组件，但是这里面又可以细分出一个controller-view. controller-view用来监听store的变化（不是所有的store，选择你想要的），然后把变化的数据向下传递给普通的view。</p>
+            <p class="my-p">2）运行： 一般在componentDidMount中监听store中的变化，在componentWillUnmount中删除监听。（监听的方式和你选择的event有关），监听到以后有两种方式去重新渲染页面，一种是软的setState，一种是硬的forceUpdate。（别傻，当然是软妹子好）</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

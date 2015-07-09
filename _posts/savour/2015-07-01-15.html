@@ -1,0 +1,103 @@
+---
+layout: default
+title: React-Router(controller)
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">
+                <pre>
+                    //导入router方法
+                    var Route = Router.Route;
+                    var RouteHandler = Router.RouteHandler;
+                    var DefaultRoute = Router.DefaultRoute;
+                    var NotFoundRoute = Router.NotFoundRoute;
+                    var Redirect = Router.Redirect;
+                    var Link = Router.Link;
+                    var State = Router.State;
+
+                    var About = React.createClass({
+                      mixins: [ State ],
+                      render: function () {
+                        return (
+                            &lt;div&gt;
+                                &lt;h2&gt;About&lt;/h2&gt;
+                                //这种方式会编译为一个a出来
+                                //Link是一个a的react组件
+                                &lt;Link to="/test/111"&gt;your sister...&lt;/Link&gt;
+                            &lt;/div&gt;
+                        );
+                      }
+                    });
+
+                    var Inbox = React.createClass({
+                      render: function () {
+                        return &lt;h2&gt;Inbox&lt;/h2&gt;;
+                      }
+                    });
+
+                    var Home = React.createClass({
+                      render: function () {
+                        return &lt;h2&gt;Home&lt;/h2&gt;;
+                      }
+                    });
+
+                    var Message = React.createClass({
+                      render: function() {
+                        return &lt;h3&gt;Message&lt;/h3&gt;;
+                      }
+                    });
+
+                    var CourseRouteNotFound = React.createClass({
+                      render: function() {
+                        return &lt;h3&gt;CourseRouteNotFound&lt;/h3&gt;;
+                      }
+                    });
+
+                    // declare our routes and their hierarchy
+                    var routes = (
+                      &lt;Route handler={App}&gt;
+                          //A DefaultRoute will be the matched child route when the parent's path matches exactly.
+                          //Think of it like index.html in a directory of a static html server.
+                          &lt;DefaultRoute handler={Home}/&gt;
+                          //http://localhost/Beauty/web/reactRouter.html#/
+                          &lt;Redirect from="home" to="about"/&gt;
+                          //from--The path you want to redirect from
+                          //to--The name of the route you want to redirect to
+                          &lt;Route name="about" path="about" handler={About}/&gt;
+                          //http://localhost/Beauty/web/reactRouter.html#/about
+                          &lt;Route path="inbox"&gt;
+                              &lt;Route path="messages/:id" handler={Message}/&gt;
+                              //http://localhost/Beauty/web/reactRouter.html#/inbox/messages/123
+                              &lt;NotFoundRoute handler={CourseRouteNotFound} /&gt;
+                              //http://localhost/Beauty/web/reactRouter.html#/inbox/messages/123/222
+                              //http://localhost/Beauty/web/reactRouter.html#/inbox/messages/
+                              //http://localhost/Beauty/web/reactRouter.html#/inbox/
+                          &lt;/Route&gt;
+                      &lt;/Route&gt;
+                    );
+
+                    var App = React.createClass({
+                      render () {
+                        return (
+                          &lt;div&gt;
+                            &lt;h1&gt;App&lt;/h1&gt;
+                            &lt;RouteHandler/&gt;
+                          &lt;/div&gt;
+                        )
+                      }
+                    });
+
+                    Router.run(routes, Router.HashLocation, function(Root){
+                        React.render(&lt;Root/&gt;, document.getElementById(data.id));
+                    });
+
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
