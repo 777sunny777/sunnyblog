@@ -1,0 +1,54 @@
+---
+layout: default
+title: 文档元素位置和滚动控制
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.文档坐标和视口坐标</p>
+            <p class="my-p">文档坐标是html文档中的坐标，css运用的就是文档坐标。视口（窗口）坐标是浏览器上看到的坐标，用js查询元素位置的时候一般会返回这个坐标。两者间的转换如下：</p>
+            <p class="my-p">文档坐标 = 视口坐标 +/- 滚动的偏移量；</p>
+            <p class="my-p">在IE8以上的所有浏览器东可以用window对象的pageXOffset和pageYOffset属性获取偏移量。</p>
+
+            <p class="my-p my-h">2.查询元素的视口坐标位置</p>
+            <p class="my-p">getBoundingClientRect()，所有浏览器都支持了，返回对象的属性中left和top返回左上角X和Y的坐标，right和bottom返回右下角X和Y的坐标，这个坐标包含边框和内边距，不包含外边距。还有要注意的是这个坐标是视口坐标。并且是静态快照。（我在想，用这个方法是不是可以对比窗口尺寸，判断元素是否在页面中显示出来了。已测这个是可以的）。这里说一句，$(document).height()是用来获取文档高度的。</p>
+
+            <p class="my-p my-h">3.判断在视口的指定位置有什么元素</p>
+            <p class="my-p">document.elementFromPoint(X,Y) (视口坐标)</p>
+
+
+            <p class="my-p my-h">4.关于滚动</p>
+            <p class="my-p">对于滚动条到顶部的偏移量何以用pageYOffset计算，在jquery中也可以用scrollTop()获取，同理pageXOffset和scrollLeft();下面两个效果的处理：</p>
+            <p class="my-p">
+                <pre>
+                    1）慢慢滚动到页脚
+                    animate的第一个参数params:一组包含作为动画属性和终值的样式属性和及其值的集合
+                    $('.circle').bind('click',function(){
+                        if($(window).scrollTop()>$(window).height()){
+                            //记住这个写法
+                            $('body,html').animate({scrollTop:0},1000);
+                        }
+                    });
+                    $(window).bind('scroll',function(){
+                        if($(window).scrollTop()>100){
+                            $('.circle').fadeIn(1500);           
+                        } else {
+                            $(".circle").fadeOut(1500);
+                        }
+                    });
+                </pre>
+            </p>
+            <p class="my-p">
+                <pre>
+                    2)自动间隔滚动
+                    setInterval(function(){scrollBy(0,10)},1000);
+                </pre>
+            </p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

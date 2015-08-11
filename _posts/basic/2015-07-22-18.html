@@ -1,0 +1,40 @@
+---
+layout: default
+title: 客户端js相关问题--犀牛书13章总结
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.关于window对象</p>
+            <p class="my-p">首先window定义了一些属性，比如location，window（一个引用自身的属性，引用窗口对象本身），doucument（显示在窗口中的文档）。其中有些文章说window具有二义性，就是说window即是全局对象，又具有控制窗口的api。通过13章，更好的解释是说window全局对象中有一个引用自身的属性，用来控制窗口。其次window又定义了一些方法，比如alert（），比如setTimeout（）等等。</p>
+            <p class="my-p my-h">2.在HTML中嵌入js的4种方式</p>
+            <p class="my-p">这个基本上现在已经被淘汰成2种方式了。当历史学习下吧。内联；外部引用；添加在onclick等html事件处理程序中；放在URL里面，使用javascript：协议。现在多数是外部引用，后面两个基本废弃。</p>
+
+            <p class="my-p my-h">3.关于外部引用的脚本</p>
+            <p class="my-p">使用src属性来引用，在script标签中的任何内容此时都会被忽略，所以需要的话可以在这里面添加文档说明或者版本信息等等。</p>
+            <p class="my-p">使用src有如下几个优点</p>
+            <p class="my-p">1）保持页面内容和行为的分离，简化html文件。2）多个web页面共用相同js文件时，利于后期维护和修改。3）浏览器只需下载一次，再次调用的时候用缓存。4）可跨域，可以去取第三方库的东西</p>
+            <p class="my-p">还应该有几个缺点</p>
+            <p class="my-p">1）多一次http请求。2）引用第三方库增加安全隐患，具体来说，当页面src包含一个脚本的时候，就给了脚本作者完全控制页面的权限</p>
+
+            <p class="my-p my-h">4.JavaScript脚本的执行</p>
+            <p class="my-p">js脚本的执行有两个阶段，第一个阶段载入文档内容并执行script元素的代码，这个阶段实际上还可以细分为（下载阶段和脚本解析阶段）；当文档载入完成并且所有脚本执行完成的时候进入第二阶段--事件驱动阶段，这个是异步的。无论是es还是客户端的js都有一个单线程执行模型，脚本和事件处理程序无论如何都在同一个时间只能执行一个--没有并发</p>
+
+            <p class="my-p my-h">5.同步、异步和延迟脚本</p>
+            <p class="my-p">1）同步document.write()--尽量不用，但是网页广告中常用到。当脚本把文本传递给document.write()时，这个文本被添加到文档输入流中，html会在当前位置创建一个节点，将文本插入到这个节点后面。</p>
+            <p class="my-p">2）脚本的执行在默认的情况下都是同步的和阻塞的，当HTML解析器遇到script的时候，会默认先执行脚本，然后再恢复文档的解析和渲染。如果是一个由src引入的外部脚本，那么要先下载和执行外部脚本，然后才执行文档部分的内容。</p>
+            <p class="my-p">3）延迟脚本执行--添加defer属性，下载脚本的同时继续解析和渲染文档，在文档载入和解析完成后开始执行脚本，并且会按照文档中出现的顺序执行</p>
+            <p class="my-p">4）异步执行的脚本--添加async属性，下载脚本的同时继续解析和渲染文档，在下载完成后就开始执行脚本，但是不保证顺序（在js执行的时候还是会阻塞UI的渲染的）</p>
+            <p class="my-p">5）如果defer和async都有的话，忽略defer</p>
+
+            <p class="my-p my-h">6.现代浏览器统一用addEventListener来注册监听事件，在IE8及以下用额外的attachEvent</p>
+            <p class="my-p my-h">7.客户端js时间线</p>
+            <p class="my-p">1）document.write()--随文档流一起。 2）遇到纯script，同步阻塞执行。3）遇到async，下载的时候并行渲染文档，脚本在下载完成后尽快执行,不保证顺序。4）遇到defer，下载的时候并行渲染文档，在文档渲染完后执行,保证顺序。5）文档解析完成，但是可能还有图片在载入。6）所有内容都解析完成后触发window.onload事件。7）此刻起可以调用异步事件了。</p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>
