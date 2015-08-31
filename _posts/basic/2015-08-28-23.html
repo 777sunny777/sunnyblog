@@ -1,0 +1,53 @@
+---
+layout: default
+title: 事件(3)关于js事件处理(持续更新)
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.关于load事件</p>
+            <p class="my-p">当文档和其他外部资源(比如图片)完全加载并显示给用户时就会触发他。</p>
+            <p class="my-p">
+                <pre>
+                     测试代码如下：
+                    &lt;img id="test" src="http://bourbon.io/images/marketing/ruby.png"&gt;
+                    &lt;script type="text/javascript" src="js/lib/jquery-2.1.4.min.js"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript"&gt;
+                        window.addEventListener("load",function(){
+                            alert("111");
+                        },false);
+                        $(document).ready(function(){
+                            alert("222");
+                        });
+                        $("#test").load(function(){
+                            alert("333");
+                        });
+                        var script = document.createElement("script");
+                        document.body.appendChild(script);
+                        script.src = "js/lib/jquery-2.1.4.min.js";
+                    &lt;/script&gt;
+                    &lt;/body&gt;
+                </pre>
+            </p>
+            <p class="my-p"> 我在jquery-2.1.4.min.js中添加了一个alert（"000"）；</p>
+            <p class="my-p">alert的弹出顺序为000,222,000,333,111。也就是说jquery提供的ready是在dom渲染好并且同步的js下载执行完就执行，不会等异步的js和图片等资源，但是window会等。其中第二个000和333的顺序可能会发生变化，因为不知道谁先下载完成，但是111一定是在最后的。 </p>
+            <p class="my-p my-h">2.关于事件调用顺序</p>
+            <p class="my-p">1)在html标签上进行属性注册( &lt;div class="test" onclick="alert('111');"&gt;&lt;/div&gt; )和设置对象属性事件( $(".test")[0].onclick = function() )这两种方式会一直优先处理。但是这两种如果调用一种事件的话，后面的会覆盖前面的事件。</p>
+            <p class="my-p">2)使用addEventListener()注册是事件会按照他们的注册顺序调用。这个相同事件没有覆盖，按顺序执行的。</p>
+            <p class="my-p">3）attachEvent()顺序不受控，在IE9以下使用。</p>
+            <p class="my-p my-h">3.事件传播顺序</p>
+            <p class="my-p">1）事件捕获--只能用于以使用addEventListener()注册且第三个参数是true的事件处理程序中，也就是说事件捕获无法在IE9之前的IE中使用。</p>
+            <p class="my-p">2）目标对象本身的事件处理程序调用。</p>
+            <p class="my-p">3）事件冒泡。</p>
+            <p class="my-p my-h">4.focus和blur事件与focusin和focusout事件的冒泡区别</p>
+            <p class="my-p">focusin和focusout事件跟focus和blur事件区别在于，他可以在父元素上检测子元素获取焦点的情况。也就是说子元素的事件可以绑定到父元素上，然后通过子元素冒泡到父元素近而触发。（这个jquery也是一样的）.focusin和focusout事件可冒泡。</p>
+            <p class="my-p my-h">5.键盘事件keydown,keyup,keypress</p>
+            <p class="my-p">在keydown和keyup中会隔着keypress，keypress是比较高级的事件，他指定产生的字符是可打印的，比如回车，tab之类的按键就不会触发他。</p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

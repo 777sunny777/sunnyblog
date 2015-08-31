@@ -1,0 +1,57 @@
+---
+layout: default
+title: jquery非常用方法---(持续更新)
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">1)$("xxx").each()方法--(return false来终止each)</p>
+            <p class="my-p">2)获取和设置元素的宽高</p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>内容content</th>
+                  <th>内距padding</th>
+                  <th>边border</th>
+                  <th>外距margin</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">W/H</th>
+                  <td>是</td>
+                  <td>否</td>
+                  <td>否</td>
+                  <td>否</td>
+                </tr>
+                <tr>
+                  <th scope="row">inner</th>
+                  <td>是</td>
+                  <td>是</td>
+                  <td>否</td>
+                  <td>否</td>
+                </tr>
+                <tr>
+                  <th scope="row">outer</th>
+                  <td>是</td>
+                  <td>是</td>
+                  <td>是</td>
+                  <td>否(true时为是)</td>
+                </tr>
+              </tbody>
+            </table>          
+            <p class="my-p">3)clone(true) 会复制事件处理函数</p>
+            <p class="my-p">4)关于删除元素</p>
+            <p class="my-p">empty(): 移除选中元素的子元素;remove(): 移除选中元素+事件;detach(): 移除选中元素+不移除事件;unwrap(): 只移除选中元素+不动子元素;filter(): 过滤选中.关于remove和detach，$test = $(".test"); $test.remove();//再append回来就没有事件了，用detach还有事件</p>
+            <p class="my-p">5）关于bind(), bind("click",data,test);//这个data会在test函数中的event.data中取到。</p>
+            <p class="my-p">6)如果用CDN来加载第三方库的话，最好用裸协议，也就是去掉http:或者https:直接用//开始。</p>
+            <p class="my-p">7)指定选择的上下文，这条要牢记并且要常用。$('.class');// 劣质的代码：因为需要遍历整个DOM来找到.class。$('.class', '#class-container');//高品代码：因为只需在指定容器范围内进行查找</p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

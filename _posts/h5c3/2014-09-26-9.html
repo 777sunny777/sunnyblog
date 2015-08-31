@@ -1,6 +1,6 @@
 ---
 layout: default
-title: web storage简单小结
+title: web storage简单小结（2015/08/20更新）
 category: h5c3
 ---
 
@@ -9,7 +9,11 @@ category: h5c3
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p my-h"></p>
+            <p class="my-p my-h">关于cookie</p>
+            <p class="my-p">1)可以通过window.navigator.cookieEnabled来判断该浏览器是否支持cookie</p>
+            <p class="my-p">2）cookie的有效期默认是用户关闭浏览器，但是可以设置其max-age属性来延长其有效期，但是要告诉是多少秒，所以这三者对比应该是： sessionStorage(页面关)&lt;cookie(浏览器关，但可设置期限)&lt;localStorage(永久)，这三个都不跨浏览器，并且可以手动删除的。</p>
+            <p class="my-p">3）默认情况下cookie和创建他的页面有关，在该页面和其同目录和子目录的其他页面可见。但是可以设置其path属性以达到共享cookie的目的。比如将路径设置为“/”,在整个域名下就都可见了。（有一个小技巧，在不设置path时，如果在一个web页面想读取同一站点的（这里对cookie仍然有cookie同源限制）其他页面中的cookie，只要在页面写一个隐藏的iframe加载进来，随后读取对应文档中的cookie即可。）</p>
+            <p class="my-p">4）cookie属性的值不能是分号，逗号和空白符，所以在存储前要先encodeURIComponent()进行编码。</p>            
             <p class="my-p">
             <pre>
                 //IE8及以上都可以使用

@@ -1,0 +1,38 @@
+---
+layout: default
+title: 一些有意思的HTML5 API (持续更新)
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.地理位置</p>
+            <p class="my-p">地理位置： 通过navigator.geolocation.getCurrentPosition()获取用户当前位置,但是在js调用浏览器信息前，用户需要允许。chrome支持这个方法（已测），但是我没调通，这个参数是一个位置pos的函数。通过pos.coords.latitude和pos.coords.longitude来确定信息的，可以在这个参数函数中调用第三方，比如google地图来返回地图的url，近而插到img的src中。</p>
+            <p class="my-p my-h">2.窗口间消息传递</p>
+            <p class="my-p">postMessage()--window对象上。这个API用来解决跨域问题非常合适，之前说过iframe是会受到同源策略影响的，postMessage可以跨域，具体来说，由一个窗口发起postMessage向另一个窗口传递消息，在另一个窗口用message来接收消息。</p>
+            <p class="my-p">
+                <pre>
+                   如下是一个简单的例子：
+                    estest页面iframe的方式嵌入到demo页面
+
+                    estest：
+                    setInterval(test,1000);
+                    function test(){
+                      window.parent.postMessage( new Date(),"http://localhost/Beauty/web/demo.html#/");
+                    }
+
+                    demo：
+                    window.addEventListener("message",testMessage,false);
+                    function testMessage(e){
+                        console.log(e.data);
+                    } 
+                </pre>
+            </p>
+            <p class="my-p my-h">但是要注意的是这个需要在两端页面的js写入代码，一个接一个收。用img的ping方法，是单向的，用jsonp可以做到回掉函数接受，而iframe和ajax都要同源，如果不配置apache的CORS策略，现有的方法应该就这么多了。</p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

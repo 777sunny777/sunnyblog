@@ -1,0 +1,49 @@
+---
+layout: default
+title: 常用DOM API总结
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">window对象中document属性引用了document对象，他是一个巨大API的核心对象，DOM(Document Object Model) API就是操作文档内容的API。要注意的是，DOM操作的可以是HTML和XML文档。近一步说，Document和Element类型与HTMLDocument和HTMLElement类型之间也有严格的区别，前者包含对XML文档或者XML文档中的一个元素的操作。</p>
+            <p class="my-p my-h">1.选取文档元素API</p>
+            <p class="my-p">1） 通过ID选取： document.getElementById() 属于Document对象 (低于IE8浏览器中不区分大小写，且匹配name属性)</p>
+            <p class="my-p">2) 通过名字选取： document.getElementsByName() 属于HTMLDocument对象 (在XML文档中不可用，在IE中会返回id属性匹配的元素，为了兼容要小心使用，不要将name和id用同样字符串)</p>
+            <p class="my-p">3） 通过标签名选取： document.getElementsByTagName() 属于Document对象 (Element对象也定义了该方法，但是范围是在这element对象内查找。)</p>
+            <p class="my-p">由于历史原因，HTMLDocument对象还定义了一些快捷属性来访问各种各样的节点。;document.links.xxx (但是只包含有href的a);document.images.xxx (img标签);document.forms.xxx (form标签);document.head;document.body;document.title</p>
+            <p class="my-p">4） 通过css类选取： document.getElementByClassName() 属于HTMLDocument对象 (IE8及以下浏览器不支持)</p>
+            <p class="my-p">5） 通过css选择器选取： document.querySelectorAll()返回所有匹配  和 document.querySelector()返回第一个匹配，如果没有就返回null(用于判空)。（Element对象也有此方法，）</p>
+            <p class="my-p my-h">2.Node对象API</p>
+            <p class="my-p">详见（http://777sunny777.github.io/sunnyblog/basic/2014/07/30/2.html） DOM(1)节点层次总结中的 1.node类型 </p>
+            <p class="my-p my-h">3.属性API</p>
+            <p class="my-p">1）对于保留字属性，js中class和for都是保留字，所以在js中调用的时候，class要写成className，for要写成htmlFor，在学习react的时候我还以为是jsx的语法修改，其实这个是js的。</p>
+            <p class="my-p">2）对于非标准属性，js中Element类型定义如下方法来操作非标准的HTML属性，getAttribute(),setAttribute(),hasAttribute(),removeAttribute()</p>
+            <p class="my-p">3)对于数据集属性，"data-"为前缀小写的属性是合法的，并且用纯js可以用dataset来获取，比如data-test-sunny，js中用dataset.testSunny来获取。</p>
+            <p class="my-p my-h">4.元素内容API</p>
+            <p class="my-p">1）对于html元素的内容，用innerHTML，outerHTML（包含被查询元素的开头结尾标签）</p>
+            <p class="my-p my-h">5.创建，插入和删除节点API</p>
+            <p class="my-p">1）创建节点，document对象的document.createElement()方法，给方法传递标签名；text节点用document.createTextNode()方法，传递text文本;另外还有element的cloneNode（）方法，默认是false，true的时候会复制包括他和他里面的所有节点，如果是false那么只复制他本身。</p>
+            <p class="my-p">2）插入和删除节点，appendChild(要插的) -- 末尾添加。insertBefore（要插的，插哪前面）。replaceChild(要插的，要替换的)。removeChild（要删除的）。</p>
+            <p class="my-p">3）临时容器document.createDocumentFragment();针对它进行操作，然后把它作为一个节点插入到要的位置即可。</p>
+            <p class="my-p my-h">6.其他文档特性</p>
+            <p class="my-p">1)Document其他属性：document.cookie(js来读写cookie，这个也有jquery的cookie插件);document.lastModified(文档的修改时间);document.referrer(链接到当前文档的上一个文档的url)</p>
+            <p class="my-p">
+                <pre>
+                2)获取用户在文档中选取内容
+                    function getSelectedText(){
+                        if (window.getSelection)
+                            return window.getSelection().toString();
+                        else if (document.selection)
+                            return document.selection.createRange().text;
+                    }
+                </pre>
+            </p>
+            <p class="my-p">3)文档可编辑属性，在标签中添加contenteditable</p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: css3(8):其他重要样式和属性(长期更新)
+title: css需要知道的属性知识--(2015/08/28最新更新)
 category: h5c3
 ---
 
@@ -39,6 +39,15 @@ category: h5c3
                 }
             </pre>
             </p>
+            <p class="my-p my-h">3.visibility和display的区别</p>
+            <p class="my-p">visibility为hidden的时候元素不可见，但是还保留空间，display为hidden的时候，空间都不保留，但是display的时候还是可以去绑定事件</p>
+            <p class="my-p my-h">4.clip</p>
+            <p class="my-p">裁剪用clip： rect（0px 100px 0px 100px），这个要配合position:absolute来使用必须有单位，不能是百分比，可以为负。一般用在img上。</p>
+            <p class="my-p my-h">3.js获取和赋值内联的样式</p>
+            <p class="my-p">1）如果知道具体的样式，可以直接用e.style.backgroundColor获取，需要注意的是样式表中的-在js中是减号，所以要用小驼峰的写法。</p>
+            <p class="my-p">2）或者用e.style.cssText来获取。</p>
+            <p class="my-p">3）或者用e.setAttribute("style","")和getAttribute()</p>
+            <p class="my-p my-h">4.link有个disabled属性，设置成true和注释了是一个效果</p>
 
         </div><!-- /.blog-main -->
     </div>

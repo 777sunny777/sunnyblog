@@ -1,0 +1,56 @@
+---
+layout: default
+title: html5 表单
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">
+                <pre>
+                    1.新增加的input的type类型
+                    &lt;input type="email" value="email"/&gt;&lt;br/&gt;
+                    &lt;input type="url" value="url"/&gt;&lt;br/&gt;
+                    &lt;input type="number" value="number"/&gt;&lt;br/&gt;
+                    &lt;input type="range" value="range"/&gt;&lt;br/&gt;
+                    &lt;input type="datetime " value="datetime"/&gt;&lt;br/&gt;
+                    &lt;input type="search" value="search"/&gt;&lt;br/&gt;
+                    &lt;input type="color" value="color"/&gt;&lt;br/&gt;
+                    &lt;button type="submit"&gt;submit&lt;/button&gt;
+                    其中,我测试的是chrome和forefox和IE11，email和url是可以用了，number和color在IE11还不支持，其他基本还不能用。如果要前端验证，目前还是插件或者正则好了。
+                </pre>
+            </p>
+            <p class="my-p">
+                <pre>
+                    2.新增加的表单元素
+                    datalist
+                    keygen
+                    output
+                    目前基本不能用
+                </pre>
+            </p>
+            <p class="my-p">
+                <pre>
+                    3.新的表单属性（用在form和input上）
+
+                    11)placeholder---建议常用
+                    12)required---可以用
+                    1)autocomplete---form/input---拥有自动完成功能---可以用
+                    3)autofocus---input---自动地获得焦点---这个可以提高用户体验，用了即使不兼容也没什么，可以用
+                    10)pattern (regexp)和title属性配合---可以用
+
+                    9)multiple--input标签：email 和 file---不常用
+                    4)form---input---表明所属的一个或多个form，不一定写在form中---不建议用
+                    5)form overrides (formaction, formenctype, formmethod, formnovalidate, formtarget)---不建议用
+                    8)min, max 和 step---和type为date pickers、number 以及 range的input用---暂时没啥用
+                    6)height 和 width---只适用于 image 类型的input标签---没啥用
+                    7)list---没啥用
+                    2)novalidate---form---不用验证---用不了
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
