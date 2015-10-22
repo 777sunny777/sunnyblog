@@ -1,0 +1,28 @@
+---
+layout: default
+title: 前端项目目录结构分析(可能会修改)
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">有的没的先聊点，这篇blog写了很久，原因是在项目不断的进行中，还有我自己不断的测试试验中，目录结构在不断的删改，直到现在，它也不是最终版本，而且也不是通用结构--根据项目用到的技术不同，你还需要相应的修改。但是不管怎样，他在线上项目中运行的很好，并且在开发中省时省力，所以我能确信这是一个阶段性的好用的前端项目目录结构。</p>
+            <p class="my-p">再聊点有的没的，这个blog更多的是写给我自己。因为我想写这篇blog但是不知道怎么写的时间更久，从我差不多两年半前接触前端，就想过这个问题。前端项目目录结构看似很无聊很不make sence的问题，不就是js，css，lib三个文件夹搞定的事么，撑死再来个image。我想说的是，现在的前端工程师不只是一个jser，或是你写两行css，会个ajax就牛逼闪闪的时代了。你需要考虑更多问题，掌握更多开发工具，快速学习新的技术架构，考虑项目开发成本，考虑网站性能。。。太多需要做的事情。而拥有一个自己的前端项目目录结构，就意味着背后有你熟悉的一套前端架构方案，这样想来，还是很make sence的吧。</p>
+            <p class="my-p my-h">下面到正题</p>
+            <p class="my-p">首先，为了节省开发时间，利于项目扩展，前端编写会用到很多编程工具，比如sass来写css，添加react库来进行前端组件化工作，在es6没有完全普及时利用babel来进行降级处理等等。另一方面，线上的前端组件(js,css,图片，json等等)要求是越小越少越好。这就要求我们不应该将开发和上线文件混淆，并且利用到了grunt这种前端项目管理工具，就更要求在进行文件批处理的时候，保证文件目录不混淆，所以一句话,建立合理的前端项目目录结构，及其重要。</p>
+            <p class="my-p">1.依照我个人的习惯会建立一个web文件夹把前端和后端编码分开，所有前端文件(包括开发和线上两种)都放在web文件夹下。</p>
+            <p class="my-p">2.在web文件夹中，创建develop和product文件夹,用于存放开发环境和线上环境的文件，真正上线的时候只要product文件夹中的东西。</p>
+            <p class="my-p">2-1.在develop文件夹中，几个必须的文件夹包括sass(用于css样式开发)js(脚本开发)images(存放图片)，几个可选的文件夹包括fake(用于异步调试json的假数据)fonts(存放诸如bs的字体文件)等等</p>
+            <p class="my-p">2-1-1.scss文件夹中，几个必须的文件夹包括base(用于放置一些公有组件的样式，比如_tip.scss,_table.scss等等)这里如果你用了bs，bs其实就已经写好了这些，你直接把bs的scss放到这个base文件夹就可以了，这里面可以继续套加文件夹的。创建文件夹pages，里面存放着各个页面私有的样式。创建文件夹plugins，里面存放着其他第三方插件的样式。另外，需要添加一个style.scss的文件，这个文件将所有的base和pages中的样式串联起来，在页面只引用style样式就可以了。只引用一个style的好处坏处都很明显，坏处首先是文件本身过大，其次在开发时，尤其对各个私有页面最外层类的处理一定不要重名。好处是首次请求虽然时间长，但是后面浏览器都可以用到缓存，提高整体性能。并且在开发的时候不用给每个私有页面添加样式了。如果你实在不喜欢这种方式，也可以不要，在pages页面写各个页面样式（不要带前面下划线）。</p>
+            <p class="my-p">2-1-2.js文件夹中，几个必须的文件夹，pages文件夹(用于放置私有页面脚本)plugins(用于放置第三方插件)，global文件夹(用于放置全局变量，公共函数),react(用于放置react组件)</p>
+            <p class="my-p">2-1-2-1.简单说一下global，global中包括config.js文件(用于放置全局变量)API.js文件(用于放置公共函数)。</p>
+            <p class="my-p">2-1-2-2.除此之外还要说一下react文件夹， 这个文件夹下面，每个用react写的组件都要各自命名一个文件夹，比如说carousel文件夹，里面的文件要按照flux来命名(创建actions，components，constants，dispatcher，stores等文件和文件夹)。然后要考虑grunt的babel和react， 这里面有一个先后顺序是先babel后react。这些文件会生成在product的相应文件夹中（具体来说是这样的，在js中babel的文件会放到temp文件夹中，在react后会生成在react文件夹里，这主要考虑到babel和react如果在一个目录下grunt会出现问题），他们会watch babel和react，其他的js会watch copy。</p>
+            <p class="my-p">之所以要把global和react两个文件夹分开(我之前是统一放到global中的)，并不是因为目录的逻辑问题，还是因为grunt的babel和watch不能很好的解析**/*.js这种路径，他会连第一层带第二层一块转化(比如*.js),这样会在config和API中报错，所以我分开成了两个文件夹，不过这样一来，目录结构也确实更清晰了。</p>
+            <p class="my-p">2-2.在product文件夹中，是线上的文件，这里面的所有东西都应该是grunt管理生成的，没有需要手动放置的东西。具体包括一个css文件，里面只存放style转化压缩过的min.css,js文件中保持原有的目录结构不变，只是都处理过了。还有就是在develop文件中的其他文件夹也要都复制过来。</p>
+            <p class="my-p">2-3.最后要说一下的是html静态页面要放在什么地方，个人建议为了减少复制查找等工作流，html页面最好只要一份，并且和develop和product目录平级，我建立一个staticPage文件夹，里面放所有的html静态页面，页面所需要的组件路径全部要基于product文件夹中的组件。</p>    
+        </div><!-- /.blog-main -->
+    </div>
+</div>

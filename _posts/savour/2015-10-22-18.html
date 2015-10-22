@@ -1,0 +1,31 @@
+---
+layout: default
+title: React学习笔记(持续更新--最新到2015/10/22)
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.React的组件名首字母要大写，来区分普通变量</p>
+            <p class="my-p my-h">2.render函数中return的dom</p>
+            <p class="my-p">1）return中的dom结构最外层一定是单节点</p>
+            <p class="my-p">2）每个dom(无论单双节点)一定要有结束符/</p>
+            <p class="my-p">3）自定义的react类引用的时候既可以用单节点也可以用双节点，关键在是否传值</p>
+            <p class="my-p">4)class是js的保留字，这里要改写为className，同理还有for是htmlFor</p>
+            <p class="my-p">5）{}表示是js代码段</p>
+            <p class="my-p my-h">3.props和state</p>
+            <p class="my-p">1）props一般表示是不易变的属性，从父类传到子类中来</p>
+            <p class="my-p">2）this.props.children表示的是组件内嵌的文本或节点，我估计也可以内嵌react组件（不过一般不这样写）</p>
+            <p class="my-p">3）相比props，state是动态的，组件私有的。并且他的变化会引起重新render</p>
+            <p class="my-p my-h">4.es6+react和普通写法的不同点</p>
+            <p class="my-p">有两个，来源是http://facebook.github.io/react/docs/reusable-components.html#es6-classes</p>
+            <p class="my-p">1）没有getInitialState函数了，直接在constructor中给this.state赋值</p>
+            <p class="my-p">2）propTypes and defaultProps(props的验证和默认值也不在class中写了，在class外部赋值)</p>
+            <p class="my-p my-h">5.setState会重新render</p>
+            <p class="my-p">setState过后会改变render但是并不会马上render，(不保证同步)，他要把整个函数内的逻辑都跑完才可以决定怎么render,比如父组件和子组件都需要render的情况下，也许父组件render后就不用子组件再render了。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
