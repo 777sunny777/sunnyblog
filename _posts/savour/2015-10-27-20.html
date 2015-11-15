@@ -1,0 +1,48 @@
+---
+layout: default
+title: Why did we build React?
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">Pete Hunt wrote a blog called "Why did we build React?" in June 5, 2013. At that time, I just a rookie in web front-end area. And now, I have learned React for almost 5 months. As the React Official Website(ROW) said, React is a JavaScript library for creating user interfaces by Facebook and Instagram. <strong>Many people choose to think of React as the V in MVC. </strong>We built React to solve one problem: <strong>building large applications with data that changes over time.(通过动态数据构建的大型应用)</strong></p>
+            <p class="my-p my-h">后面我要翻译一下Pete的这篇文章，其中可能会加一下我的理解，（链接地址： http://facebook.github.io/react/blog/2013/06/05/why-react.html）</p>
+            <p class="my-p my-h">Why did we build React?</p>
+            <p class="my-p">现在世面上有很多js MVC框架，那我们为什么要用React，你为什么想要用它。</p>
+            <p class="my-p"><strong>React isn't an MVC framework</strong></p>
+            <p class="my-p">React不是一个MVC框架，他用来构建可组合的用户界面，他比较倾向于构建可重用的动态数据的UI组件</p>
+            <p class="my-p"><strong>React doesn't use templates</strong></p>
+            <p class="my-p">传统的web UI构建一般通过模板。这些模板有一套抽象的法则来构建UI。（我对这个的理解是比如ThinkPHP有tpl的相应规则，如何传变量等等，你不用去理解只要安语法做就行了） React用雨中不同的方式去构建用户界面，它将其拆分成组件。这意味着React是以一种真实的、全面的程序语言去渲染views（这个不翻译更好理解）。</p>
+            <p class="my-p">React这种渲染方式的优势如下：</p>
+            <p class="my-p">1.js是一个灵活的，强有力的程序语言，它有能力去构建抽象元素（我这个还没理解啥意思），这个特点在构建大型应用的时候极其极其重要的。</p>
+            <p class="my-p">2.通过统一标记来对应视图逻辑（这个应该是指虚拟DOM），React使得views更容易扩展和维护。</p>
+            <p class="my-p">3.在js中构建可理解的标记和内容，这样就没有人为的字符串连接，因此减少了界面区域的XSS攻击。（理解也不是很深，这个应该是指不用jsx的方式写react）</p>
+            <p class="my-p">我们同时创建了JSX，一个可选的语法扩展，这个增强了html在js中的可读性。（jsx是一种html和js混写的语法方式，有很好的可读性）</p>
+            <p class="my-p"><strong>Reactive updates are dead simple.</strong></p>
+            <p class="my-p">React真正的闪光点是数据变化的时候。（这时候state变化引起重渲染，虚拟dom速度快，有点主要在这)传统的js应用中，你需要观察哪个数据变化了然后命令DOM也实时变化，甚至是AngularJS，也需要通过指令和数据绑定提供一个声明性接口，需要一个链接函数去手动更新DOM节点。</p>
+            <p class="my-p">React不走寻常路，当你的组件第一次初始化的时候，render函数被调用，在你的view上生成标记。当你的数据改变的时候，render方法再次被调用。为了让重渲染尽可能的提高效率。我们会比较这两次render的结果，生成一个最小变化集合提供给DOM，这个过程叫reconciliation.（render返回的数据既不是字符串也不是一个DOM节点--她是一种类似于DOM的带标记的描述）。因为 re-render超级快，所以我们不需要去做数据绑定。</p>
+            <p class="my-p"><strong>HTML is just the beginning（这块是未来展望，不翻译了）</strong></p>
+            <p class="my-p">Because React has its own lightweight representation of the document, we can do some pretty cool things with it:</p>
+            <p class="my-p">1.Facebook has dynamic charts that render to <canvas> instead of HTML.</p>
+            <p class="my-p">2.Instagram is a "single page" web app built entirely with React and Backbone.Router. Designers regularly contribute React code with JSX.</p>
+            <p class="my-p">3.We've built internal prototypes that run React apps in a web worker and use React to drive native iOS views via an Objective-C bridge.</p>
+            <p class="my-p">4.You can run React on the server for SEO, performance, code sharing and overall flexibility.</p>
+            <p class="my-p">5.Events behave in a consistent, standards-compliant way in all browsers (including IE8) and automatically use event delegation.</p>
+            <p class="my-p my-h">我的观点</p>
+            <p class="my-p"><strong>React优点</strong></p>
+            <p class="my-p">1.渲染快，虚拟DOM是React的基石，因为他解决了DOM操作非常之慢的性能问题，开发者操作虚拟DOM，React在必要的时候将它们渲染到真正的 DOM上 —— 有点像游戏开发中的双缓冲区/Double Buffer帧重绘。这个是react今后发展存在的最最重要的原因。</p>
+            <p class="my-p">2.易懂，易读（按照组件的逻辑去构建的，你可以跟着数据流走）</p>
+            <p class="my-p">3.易扩展，易维护（逻辑性强，松耦合）</p>
+            <p class="my-p">4.易于和各种js库合作</p>
+            <p class="my-p">5.其实这个应该是第二大优点，除了性能的考虑，React引入虚拟DOM更重要的意义是提供了一种一致的开发方 式来开发服务端应用、Web应用和手机端应用，因为有了虚拟DOM这一层，所以通过配备不同的渲染器，就可以将虚拟DOM的内容 渲染到不同的平台。而应用开发者，使用JavaScript就可以通吃各个平台了。这是一种新的开发思路</p>
+            <p class="my-p"><strong>React缺点</strong></p>
+            <p class="my-p">1.学习成本比jquery高</p>
+            <p class="my-p">2.构建组件比直接写页面耗时长</p>
+            <p class="my-p">3.还不稳定，没有第一版</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

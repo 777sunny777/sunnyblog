@@ -1,0 +1,34 @@
+---
+layout: default
+title: React组件编写步骤（从UI到jsx实现）
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">主要参考的就是Pete Hunt写的Thinking in React的demo</p>
+            <p class="my-p my-h">1.第一步，拿到UI设计图,开始拆分组件</p>
+            <p class="my-p">1）如何去拆分组件，pete的建议是去和美工聊下，根据ps的layer你就知道如何查分和命名了</p>
+            <p class="my-p">2）如何判断一个单组件（即不能再拆分了），有一个原则叫single responsibility principle，一个单组件只要做一件事就好，如果这个组件以后扩展了，要继续拆分他</p>
+            <p class="my-p my-h">2.第二步，建立一个没有交互的静态组件</p>
+            <p class="my-p">1)在这个阶段，组件中只有props传值进来，并且只用render()一个方法</p>
+            <p class="my-p">2)不需要用state，state是用来交互用的</p>
+            <p class="my-p">3)组件是结构化的，你可以从子组件写到父组件，也可以相反，如果你也用es6，因为先写接口，我建议从父到子开始写</p>
+            <p class="my-p my-h">3.第三步，找到state的最小属性模型</p>
+            <p class="my-p">1）原则就是不要让state属性重复</p>
+            <p class="my-p">2)可以用下面三个验证条件来判断所有组件需要的state最小属性模型</p>
+            <p class="my-p">a.是否是从父级通过 props 传入的？如果是，可能不是 state 。</p>
+            <p class="my-p">b.是否会随着时间改变？如果不是，可能不是 state 。</p>
+            <p class="my-p">c.能根据组件中其它 state 数据或者 props 计算出来吗？如果是，就不是 state 。</p>
+            <p class="my-p my-h">4.第四步，找到在哪个组件上写state</p>
+            <p class="my-p">1)我个人理解的原则就是，找这些state属性的公共父组件，找不到就自己建一个</p>
+            <p class="my-p my-h">5.第五步，添加反向数据流</p>
+            <p class="my-p">1)通过前四步建立了沿着组件树从上至下单向数据流动的应用，现在组件树中层级很深的表单组件需要更新父级的组件中的state了，这样才有不断render的效果</p>
+            <p class="my-p">2)具体的原理就是我们可以使用input的onChange事件来监听用户输入，从而确定何时触发回调函数。父级组件传递的回调函数将会调用setState() ，然后应用将会被更新。</p>
+            <p class="my-p my-h">完，就是这样。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

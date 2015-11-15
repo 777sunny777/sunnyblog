@@ -1,6 +1,6 @@
 ---
 layout: default
-title: React--Component Specs and Lifecycle
+title: React--Component Specs and Lifecycle(2015/11/13更新)
 category: savour
 ---
 
@@ -9,6 +9,30 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">生命周期</p>
+            <p class="my-p">在组件实例的整个周期中，React将在特定的时间点调用以下方法：</p>
+            <p class="my-p">
+                <strong>componentWillMount()</strong>- 组件实例即将挂接（初次渲染）时被调用这个方法在整个生命周期中只会被调用一次。
+            </p>
+            <p class="my-p">
+                <strong>componentDidMount()</strong>- 组件实例挂接（初次渲染）后被调用这个方法在整个生命周期中只会被调用一次。
+            </p>            
+            <p class="my-p">
+                <strong>componentWillReceiveProps(nextProps)</strong>- 组件实例即将设置新属性时被调用参数nextProps表示即将应用到组件实例上的新属性值。这个方法在初次渲染时不会被调用。在此方法内调用setState()不会引起重新渲染。
+            </p>            
+            <p class="my-p">
+                <strong>shouldComponentUpdate(nextProps, nextState)</strong>- 组件实例即将重新渲染时被调用参数nextProps传入即将应用到组件实例上的新属性值，参数nextState传入组件实例即将被 设置的状态值。如果这个方法返回false，那么组件实例就不会被重新渲染。除非我们明确地知道，新的属性和状态不需要进行重新渲染，否则这个方法都应该返回true。这个方法在初次渲染时或通过forceUpdate()方法进行渲染时不会被调用。
+            </p> 
+            <p class="my-p">
+                <strong>componentWillUpdate(nextProps, nextState)</strong> - 组件实例即将重新渲染时被调用这个方法在初次渲染时不会被调用。注意：不能在此方法内调用setState()。
+            </p>            
+            <p class="my-p">
+                <strong>componentDidUpdate(prevProps, prevState)</strong>- 组件实例重新渲染后被调用这个方法在初次渲染时不会被调用。
+            </p>            
+            <p class="my-p">
+                <strong>componentWillUnmount()</strong>- 组件实例即将从DOM树移除时被调用这个方法在整个生命周期中只会被调用一次。
+            </p>
+
             <p class="my-p">
                 <pre>
 

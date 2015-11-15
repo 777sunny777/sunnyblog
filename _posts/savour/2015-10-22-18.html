@@ -1,6 +1,6 @@
 ---
 layout: default
-title: React学习笔记(持续更新--最新到2015/10/22)
+title: React学习笔记(持续更新--最新到2015/11/13)
 category: savour
 ---
 
@@ -9,6 +9,7 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">2015/10/22</p>
             <p class="my-p my-h">1.React的组件名首字母要大写，来区分普通变量</p>
             <p class="my-p my-h">2.render函数中return的dom</p>
             <p class="my-p">1）return中的dom结构最外层一定是单节点</p>
@@ -19,13 +20,106 @@ category: savour
             <p class="my-p my-h">3.props和state</p>
             <p class="my-p">1）props一般表示是不易变的属性，从父类传到子类中来</p>
             <p class="my-p">2）this.props.children表示的是组件内嵌的文本或节点，我估计也可以内嵌react组件（不过一般不这样写）</p>
-            <p class="my-p">3）相比props，state是动态的，组件私有的。并且他的变化会引起重新render</p>
+            <p class="my-p">3）相比props，state用来保存组件的当前状态,是动态的，组件私有的。并且他的变化会引起重新render</p>
             <p class="my-p my-h">4.es6+react和普通写法的不同点</p>
             <p class="my-p">有两个，来源是http://facebook.github.io/react/docs/reusable-components.html#es6-classes</p>
             <p class="my-p">1）没有getInitialState函数了，直接在constructor中给this.state赋值</p>
             <p class="my-p">2）propTypes and defaultProps(props的验证和默认值也不在class中写了，在class外部赋值)</p>
+
             <p class="my-p my-h">5.setState会重新render</p>
             <p class="my-p">setState过后会改变render但是并不会马上render，(不保证同步)，他要把整个函数内的逻辑都跑完才可以决定怎么render,比如父组件和子组件都需要render的情况下，也许父组件render后就不用子组件再render了。</p>
+
+            <p class="my-p my-h">2015/10/26</p>
+            <p class="my-p my-h">6.react组件table和json数据结构是有关系的</p>
+            <p class="my-p">考虑到table有表头和内容，如果用来过滤用，你不能用map，你要新建立新的不定长数组，json要写成数组，而不是对象，这样难度小一点。</p>
+
+            <p class="my-p my-h">7.refs</p>
+            <p class="my-p">refs用于获取dom结构中的相关属性，作用类似于id</p>
+            <pre>
+                js: this.refs.inStockOnlyInput.value
+                input: ref="inStockOnlyInput"
+            </pre>
+            <p class="my-p">refs还可以配合findDOMNode()</p>
+            <pre>
+                var hereP = React.findDOMNode(this.refs.hereP);
+                console.log(hereP.innerHTML);
+            </pre>
+
+            <p class="my-p my-h">8.react中写三目运算符要注意,最好以？：分三段写，不然编译时可能报错</p>
+            <p class="my-p my-h">9.jsx文件中变量可以直接赋值dom结构</p>
+            <p class="my-p my-h">2015/10/27</p>
+
+            <p class="my-p my-h">10.jsx中的一些dom相关属性写法</p>
+            <p class="my-p">1）.在dom属性中写js---用{}</p>
+            <pre>
+                var person = &lt;Person name={window.isLoggedIn ? window.name : ''} /&gt;
+            </pre>
+            <p class="my-p">2）.在dom中写bool属性---with attributes like disabled, required, checked and readOnly.</p>
+            <pre>
+                &lt;input type="button" disabled={true} /&gt;
+            </pre>
+            <p class="my-p">3）.注释---{/* */}</p>
+            <p class="my-p">4）.注意style的写法style={{color:'red'}},详细原因如下：</p>
+            <pre>
+                //2015/11/13
+                内联样式在jsx的写法：
+                var myStyle = {
+                    width:"200px",
+                    height:"200px"
+                };
+                //JSX
+                var e = &lt;div style="{myStyle}"&gt;&lt;/div&gt;;
+            </pre>
+            <p class="my-p">注意1 - 对应样式名称的字段，需要使用驼峰式命名，比如：border-radius样式需要使用borderRadius来访问，而background-image 样式需要使用backgroundImage来访问。</p>
+            <p class="my-p">注意2 - 样式名称中的供应商前缀，除ms外都需要大写首字母对于供应商前缀（-webkit, -moz, -o, -ms），除了ms，其他都需要将首字母大写。 比如：-webkit-transition应当通过WebkitTransition来访问，然而-ms-transition 则需要通过msTransition来访问。</p>
+
+            <p class="my-p my-h">11.jsx中的Spread Attributes写法</p>
+            <p class="my-p">属性省略</p>
+            <pre>
+                var props = {};
+                props.foo = x;
+                props.bar = y;
+                var component = &lt;Component {...props} /&gt;;
+            </pre>
+            <p class="my-p">You can use this multiple times or combine it with other attributes. The specification order is important. Later attributes override previous ones.(属性覆盖)</p>
+            <pre>
+                var props = { foo: 'default' };
+                var component = &lt;Component {...props} foo={'override'} /&gt;;
+                console.log(component.props.foo); // 'override'
+            </pre>
+            <p class="my-p my-h">12.jsx中HTML的实体字符写法</p>
+            <p class="my-p">实体字符转义不了，有两种绕过的方法</p>
+            <pre>
+                //数组
+                &lt;div&gt;{['First ', &lt;span&gt;&middot;&lt;/span&gt;, ' Second']}&lt;/div&gt;
+            </pre>
+            <pre>
+                //最后的方法
+                &lt;div dangerouslySetInnerHTML={{__html: 'First &middot; Second'}} /&gt;
+            </pre>
+            <p class="my-p my-h">13.jsx中dom不支持自定义属性，如果要自定义，加上data-或者aria-</p>
+
+            <p class="my-p my-h">2015/11/13</p>
+            <p class="my-p my-h">14.react表单输入--注意</p>
+            <p class="my-p">1）文本输入框--不要使用value属性设置文本输入框元素的初值，应当使用defaultValue</p>
+            <pre>
+                &lt;input type="text" defaultvalue="demo"&gt; 
+            </pre>
+            <p class="my-p">2）复选按钮--要使用checked属性设置复选按钮的初始选中状态，应当使用defaultChecked</p>
+            <pre>
+                &lt;input type="checkbox" defaultchecked=""&gt; 
+            </pre>
+            <p class="my-p">3）单选按钮组--不要使用option元素的selected属性设置单选按钮组的初始选中状态，应当使用 select元素的defaultValue</p>
+            <pre>
+                &lt;select defaultvalue="A"&gt; 
+                    &lt;option value="A"&gt; China&lt;/option&gt; 
+                    &lt;option value="B"&gt; India&lt;/option&gt; 
+                    &lt;option value="C"&gt; Japan&lt;/option&gt; 
+                &lt;/select&gt; 
+            </pre>
+
+
+
         </div><!-- /.blog-main -->
     </div>
 </div>

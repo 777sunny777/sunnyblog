@@ -1,0 +1,300 @@
+---
+layout: default
+title: Material Design Lite 学习(持续更新)
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">Material Design Lite---Google 推出的新的html/css框架</p>
+            <p class="my-p"><a href="https://github.com/google/material-design-lite" target="_blank">Material Design Lite github项目地址</a>，Material Design 设计风格核心是：扁而不平。</p>
+            <p class="my-p">我学习mdl目前也就是不到一周的时间，并且只是做了各个组件的demo，还没有在实际的项目中用到，并且他的网站现在是访问不到的，我是下了源码看readme，并且在<a href="http://www.hubwiz.com/" target="_blank">汇智网</a>中进行了一个初步学习。</p>
+            <p class="my-p">我用过的hc框架目前不外乎boostrap和bourbon两种，和这两种相比我觉得mdl更加的智能化（或者说，更加降低了页面编写的难度，很多组件都集成的很好了，你只要粘粘粘），符合这种风格的页面用mdl会非常的快，而且他的样式遵循BEM标准，很有大公司的范儿。它提供sass版本（bs官方是从V4才开始提供的），栅格的运用上偏bs，没有bourbon的自定义，组件比bs要多一些。</p>
+            <p class="my-p">下面是一些mdl常用的类和例子，以后有机会我一定会用，会不断更新的</p>
+            <pre>
+
+                class:
+                mdl-shadow--16dp      阴影，视觉靠前，有效取值为：2/3/4/6/8/16
+                mdl-color--red-300    背景色
+                mdl-color-text--grey-50  文字颜色
+                mdl-js-ripple-effect 按钮效果
+
+                1.布局/Layout
+                MDL class   说明
+                mdl-layout  声明元素为布局组件
+                mdl-js-layout   为布局实现基本的行为逻辑
+                mdl-layout__header  声明元素为布局头/header元素
+                mdl-layout__drawer  声明元素为侧栏菜单/drawer元素
+                mdl-layout__content 声明元素为布局内容/content元素
+
+                mdl-layout--fixed-drawer    将侧栏菜单/drawer声明为固定式 yes
+                在1024会隐藏，大于的时候可以显示，这个可以用到不要header的时候
+
+                mdl-layout--fixed-header    将头部/header声明为固定式 yes
+                小于1024会隐藏
+
+                mdl-layout--large-screen-only   在小尺寸屏幕上隐藏头部/header
+                mdl-layout--overlay-drawer-button   为布局添加激活侧栏菜单按钮
+
+                &lt;any class="mdl-layout mdl-js-layout"&gt;
+                    &lt;any class="mdl-layout__header"&gt;...&lt;/any&gt;
+                    &lt;any class="mdl-layout__drawer"&gt;...&lt;/any&gt;
+                    &lt;any class="mdl-layout__content"&gt;...&lt;/any&gt;
+                &lt;/any&gt;
+
+
+                2.头部/Header
+                MDL class   说明
+                mdl-layout__header-row  声明元素为行容器
+                mdl-layout-title    声明元素为标题
+                mdl-layout-icon 声明元素为菜单图标
+                mdl-layout-spacer   声明元素自动填充行容器剩余空间
+                mdl-layout__header--transparent 声明布局头为透明背景
+                mdl-layout__header--scroll  声明布局头为可滚动
+
+                mdl-layout__header--waterfall   对多行标题，当滚动内容时，仅显示第一行 yes
+
+                &lt;header class="mdl-layout__header"&gt;
+                    &lt;div class="mdl-layout__header-row"&gt;
+                        &lt;span class="mdl-layout-title"&gt;title&lt;/span&gt;
+                        &lt;div class="mdl-layout-spacer"&gt;&lt;/div&gt;
+                        &lt;span class="material-icons"&gt;mail link report&lt;/span&gt;
+                    &lt;/div&gt;
+                &lt;/header&gt;
+
+                2-1.头部 - 导航/Navigatoin
+                MDL class   说明
+                mdl-navigation  声明元素为MDL导航组
+                mdl-navigation__link    声明锚点元素为MDL导航链接
+
+                2-2.头部 - 选项卡/Tabs
+                MDL class   说明
+                mdl-layout__tab-bar 声明元素为选项栏
+                mdl-layout__tab 声明锚点元素为选项链接
+                mdl-layout__tab-panel   声明元素为选项面板
+                is-active   将选项链接/tab或选项面板/tab-panel声明为激活
+                mdl-layout--fixed-tabs  将头部tab条声明为固定式
+
+
+                3.侧拉菜单/Drawer
+                MDL class   说明
+                mdl-layout__drawer  声明元素为侧栏菜单/drawer元素
+                mdl-layout-title    声明元素为标题
+                mdl-navigation  声明元素为MDL导航组
+                mdl-navigation__link    声明锚点元素为MDL导航链接
+                mdl-layout--fixed-drawer    将侧栏菜单/drawer声明为固定式
+
+
+                4.单行页脚/Mini footer
+                MDL class   说明
+                mdl-mini-footer 声明元素为单行页脚组件
+                mdl-mini-footer--left-section   声明元素为左区域容器
+                mdl-mini-footer--right-section  声明元素为右区域容器
+                mdl-logo    声明元素为logo区
+                mdl-mini-footer--link-list  声明元素为链接容器
+                mdl-mini-footer--social-btn 声明元素为36px大小的方块区域
+
+
+                5.多行页脚/Mega footer
+                MDL class   说明
+                mdl-mega-footer 声明元素为多行页脚组件
+                mdl-mega-footer--top-section    声明元素为顶部区域
+                mdl-mega-footer--middle-section 声明元素为中部区域
+                mdl-mega-footer--bottom-section 声明元素为底部区域
+                mdl-mega-footer--left-section   声明元素在容器内居左
+                mdl-mega-footer--right-section  声明元素在容器内居右
+                mdl-mega-footer--drop-down-section  声明元素为垂直内容区
+                mdl-mega-footer--link-list  声明元素为链接容器
+                mdl-mega-footer--heading    声明元素为标题
+                mdl-logo    声明元素为logo区
+                mdl-mega-footer--social-btn 声明元素为36px正方大小
+
+
+                6.栅格/Grid
+                MDL class   说明
+                mdl-grid    将元素声明为grid组件
+                mdl-cell    将元素声明为grid组件的单元格cell
+                mdl-cell--N-col 设置单元格宽为N（1-12），默认为4。可选
+                mdl-cell--N-col-desktop 在桌面环境下设置单元格宽为N（1-12）。可选
+                mdl-cell--N-col-tablet  在平板环境下设置单元格宽为N（1-8）。可选
+                mdl-cell--N-col-phone   在手机环境下设置单元格宽为N（1-4）。可选
+                mdl-cell--hide-desktop  在桌面环境下隐藏该单元格 。可选
+                mdl-cell--hide-tablet   在平板环境下隐藏该单元格。可选
+                mdl-cell--hide-phone    在手机环境下隐藏该单元格。可选
+                mdl-cell--stretch   在垂直方向拉伸单元格以充满父元素。 这是单元格的默认值
+                mdl-cell--top   在垂直方向单元格顶部对齐。可选
+                mdl-cell--middle    在垂直方向单元格居中对齐。可选
+                mdl-cell--bottom    在垂直方向单元格底部对齐。可选
+
+
+                7.选项卡/Tabs
+                MDL class   功能
+                mdl-tabs    将元素声明为tabs组件
+                mdl-js-tabs 实现tabs组件的基本逻辑
+                mdl-tabs__tab-bar   将元素声明为tabs组件的导航条容器
+                mdl-tabs__tab   将链接元素声明为tabs组件的tab页触发器
+                mdl-tabs__panel 将元素声明为tabs组件的tab页内容面板
+                is-active   将tab页内容面板或tab页触发器设置为活动状态
+                mdl-js-ripple-effect    为tab页触发器增加点击时水纹效果。可选 yes
+
+
+
+                8.卡片/Cards
+                MDL class   说明
+                mdl-card    应用在外层容器，声明元素为卡片
+                mdl-card--border    为区域增加顶部边框，应用于actions区域和title区域
+                mdl-shadow--Ndp 为卡片添加N(2~8)dp的阴影，应用在外层容器
+                mdl-card__title 声明容器为卡片标题区域，应用在内层容器
+                mdl-card__title-text    为卡片标题设置合适的样式，应用在卡片标题区域的h1~h6
+                mdl-card__subtitle-text 为卡片子标题设置合适的样式
+                mdl-card__media 声明容器为卡片媒体区域，应用在内层容器
+                mdl-card__supporting-text   声明容器为卡片正文区域，应用在内层容器
+                mdl-card__actions   声明容器为卡片正文区域，应用在内层容器
+                mdl-card__menu  声明元素为卡片菜单按钮区
+                mdl-card--expand    声明区域的flex-grow为1，使区域自动增长以填充卡片剩余空间
+                修改示例代码，设置卡片宽度为520
+
+                &lt;any class="mdl-card"&gt;
+                    &lt;any class="mdl-card__title"&gt;...&lt;/any&gt;
+                    &lt;any class="mdl-card__media"&gt;...&lt;/any&gt;
+                    &lt;any class="mdl-card__supporting-text"&gt;...&lt;/any&gt;
+                    &lt;any class="mdl-card__actions"&gt;...&lt;/any&gt;
+                    &lt;any class="mdl-card__menu"&gt;...&lt;/any&gt;
+                &lt;/any&gt;
+
+
+                9.徽章/Badge
+                MDL class   说明
+                mdl-badge   声明当前元素为MDL徽章组件
+                mdl-badge--no-background    声明徽章组件不使用背景色
+                data-badge  徽章组件使用宿主元素上这个属性值来设置显示内容
+                &lt;any class="mdl-badge" data-badge="1"&gt;...&lt;/any&gt;
+
+
+                10.提示框/Tooltip
+                MDL class   说明
+                mdl-tooltip 声明元素为MDL提示框组件
+                mdl-tooltip--large  为MDL提示框组件应用大字体（14px）
+                &lt;!--1. 为宿主元素定义一个id --&gt;
+                &lt;button id="test"&gt;TEST&lt;/button&gt;
+                &lt;!--2. 声明一个tooltip组件，使用*for*属性绑定到宿主元素上，可以用html--&gt;
+                &lt;div class="mdl-tooltip" for="test"&gt;这个按钮没什么用;-(&lt;/div&gt;
+
+
+                11.按钮/Button
+                MDL按钮的显示类型包括：flat, raised, fab, mini-fab, icon. 这些类型 都可以设置为浅灰或彩色，也可以禁止。fab, mini-fab和icon类型的按钮通常 使用一个小图像而不是文字来表征其功能。
+                使用按钮组件很简单，为button元素声明mdl-button、mdl-js-button及 其他可选的修饰样式类即可：
+
+                MDL class   说明
+                mdl-button  将元素声明为MDL按钮组件
+                mdl-js-button   为按钮添加基本的行为逻辑
+                mdl-button--raised  为按钮应用凸起效果
+                mdl-button--fab 将按钮设置为圆形，直径56px
+                mdl-button--mini-fab    将fab按钮设置为原型，直径40px。
+                mdl-button--icon    为按钮应用图标效果，直径32px
+                mdl-button--colored 为按钮应用色彩，使用强调色
+                mdl-button--primary 为按钮应用基准色
+                mdl-button--accent  为按钮应用强调色
+                mdl-js-ripple-effect    为点击动作应用水纹效果
+
+
+                12.菜单/Menus
+                MDL class   说明
+                mdl-button  声明元素为按钮组件
+                mdl-js-button   为按钮组件添加基本的逻辑
+                mdl-button--icon    使按钮适配图标显示
+                material-icons  声明元素为图标
+                mdl-menu    声明元素为菜单组件
+                mdl-menu__item  声明元素为菜单项
+                mdl-js-ripple-effect    为点击动作添加水纹效果
+                mdl-menu--top-left  在按钮之上显示菜单，菜单左边框与按钮对齐
+                mdl-menu--top-right 在按钮之上显示菜单，菜单右边框与按钮对齐
+                mdl-menu--bottom-left   在按钮之下显示菜单，菜单左边框与按钮对齐
+                mdl-menu--bottom-right  在按钮之下显示菜单，菜单右边框与按钮对齐
+                &lt;any class="mdl-menu mdl-js-menu"&gt;
+                    &lt;any class="mdl-menu__item"&gt;...&lt;/any&gt;
+                    &lt;any class="mdl-menu__item"&gt;...&lt;/any&gt;
+                &lt;/any&gt;
+
+
+                13.滑动条/Sliders
+                MDL class   说明
+                mdl-slider  声明元素为滑动条组件
+                mdl-js-slider   为滑动条添加基本的行为逻辑
+
+                &lt;input type="range" min="0" max="100" class="mdl-slider mdl-js-slider"&gt;
+
+
+                14.复选按钮/Checkbox
+                MDL class   说明
+                mdl-checkbox    声明元素为复选按钮
+                mdl-js-checkbox 为复选按钮添加基本的行为逻辑
+                mdl-checkbox__input 为组件的input子元素使用此样式
+                mdl-checkbox__label 为组件的label子元素使用此样式
+                mdl-js-ripple-effect    为点击动作添加水纹效果
+
+
+                15.单选按钮/Radio button
+                MDL class   说明
+                mdl-radio   声明元素为单选按钮
+                mdl-js-radio    为单选按钮添加基本的行为逻辑
+                mdl-radio__button   为input元素声明此样式
+                mdl-radio__label    为label元素声明此样式
+                mdl-js-ripple-effect    为点击动作应用水纹效果
+
+
+                16.图标开关/Icon toggle
+                MDL class   说明
+                mdl-icon-toggle 声明元素为图标开关
+                mdl-js-icon-toggle  为图标开关添加基本的行为逻辑
+                mdl-icon-toggle__input  为input元素声明此样式
+                mdl-icon-toggle__label  为label元素声明此样式
+                mdl-js-ripple-effect    为点击动作添加水纹效果
+
+
+
+                17.进度条/Progress bar
+                MDL class   说明
+                mdl-progress    声明元素为进度条组件
+                mdl-js-progress 为进度条组件添加基本的行为逻辑
+                mdl-progress__indeterminate 为元素应用动画效果。可选
+
+
+                18.等待指示器/Spinner
+                MDL class   说明
+                mdl-spinner 声明元素为spinner组件
+                mdl-js-spinner  为spinner增加基本的行为逻辑
+                is-active   显示spinner组件并激活动画
+                mdl-spinner--single-color   只使用单一色彩
+
+
+                19.文本输入/Text Field
+                MDL class   说明
+                mdl-textfield   声明元素为文本输入组件
+                mdl-js-textfield    为文本输入组件添加基本的行为逻辑
+                mdl-textfield__input    为input元素应用此样式
+                mdl-textfield__label    为label元素应用此样式
+                mdl-textfield--floating-label   为文本输入组件应用浮动标签效果
+                mdl-textfield__error    声明span元素为MDL错误信息容器
+
+
+                20.文本输入 - 动态展开式
+                MDL class   说明
+                mdl-textfield--expandable   声明元素为可展开文本输入组件
+                mdl-input__expandable-holder    声明元素为文本输入元素的容器
+
+
+                21.数据表/Data table
+                MDL class   说明
+                mdl-data-table  声明元素为数据表组件
+                mdl-js-data-table   为数据表添加基本的行为逻辑
+                mdl-data-table--selectable  为数据表的每一条记录添加复选按钮，应用在table元素上
+                mdl-data-table__cell--non-numeric   声明单元格内容非数字，使单元格文字左对齐
+
+            </pre>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
