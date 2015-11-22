@@ -1,6 +1,6 @@
 ---
 layout: default
-title: React学习笔记(持续更新--最新到2015/11/13)
+title: React学习笔记(持续更新--最新到2015/11/18)
 category: savour
 ---
 
@@ -9,6 +9,7 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">React ensures that all events behave identically in IE8 and above by implementing a synthetic event system</p>
             <p class="my-p my-h">2015/10/22</p>
             <p class="my-p my-h">1.React的组件名首字母要大写，来区分普通变量</p>
             <p class="my-p my-h">2.render函数中return的dom</p>
@@ -21,11 +22,15 @@ category: savour
             <p class="my-p">1）props一般表示是不易变的属性，从父类传到子类中来</p>
             <p class="my-p">2）this.props.children表示的是组件内嵌的文本或节点，我估计也可以内嵌react组件（不过一般不这样写）</p>
             <p class="my-p">3）相比props，state用来保存组件的当前状态,是动态的，组件私有的。并且他的变化会引起重新render</p>
+            <p class="my-p">4)state中表示了一种控制组件状态的最小属性集合，所以不可以包含可以计算出的属性</p>
             <p class="my-p my-h">4.es6+react和普通写法的不同点</p>
             <p class="my-p">有两个，来源是http://facebook.github.io/react/docs/reusable-components.html#es6-classes</p>
             <p class="my-p">1）没有getInitialState函数了，直接在constructor中给this.state赋值</p>
             <p class="my-p">2）propTypes and defaultProps(props的验证和默认值也不在class中写了，在class外部赋值)</p>
-
+            <p class="my-p"><strong>我测试的结果是： defaultProps在ES6是其作用的，propTypes是不起作用的</strong></p>
+            <p class="my-p"><strong>此外还要注意的是： (2015/11/18)</strong></p>
+            <p class="my-p">1)对于this来说, With React, every method is automatically bound to its component instance (except when using ES6 class syntax). Methods follow the same semantics as regular ES6 classes, meaning that they don't automatically bind this to the instance. You'll have to explicitly use .bind(this) or arrow functions => </p>
+            <p class="my-p">2)about ES6--Unfortunately ES6 launched without any mixin support. Therefore, there is no support for mixins when you use React with ES6 classes. Instead, we're working on making it easier to support such use cases without resorting to mixins. ES6不支持插件所以也不用看了，我觉得，react之后会把插件做成本身的API来支持ES6的。</p>
             <p class="my-p my-h">5.setState会重新render</p>
             <p class="my-p">setState过后会改变render但是并不会马上render，(不保证同步)，他要把整个函数内的逻辑都跑完才可以决定怎么render,比如父组件和子组件都需要render的情况下，也许父组件render后就不用子组件再render了。</p>
 
@@ -44,6 +49,15 @@ category: savour
                 var hereP = React.findDOMNode(this.refs.hereP);
                 console.log(hereP.innerHTML);
             </pre>
+            <p class="my-p">每一个挂载的React组件有一个getDOMNode()方法，你可以调用这个方法来获取对该节点的引用</p>
+            <pre>
+                this.refs.myTextInput.getDOMNode().focus();
+            </pre>
+            <p class="my-p"><strong>Refs are a great way to send a message to a particular child instance in a way that would be inconvenient to do via streaming Reactive props and state. They should, however, not be your go-to abstraction for flowing data through your application. By default, use the Reactive data flow and save refs for use cases that are inherently non-reactive.</strong>如下是几个优点：</p>
+
+            <p class="my-p">1.this.refs.myTypeahead.reset()或者focus()</p>
+            <p class="my-p">2.this.refs.myInput.getDOMNode() 获取input元素的底层 DOM 节点。 Refs 是做这件事唯一可靠的方式</p>
+            <p class="my-p">3.Refs是被自动管理的！如果某个子级实例被销毁了，它的 ref 也会自动销毁。不用考虑内存问题</p>
 
             <p class="my-p my-h">8.react中写三目运算符要注意,最好以？：分三段写，不然编译时可能报错</p>
             <p class="my-p my-h">9.jsx文件中变量可以直接赋值dom结构</p>
@@ -87,6 +101,35 @@ category: savour
                 var component = &lt;Component {...props} foo={'override'} /&gt;;
                 console.log(component.props.foo); // 'override'
             </pre>
+            <p class="my-p">You can use JSX spread attributes to merge the old props with additional values:</p>
+            <pre>
+                &lt;Component {...this.props} more="values"/&gt;
+            </pre>
+
+            <p class="my-p">props传递的PATTERN和ANTI-PATTERN模式</p>
+            <pre>
+                组件如下：
+                &lt;FancyCheckbox checked={true} onClick={console.log.bind(console)}&gt;
+                    Hello world!
+                &lt;/FancyCheckbox&gt;
+                render写法：
+                render: function() {
+                    var { checked, ...other } = this.props;
+                    var fancyClass = checked ? 'FancyChecked' : 'FancyUnchecked';
+                    return (
+                      &lt;div {...other} className={fancyClass} /&gt;
+                    );
+                }
+
+                // `other` contains { onClick: console.log } but not the checked property
+                这样向子组件传递就不会传checked了
+            </pre>
+            <pre>
+                如果你全都要传给子组件，就不要写下面这行
+                var { checked, ...other } = this.props;
+                写成这样的模式
+                &lt;div {...this.props} className={fancyClass} /&gt;
+            </pre>
             <p class="my-p my-h">12.jsx中HTML的实体字符写法</p>
             <p class="my-p">实体字符转义不了，有两种绕过的方法</p>
             <pre>
@@ -117,8 +160,14 @@ category: savour
                     &lt;option value="C"&gt; Japan&lt;/option&gt; 
                 &lt;/select&gt; 
             </pre>
+            <p class="my-p my-h">关于表单，因为react的表单和传统html表单展现方式不一样（尤其是对于value的设置，react是js，要state驱动，html则不用），所以目前我个人不建议表单做成react组件，知道react成熟为止再考虑</p>
+             <p class="my-p my-h">2015/11/18</p>
+             <p class="my-p my-h">15.react事件</p>
+             <p class="my-p">1）react用的是事件委派</p>
 
-
+              <p class="my-p my-h">16.key</p>
+             <p class="my-p">对于key的作用我现在认识还不深，没有看到非有他不可的地方，继续学习。</p>
+             <p class="my-p">1)一般在重复子项上添加key（例如，在ui的li中）。务必把key添加到子级数组里组件本身上，而不是每个子级内部最外层 HTML 上</p>
 
         </div><!-- /.blog-main -->
     </div>
