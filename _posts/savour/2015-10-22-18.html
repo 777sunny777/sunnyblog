@@ -1,6 +1,6 @@
 ---
 layout: default
-title: React学习笔记(持续更新--最新到2015/11/18)
+title: React学习笔记(持续更新--最新到2015/11/25)
 category: savour
 ---
 
@@ -21,6 +21,7 @@ category: savour
             <p class="my-p my-h">3.props和state</p>
             <p class="my-p">1）props一般表示是不易变的属性，从父类传到子类中来</p>
             <p class="my-p">2）this.props.children表示的是组件内嵌的文本或节点，我估计也可以内嵌react组件（不过一般不这样写）</p>
+            <p class="my-p">用this.props.children.length的时候要注意，如果只是hello，length=5 not 1，但是如果是dom就正常计算了。</p>
             <p class="my-p">3）相比props，state用来保存组件的当前状态,是动态的，组件私有的。并且他的变化会引起重新render</p>
             <p class="my-p">4)state中表示了一种控制组件状态的最小属性集合，所以不可以包含可以计算出的属性</p>
             <p class="my-p my-h">4.es6+react和普通写法的不同点</p>
@@ -59,7 +60,7 @@ category: savour
             <p class="my-p">2.this.refs.myInput.getDOMNode() 获取input元素的底层 DOM 节点。 Refs 是做这件事唯一可靠的方式</p>
             <p class="my-p">3.Refs是被自动管理的！如果某个子级实例被销毁了，它的 ref 也会自动销毁。不用考虑内存问题</p>
 
-            <p class="my-p my-h">8.react中写三目运算符要注意,最好以？：分三段写，不然编译时可能报错</p>
+            <p class="my-p my-h">8.react中写三目运算符要注意,最好以？：分三段写，不然编译时可能报错(2015/11/25:这条是错的，再看看)</p>
             <p class="my-p my-h">9.jsx文件中变量可以直接赋值dom结构</p>
             <p class="my-p my-h">2015/10/27</p>
 
@@ -86,7 +87,9 @@ category: savour
             </pre>
             <p class="my-p">注意1 - 对应样式名称的字段，需要使用驼峰式命名，比如：border-radius样式需要使用borderRadius来访问，而background-image 样式需要使用backgroundImage来访问。</p>
             <p class="my-p">注意2 - 样式名称中的供应商前缀，除ms外都需要大写首字母对于供应商前缀（-webkit, -moz, -o, -ms），除了ms，其他都需要将首字母大写。 比如：-webkit-transition应当通过WebkitTransition来访问，然而-ms-transition 则需要通过msTransition来访问。</p>
-
+            <p class="my-p">5)When specifying a pixel value for your inline style prop, React automatically appends the string "px" for you after your number value,</p>
+            <p class="my-p">6).if-else statements don't work inside JSX. This is because JSX is just syntactic sugar for function calls and object construction. </p>
+            <p class="my-p">你可以用三目运算符在{}中代替，也可以在return外面写if-else( outside of your JSX )</p>
             <p class="my-p my-h">11.jsx中的Spread Attributes写法</p>
             <p class="my-p">属性省略</p>
             <pre>
@@ -161,9 +164,12 @@ category: savour
                 &lt;/select&gt; 
             </pre>
             <p class="my-p my-h">关于表单，因为react的表单和传统html表单展现方式不一样（尤其是对于value的设置，react是js，要state驱动，html则不用），所以目前我个人不建议表单做成react组件，知道react成熟为止再考虑</p>
+            <p class="my-p">input value={null}的时候是可以编辑的，但是我还没有找到合适的运用场景，待。</p>
              <p class="my-p my-h">2015/11/18</p>
              <p class="my-p my-h">15.react事件</p>
              <p class="my-p">1）react用的是事件委派</p>
+             <p class="my-p">2）As of v0.14, returning false from an event handler will no longer stop event propagation. Instead, e.stopPropagation() or e.preventDefault() should be triggered manually, as appropriate.</p>
+             <p class="my-p">3)To register an event handler for the capture phase, append Capture to the event name; for example, instead of using onClick, you would use onClickCapture to handle the click event in the capture phase.</p>
 
               <p class="my-p my-h">16.key</p>
              <p class="my-p">对于key的作用我现在认识还不深，没有看到非有他不可的地方，继续学习。</p>

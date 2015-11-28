@@ -1,0 +1,189 @@
+---
+layout: default
+title: React生命周期类的7个API
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <pre>
+                React组件声明周期进程：
+
+                0.第一次渲染
+                        |
+                        v
+                1.父-componentWillMount
+                        |
+                        v
+                2.子-componentDidMount
+                        |
+                        v
+                3.父-componentDidMount
+                        |
+                        v
+                4.父-componentWillUnmount
+
+
+                0.触发更新事件
+                        |
+                        v
+                1.父-shouldComponentUpdate
+                        |
+                        v
+                2.子-componentWillReceiveProps
+                        |
+                        v
+                3.子-componentWillUpdate
+                        |
+                        v
+                4.子-componentDidUpdate
+            </pre>
+            <pre>
+                import React from 'react';
+                import $ from 'jquery';
+
+                class Rs4 extends React.Component {
+                    constructor(props) {
+                        super(props);
+                        this.state = {
+                            feeling: "good"
+                        }; 
+                    }
+
+                    componentWillMount (){
+                        alert("parent-componentWillMount");
+                        //注意：
+                        //1.Invoked once,immediately before the initial rendering occurs. 
+                        //2.If you call setState within this method, 
+                        //render() will see the updated state and will be executed only once despite the state change.
+                        //3.我个人觉得这是个条件判断改变初始state的好地方
+                        this.setState({
+                            feeling:　"very exciting"
+                        });
+                    }
+
+                    componentDidMount(){
+                        alert("parent-componentDidMount");
+                        //注意：
+                        //1.Invoked once,immediately after the initial rendering occurs.
+                        //2.you can access any refs to your children.(this.refs.xxx)
+                        //3.child components is invoked before that of parent components.子组件先于父组件调用，这是一个由内向外的顺序 
+                        //4.if you want to integrate with other JavaScript frameworks, 
+                        //set timers using setTimeout or setInterval, or send AJAX requests, perform those operations
+                        //in this method.如果与第三方库混用,比如jQuery,最好在这里操作。
+                    }
+
+                    componentWillUnmount(){
+                        alert("parent-componentWillUnmount");
+                        //注意：
+                        //1.Invoked immediately before a component is unmounted from the DOM.
+                        //2.Perform any necessary cleanup in this method, such as invalidating timers 
+                        //or cleaning up any DOM elements that were created in componentDidMount.
+                    }
+
+                    shouldComponentUpdate(nextProps, nextState){
+                        alert("parent-shouldComponentUpdate");
+                        console.log(nextProps);
+                        console.log(nextState);
+                        return true;
+                        //注意：
+                        //1.Invoked before rendering when new props or state are being received. 
+                        //This method is not called for the initial render or when forceUpdate is used.
+                        //2.Use this as an opportunity to return false when you're certain that
+                        //the transition to the new props and state will not require a component update.
+                        //3.If shouldComponentUpdate returns false, then render() will be completely skipped until the next state change. 
+                        //In addition, componentWillUpdate and componentDidUpdate will not be called.
+                        //组件初始化和forceUpdate()的时候，可以直接无视这个方法，这个方法return false的时候可以无视componentWillUpdate and componentDidUpdate
+                        //这个目前react唯一一个可以阻止render的API，根据返回的boolen来判断
+                    }
+
+                    changeFeeling(){
+                        var feeling = (this.state.feeling == "very exciting")?"good":"very exciting";
+                        this.setState({
+                            feeling:　feeling
+                        });  
+                    }
+
+                    killFeeling(){
+                        React.unmountComponentAtNode( document.getElementById("rs4") );
+                    }
+
+                    render() {
+                        return(
+                            &lt;div&gt;
+                               &lt;button onClick={this.changeFeeling.bind(this)}&gt;click change feeling&lt;/button&gt;
+                               &lt;p id="parentDom"&gt;parent feeling is {this.state.feeling}&lt;/p&gt; 
+                               &lt;SubRs4 feeling={this.state.feeling}/&gt;
+                               &lt;button onClick={this.killFeeling.bind(this)}&gt;kill feeling&lt;/button&gt;
+                            &lt;/div&gt;
+                        );
+                    }
+                };
+
+                class SubRs4 extends React.Component {
+                    constructor(props) {
+                        super(props);
+                    }
+
+                    componentDidMount(){
+                        alert("child-componentDidMount");
+                    }
+
+                    componentWillUpdate(nextProps, nextState){
+                        alert("child-componentWillUpdate");
+                        console.log("child-componentWillUpdate");
+                        console.log(nextProps);
+                        console.log(nextState);        
+                        //注意：
+                        //1.Invoked immediately before rendering when new props or state are being received. 
+                        //This method is not called for the initial render.
+                        //2.You cannot use this.setState() in this method,如果你想用，用componentWillReceiveProps代替
+                        //3.我测试过，他是在componentWillReceiveProps后面调用的，跟位置无关，
+                        //从生命周期的角度来想，也肯定是组件先接受props，然后组件才开始更新。这里接受的props可能被componentWillReceiveProps改过了
+                        //4.相比componentWillReceiveProps，他还可以抓到
+                    }
+
+                    componentDidUpdate(prevProps, prevState){
+                        alert("child-componentDidUpdate");
+                        console.log("child-componentDidUpdate");
+                        console.log(prevProps);
+                        console.log(prevState);    
+                        //注意：
+                        //1.Invoked immediately after the component's updates are flushed to the DOM. 
+                        //This method is not called for the initial render.
+                        //2.这个地方可以获取prevProps就是渲染到页面之前的那个状态，这个可能有用
+                    }
+
+                    componentWillReceiveProps(nextProps){
+                        alert("child-componentWillReceiveProps");
+                        //注意：
+                        //1.Invoked when a component is receiving new props. 
+                        //This method is not called for the initial render.
+                        //2.it always use in sub component, which receive props form parent component
+                        //but in parent component it is a state,that guarantee props change
+                        //3.和componentWillMount一样的，这个方法中调用setState不会引起多一次的render
+                        //我个人觉得这个用于子组件根据父组件的state变化来判断这个条件下要怎样render,但是他阻止不了render
+                        if ( nextProps.feeling === "good" ) {
+                            nextProps.feeling = "not good";
+                        };
+                    }
+
+                    render() {
+                        return(
+                            &lt;div&gt;
+                                &lt;p&gt;child feeling is {this.props.feeling}&lt;/p&gt; 
+                            &lt;/div&gt;
+                        );
+                    }
+                };
+
+                export default function renderReact(addr){
+                    React.render(&lt;Rs4/&gt;, $(addr).get(0));
+                }
+            </pre>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

@@ -1,0 +1,110 @@
+---
+layout: default
+title: 常用的React API总结
+category: savour
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.React.Component</p>
+            <p class="my-p">用ES6定义的react组件都继承自这个基础类，该方法提供了react组件需要的基础API</p>
+            <pre>
+                //ES6标着下，定义react组件Hello，他继承了React.Component
+                export default class Hello extends React.Component {
+                    constructor(props) {
+                        super(props);
+                    }
+                    render() {
+                        return(
+                            &lt;div&gt;Hello!&lt;/div&gt;
+                        );
+                    }
+                };
+            </pre>
+            <p class="my-p my-h">2.React.createClass</p>
+            <p class="my-p">ES5下定义react组件的基本写法，创建组件用React.createClass</p>
+            <pre>
+                var Hello = React.createClass({
+                    render:function(){
+                        return(
+                            &lt;div&gt;Hello!&lt;/div&gt;
+                        );
+                    }
+                });
+            </pre>
+            <p class="my-p my-h">3.React.render</p>
+            <p class="my-p">渲染react的虚拟dom到页面需要的方法，render()是有回调函数的，在内容渲染到页面之后调用</p>
+            <pre>
+                var title="I come from props";
+                React.render(
+                    &lt;Hello title={title}/&gt;,
+                    document.getElementById("test1")
+                );
+            </pre>
+            <p class="my-p my-h">4.React.unmountComponentAtNode()</p>
+            <p class="my-p">返回值和参数boolean unmountComponentAtNode(DOMElement container)，unmountComponentAtNode可以删除渲染的dom结构（react组件），包括组件上绑定的事件以及其中的state，但是要注意的是，在组件内部不能删除组件中的部分，但是可以删除组件全部，记住要找DOMElement container。如果有组件返回true，如果没有组件返回false。</p>
+            <pre>
+                //这个是在组件Rs4外部，先渲染后删除的例子
+                React.render(&lt;Rs4/&gt;, $(addr).get(0), function(){
+                    alert("111");
+                    React.unmountComponentAtNode($(addr).get(0));
+                } );
+            </pre>
+            <p class="my-p my-h">5.ReactDOM.findDOMNode</p>
+            <p class="my-p">这个函数用于获取真实dom结构中的值，主要场景是form field values还有真实dom中的一些属性,记住这个函数only works on mounted components。最好是和refs组合用</p>
+            <pre>
+                //返回值和参数DOMElement findDOMNode(ReactComponent component)
+                componentDidMount(){
+                   var test = React.findDOMNode(this.refs.testRef);
+                   console.log(test.innerHTML);
+                   console.log($(test).height());
+                }
+            </pre>
+            <p class="my-p my-h">6.React.PropTypes</p>
+            <p class="my-p">用于props的输入验证,在ES6中我测试还用不了，虽然有指定写法</p>
+            <pre>
+                ES5中写在React.createClass中
+                propTypes:{
+                    title: React.PropTypes.string.isRequired,
+                }
+                ES6写在class外
+                Counter.propTypes = { 
+                    initialCount: React.PropTypes.number 
+                };
+            </pre>
+            <p class="my-p my-h">7.this.props.children</p>
+            <p class="my-p">表示的是组件内嵌的文本或节点</p>
+            <p class="my-p my-h">8.this.setState</p>
+            <p class="my-p">setState过后会调用render但是并不会马上调用render，(不保证同步)当然你，如果在shouldComponentUpdate()中添加判断逻辑，那么setState可能调不到render</p>
+            <pre>
+                this.setState({
+                    text: "second",
+                });
+            </pre>
+            <p class="my-p my-h">9.this.forceUpdate()</p>
+            <p class="my-p">强制调用执行render(),并且是skipping shouldComponentUpdate().</p>
+            <p class="my-p my-h">10.statics</p>
+            <p class="my-p">如果在一个方法前，加上static关键字，就表示该方法不会被实例继承，而是直接通过类来调用，这就称为“静态方法”。</p>
+            <pre>
+                var MyComponent = React.createClass({
+                statics: {
+                    customMethod: function(foo) {
+                        return foo === 'bar';
+                    }
+                },
+                render: function() { }
+                });
+                MyComponent.customMethod('bar');  // true
+            </pre>
+            <p class="my-p my-h">11.dangerouslySetInnerHTML</p>
+            <p class="my-p">Provides the ability to insert raw HTML, mainly for cooperating with DOM string manipulation libraries</p>
+            <pre>
+                function createMarkup() { return {__html: 'First &middot; Second'}; };
+                &lt;div dangerouslySetInnerHTML={createMarkup()} /&gt;
+            </pre>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
