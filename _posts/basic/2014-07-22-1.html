@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 理解闭包
+title: 理解闭包(2016/02/15更新)
 category: basic
 ---
 
@@ -19,6 +19,20 @@ category: basic
             </p>
             <p class="my-p my-h">2015/05/27</p>
             <p class="my-p">这两天深入学习了下闭包，有了更深的体会，闭包是两个作用域链碰撞产生的激情，他的标志很可能就是函数嵌套，外层函数将内层函数名返回造成的。也因为此，本该在外层函数内部销毁的局部变量，因为内层函数调用，且内层函数被暴露到外层函数之外，而被一起保留下来。</p>
+            <p class="my-p my-h">2016/02/15</p>
+            <p class="my-p">转眼快两年了，项目中用到的闭包，或者说刻意去用的闭包不多，对这个概念还是在阶段性不断理解中。现在简化的理解就是，闭包是函数A在执行中可以获取函数B中局部变量的方式，从作用域链的角度来说，这个方式的实现需要函数嵌套，即B中套A才可以达到。B中的A是不可撤销的，A和B中的变量同处于一个作用域所以也无法撤销。</p>
+            <p class="my-p">
+                <pre>
+                    //这也是一个闭包
+                    function bingClick(){
+                        var id = "test";
+                        document.getElementById('save').onclick = function(){
+                            saveDocment(id);
+                        }
+                    }
+                </pre>
+            </p>
+            <p class="my-p">onclick事件在bingClick内部定义，是函数嵌套，onclick执行的时候可以调用到bingClick函数中的局部变量id</p>
         </div><!-- /.blog-main -->
     </div>
 </div>

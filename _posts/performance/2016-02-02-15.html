@@ -1,0 +1,52 @@
+---
+layout: default
+title: 数据存储：作用域链和原型链对性能的影响
+category: performance
+---
+https://developer.chrome.com/devtools/docs/javascript-debugging#pause-on-uncaught-exceptions
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.js有四种基本的数据存储方式，字面量、变量、数组项、对象成员</p>
+            <p class="my-p">访问字面量和局部变量性能最快（要优先尽量多的使用），数组元素和对象成员相对比较慢，</p>
+            <p class="my-p my-h">2.关于作用域链和性能</p>
+            <p class="my-p">a.作用域链（函数的作用域链），指的是一个被创建函数的作用域中对象的集合，它决定了那些数据可以被函数访问到。<strong>个人观点：作用域链关注的是函数可访问的几个作用域的调用顺序。</strong></p>
+            <p class="my-p">b.局部变量总是最快的，而全局变量总是最慢的，是因为<strong>局部变量存在于作用域链的起始位置。变量在作用域链中的位置越深，访问所需要的时间就越长。全局变量的位置总在作用域链的最末端，因此访问速度也就是最慢的。</strong></p>
+            <p class="my-p my-h">一个好的经验： 如果某个跨作用域的值在函数中被引用一次以上，那么就把它存储到局部作用域中，比如用选择器选中的DOM节点，它是属于document的，是全局变量，如果多次调用最好提前赋值给局部变量（ var sss = document.getElementById('test') ）,这样会节省作用域链中的查找时间。</p>
+            <p class="my-p my-h">通常来说，你可以通过把常用的对象成员、数组元素、跨域变量保存在局部变量中来改善js的性能，因为局部变量访问速度更快。</p>
+            <p class="my-p">c.改变作用域链，js中可以改变作用域链的语句有： with和try...catch...中的catch。with主要用来减少多次书写，看起来效率更高，如下：</p>
+            <p class="my-p">
+                <pre>
+                    ...
+                    with(document){
+                        var bd = body,
+                        links = getElementsByTagName('a'),
+                        len = links.length;
+                        getElementById('test').onclick = function(){
+                            ...  ...
+                        }
+                    }
+                    ...
+                    对比
+                    ...
+                        var bd = document.body,
+                        links = document.getElementsByTagName('a'),
+                        len = links.length;
+                        document.getElementById('test').onclick = function(){
+                            ...  ...
+                        }
+                    ...
+                </pre>
+            </p>
+            <p class="my-p">可见感觉书写上节省了，但实际上，这样是建立了一个新的变量对象，它包含了with参数中所指定的所有属性，这个对象被推入到作用域链的首位，这样局部变量就所处在作用域链的二级了，其他类推，这样访问的代价反而变得高了（改变了性能优化法则）</p>
+            <p class="my-p">类似的是catch，在try代码段发生错误的时候，执行过程会自动跳转到catch，然后把异常对象推入到作用域的首位，在catch内部，局部作用域会排在第二。<strong>try-catch语句本身不应该被用来解决js错误，如果你知道某个错误可能会出现，应该是代码本身的问题，应该去修复</strong>，另外eval也有可能改变作用域链，比如在eval中给window赋值，使其变成了一个局部变量。</p>
+            <p class="my-p my-h">3.关于原型链和性能</p>
+            <p class="my-p">a.js是基于对象的，js中的对象是基于原型的，原型是其他对象的基础。它定义并实现了一个新创建的对象所必需包含的成员列表</p>
+            <p class="my-p">b.js的原型与面向对象的语言中类的区别在于： 类定义了新对象所具有的属性和方法；原型对象是所有对象实例所共享的</p>
+            <p class="my-p">c.js对象可以有两种成员类型：实例成员和原型成员，可以通过hasOwnProperty()来判断实例成员：obj1.hasOwnProperty('title');可以通过in来判断实例成员和原型成员，这个范围更广：("title" in obj1)</p>
+            <p class="my-p"><strong>原型链关注的是对象成员的继承关系</strong>属性或方法在原型链中的位置约深，访问他的速度就越慢。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

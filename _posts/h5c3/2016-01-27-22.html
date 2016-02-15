@@ -1,0 +1,150 @@
+---
+layout: default
+title: 平级or嵌套，定位与z-index的问题
+category: h5c3
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">简单的说就是今天遇到的一个bug，发现了我css中的一块知识盲点，所以在这总结一下</p>
+            <p class="my-p my-h">1.平级+一个定位一个不定位+一个index</p>
+            <p class="my-p">
+                <pre>
+                    &lt;style type="text/css"&gt;
+                        body{
+                            background-color: black;
+                        }
+                        .test1{
+                            margin-top: 50px;
+                            height: 200px;
+                            background-color: green;
+                        }
+                        .test2{
+                            display: inline-block;
+                            width: 400px;
+                            height: 100px;
+                            background-color: red;
+                            /*子元素中增加定位和z-index*/
+                            position: absolute;
+                            top: -150px;
+                            left: 10%;
+                            z-index: -1;
+                        } 
+                    &lt;/style&gt;
+                    &lt;div class="test1"&gt;test1&lt;/div&gt;
+                    &lt;div class="test2"&gt;test2&lt;/div&gt;
+                </pre>
+            </p>
+            <p class="my-p">在这个情况下无论第二个元素是绝对还是相对，都会受z-index影响，这个时候第一个元素不管是什么z-index对二来讲都不起作用，因为本质上，他们都是平级的。</p>
+            <p class="my-p my-h">2.平级+两个定位+两个index</p>
+            <p class="my-p">
+                <pre>
+                    &lt;style type="text/css"&gt;
+                        body{
+                            background-color: black;
+                        }
+                        .test1{
+                            margin-top: 50px;
+                            height: 200px;
+                            background-color: green;
+                            position: relative;
+                            z-index: -4;
+                        }
+                        .test2{
+                            display: inline-block;
+                            width: 400px;
+                            height: 100px;
+                            background-color: red;
+                            /*子元素中增加定位和z-index*/
+                            position: relative;
+                            top: -150px;
+                            left: 10%;
+                            z-index: -8;
+                        } 
+                    &lt;/style&gt;
+                    &lt;div class="test1"&gt;test1&lt;/div&gt;
+                    &lt;div class="test2"&gt;test2&lt;/div&gt;
+                </pre>
+            </p>
+            <p class="my-p">这个情况是我开始想当然的情况，在这个情况下，平级两者都有z-index，这时候就会都起作用并且可以比较两者大小决定谁在上谁在下。</p>
+            <p class="my-p my-h">3.嵌套+一个定位一个不定位+一个index</p>
+            <p class="my-p">
+                <pre>
+                    &lt;style type="text/css"&gt;
+                        body{
+                            z-index: 9999;
+                            background-color: black;
+                        }
+                        .test{
+                            margin-top: 50px;
+                            height: 200px;
+                            background-color: green;
+                        }
+                        .sub-test{
+                            margin-top: 50px;
+                            display: inline-block;
+                            width: 400px;
+                            height: 100px;
+                            background-color: red;
+                            /*子元素中增加定位和z-index*/
+                            position: absolute;
+                            top: 0;
+                            left: 10%;
+                            z-index: -1;
+                        }  
+                    &lt;/style&gt;
+                    &lt;div class="test"&gt;
+                        test
+                        &lt;div class="sub-test"&gt;
+                            sub-test
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                </pre>
+            </p>
+            <p class="my-p">首先，只要是嵌套，子元素在z-index非负的情况下，一定是在其父元素之上的，在-1的时候，在其相对的元素之下的（如果子是绝对定位，那么找相对定位父元素，在这个父元素之下但是在这个父元素的父元素之上； 如果子是相对定位，那么就是和body对比）</p>
+            <p class="my-p my-h">4.嵌套+两个定位+两个index</p>
+            <p class="my-p">
+                <pre>
+                    &lt;style type="text/css"&gt;
+                    body{
+                    z-index: 9999;
+                    background-color: black;
+                    }
+                    .test{
+                    margin-top: 50px;
+                    height: 200px;
+                    background-color: green;
+                    /*父元素增加定位*/
+                    position: absolute;
+                    z-index: 5;
+                    }
+                    .sub-test{
+                    margin-top: 50px;
+                    display: inline-block;
+                    width: 400px;
+                    height: 100px;
+                    background-color: red;
+                    /*子元素中增加定位和z-index*/
+                    position: relative;
+                    top: 0;
+                    left: 10%;
+                    z-index: -1;
+                    }  
+                    &lt;/style&gt;
+                    &lt;div class="test"&gt;
+                    test
+                    &lt;div class="sub-test"&gt;
+                    sub-test
+                    &lt;/div&gt;
+                    &lt;/div&gt;
+                </pre>
+            </p>
+            <p class="my-p">在这种情况下，你是无法把sub-test放到test下面去的，除非你去掉父中的z-index: 5;</p>
+            <p class="my-p my-h">这个问题其实还可以更加复杂，比如添加float浮动，三层以上嵌套等等，这个点涉及到定位，浮动，盒子三个css最难的问题，最好的方法就是尽量避免。</p>  
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+
