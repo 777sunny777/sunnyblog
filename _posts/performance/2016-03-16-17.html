@@ -1,0 +1,16 @@
+---
+layout: default
+title: 事件委派原理
+category: performance
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">事件委派可以很好的提升性能（1.可以减少事件绑定的个数，因为每一个事件绑定都是有代价的，减少了document.ready后的处理时间）</p>
+            <p class="my-p">事件绑定是一个简单而优雅的处理dom事件的技术，原理是事件是逐层冒泡并能被父级元素捕获的</p>
+            <p class="my-p">事件委派的事件是绑定在父级的，而子级的目标元素是用于判断用的，当事件的type和目标元素一直的时候，回掉函数中的逻辑才执行，但是这个逻辑实际上是已经绑定到父级的</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

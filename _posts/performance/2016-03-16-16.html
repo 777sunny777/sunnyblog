@@ -1,0 +1,43 @@
+---
+layout: default
+title: DOM编程中需要注意的性能问题
+category: performance
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">用脚本进行DOM操作的代价是很昂贵的，这个涉及到DOM频繁操作引起的重排和重绘问题（另一个富web应用的瓶颈是http请求总时长）。</p>
+            <p class="my-p my-h">1.访问和修改DOM的代价</p>
+            <p class="my-p">对于dom和js来说，这两个相互独立的功能通过接口彼此连结，消耗随即产生。有个贴切的比喻，把DOM和javascript比喻成两个岛屿，他们之间通过收费桥来连接，ES每次访问DOM，都要缴纳过桥费，访问DOM的次数越多，费用也就越高，因此推荐的做法就是尽量呆在ES岛屿上，减少过桥的费用。(访问DOM的次数越多，代码运行的速度就越慢，减少访问DOM的次数，把运算尽量留在ES这一端来处理，因为js的解析速度要远快于DOM更新速度。)</p>
+            <p class="my-p my-h">a.比如我们在循环中不断的对dom中的某个元素进行字符串的添加，这是在循环中对元素不断进行访问和修改，及其损耗性能，良好的解决方案是先进行字符串的拼接，然后统一进行一次访问和修改操作。<strong>(最小化DOM访问次数，尽可能的在javascript端处理)</strong></p>
+            <p class="my-p">用选择器去获取的html集合对象，实际上是一个类数组对象，它提供了length方法，以及可以用数字索引的方式去访问列表中的元素，但是没有push或slice这样的数组方法。</p>
+            <p class="my-p">这个html集合对象与文档是一直保持着联系的，我们要注意这点，防止写出这样的死循环来
+                <pre>   
+                    var alldivs = document.getElementsByTagName('div');
+                    for ( var i=0; i < alldivs.length; i++ ){
+                        document.body.appendChild( document.createElement('div') );
+                    }
+                </pre>
+                这种情况下alldivs.length是会不断增加的，要记住html集合对象与文档是一直保持着联系的。
+            </p>
+            <p class="my-p my-h">b.小心处理HTML集合，因为html集合对象与文档是一直保持着联系的，好的建议是把集合的长度缓存到一个变量中去，并在迭代中使用它。如果需要经常操作集合，建议把它拷贝到一个数组中去。</p>
+            <p class="my-p my-h">c.当遍历一个集合时，第一优化原则是把集合存储在局部变量中，并把length缓存在循环外部，然后使用局部变量去替代这些需要多次读取的元素。<strong>(如果需要多次访问某个DOM节点，请使用局部变量存储他的引用)</strong></p>
+            <p class="my-p my-h">d.尽量使用速度更快的API，比如document.querySelectorAll()和firstElementChild。以后要用一些新提供的API，比如用children来替代childNodes，前者是只关心element，后者还要增加text，这个在计数的时候要过滤更加麻烦，此外还有childElementCount,lastElementChild,nextElementSibling和previousElementSibling。</p>
+            <p class="my-p my-h">2.重排和重绘</p>
+            <p class="my-p">简单的说，在浏览器下载完所有的组件的时候，会解析出两个内部的数据结构，DOM tree和render tree, 这两个结构ready之后，浏览器就会开始绘制页面元素，这个时候会引出重排和重绘的概念</p>    
+            <p class="my-p">重排：reflow指的是元素的几何属性发生改变，使得浏览器需要重新构造渲染树的过程</p>
+            <p class="my-p">重绘：repaint指的是元素的颜色等非几何属性发生改变，使得浏览器需要重新绘制的过程</p>
+            <p class="my-p my-h">e.最小化重排和重绘的技巧就是，在批量修改样式的时候可以“离线”操作DOM tree，离线的方法有三种，1.隐藏->修改->显示(隐藏的元素不在render tree中了，避免了reflow and repaint，但是在dom tree中，所以仍然可以js进行操作)。2.使用document.createDocumentFragment文档片段，之后将其插回到dom中。
+                <pre>
+                    //用jquery使用createDocumentFragment
+                    var qqq = document.createDocumentFragment();
+                    $(qqq).append("&lt;h1&gt;123&lt;/h1&gt;");
+                    $(".faq-part-question").append($(qqq));
+                </pre>
+                3.将原始元素拷贝到一个脱离文档的节点中，修改副本，完成后再替换原始元素。
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
