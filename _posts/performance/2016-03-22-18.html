@@ -1,0 +1,129 @@
+---
+layout: default
+title: 算法和流程控制中的几个注意的点
+category: performance
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.关于循环</p>
+            <p class="my-p">ES3中： 有四种循环类型(for,while,do...while,for(in))</p>
+            <p class="my-p">其中for(in)用于遍历对象中的可枚举的属性，他的性能最差，大概相差7倍</p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>demo</th>
+                  <th>返回值</th>
+                  <th>定义</th>
+                  <th>实例的属性</th>
+                  <th>原型对象的属性</th>
+                  <th>可枚举的属性</th>
+                  <th>不可枚举的属性</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">in</th>
+                  <td>"name" in obj</td>
+                  <td>true/false</td>
+                  <td>判断属性是否属于该对象</td>
+                  <td>yes</td>
+                  <td>yes</td>
+                  <td>yes</td>
+                  <td>yes</td>
+                </tr>
+                <tr>
+                  <th scope="row">!==</th>
+                  <td>obj.name!==undefined</td>
+                  <td>true/false</td>
+                  <td>判断对象有无该属性</td>
+                  <td>yes</td>
+                  <td>yes</td>
+                  <td>yes</td>
+                  <td>yes</td>
+                </tr>
+                <tr>
+                  <th scope="row">for(in)</th>
+                  <td>for(var item in obj){...}</td>
+                  <td>---</td>
+                  <td>遍历对象中的可枚举的属性</td>
+                  <td>yes</td>
+                  <td>yes</td>
+                  <td>yes</td>
+                  <td>no</td>
+                </tr>
+                <tr>
+                  <th scope="row">hasOwnProperty</th>
+                  <td>obj.hasOwnProperty('name')</td>
+                  <td>true/false</td>
+                  <td>判断属性是否属于实例</td>
+                  <td>yes</td>
+                  <td>no</td>
+                  <td>yes</td>
+                  <td>yes</td>
+                </tr>
+                <tr>
+                  <th scope="row">propertyIsEnumerable</th>
+                  <td>obj.propertyIsEnumerable('name')</td>
+                  <td>true/false</td>
+                  <td>判断枚举的属性是否属于实例</td>
+                  <td>yes</td>
+                  <td>no</td>
+                  <td>yes</td>
+                  <td>no</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="my-p my-h">优化循环的第一步就是：减少对象成员及数组项的查找次数</p>
+            <p class="my-p">
+                <pre>
+                    //常见的写法
+                    for (var i=0; i < items.length; i++){...}
+                    //最小化属性查找
+                    for (var i=0, len=items.length; i < len; i++){...}
+                    //减少属性查找并反转，性能更好(在顺序无关的时候可用)
+                    //相比正序, 减少了一次比较
+                    for (var i=items.length; i--; ){...}
+                </pre>
+            </p>
+            <p class="my-p my-h">优化循环的第二步就是：减少迭代次数</p>
+            <p class="my-p">
+              <pre>
+                  //广为人知的一种限制循环迭代次数的模式--达夫设备
+                  //500000次迭代中，运行时间比常规循环少70%
+                  var iterations = Math.floor(items.length/8),
+                      startAt = items.length % 8,
+                      i = 0;
+                  do {
+                      switch(startAt){
+                          case 0: process(items[i++]);
+                          case 7: process(items[i++]);
+                          case 6: process(items[i++]);
+                          case 5: process(items[i++]);
+                          case 4: process(items[i++]);
+                          case 3: process(items[i++]);
+                          case 2: process(items[i++]);
+                          case 1: process(items[i++]);
+                      }
+                      startAt = 0;
+                   }while(--iterations);
+              </pre> 
+            </p>
+            <p class="my-p">ES4中增加了forEach()</p>
+            <p class="my-p">array.forEach(function(value,index,array){...});性能上比for(in)要好一些</p>
+            <p class="my-p">ES5中增加了map()，filter(),every(),some(),reduce()等等</p>
+            <p class="my-p">他们的目的是生成一个数组副本或者用于判断数组是否符合特定条件</p>
+
+            <p class="my-p my-h">2.关于条件语句</p>
+            <p class="my-p">优化原则1： 大多数情况下switch比if-else运行要快,条件数量越大越明显</p>
+            <p class="my-p">优化原则2： if-else中的条件语句应该总是按照从最大概率到最小概率的顺序排列，以确保运行速度最快</p>
+
+            <p class="my-p my-h">3.字符串连接</p>
+            <p class="my-p">优化原则： +=最快, join和concat都慢</p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

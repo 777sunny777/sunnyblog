@@ -1,0 +1,50 @@
+---
+layout: default
+title: apply和call的用法
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">apply和call可以劫持其他对象的方法归自己所有</p>
+            <p class="my-p">functionName.apply(newObj,[parm1,parm2])</p>
+            <p class="my-p">functionName.call(newObj,parm1,parm2)</p>
+            <p class="my-p">
+                <pre>
+                    function test(a){ console.log(a)  }
+                    var newObj = newObj||{}
+                    test.apply(newObj,[7])  //print=7
+                    //这段代码中newObj劫持了test方法归自己所有了
+                </pre>
+                <pre>
+                    //如果用call
+                    test.call(newObj,9)
+                </pre>
+            </p>
+            <p class="my-p">
+                <pre>
+                    //一段js文件的逻辑引用方式
+                    /* GLOBAL JAVASCRIPT */
+                    $(document).ready(function() {
+                        Sunny.init();
+                    });
+
+                    // Global namespace
+                    var Sunny = Sunny || {};
+
+                    (function($) {
+                        "use strict";
+
+                        this.init = function(){
+                            ...
+                        }
+                        ...
+                    }).apply(Sunny, [jQuery]);
+                </pre>
+                这段代码很好的将js逻辑模块化，防止了对全局变量的污染
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>

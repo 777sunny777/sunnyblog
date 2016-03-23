@@ -1,0 +1,158 @@
+---
+layout: default
+title: 2016终版--script加载和执行
+category: performance
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+
+            <p class="my-p my-h">1.javascript的阻塞特性(问题的起源)</p>
+            <p class="my-p">多数浏览器使用单一进程来处理用户界面(UI)刷新和javascript脚本执行，所以同一时刻只能做一件事。<strong>为什么使用单一进程呢?</strong>因为在脚本执行过程中可能会修改页面内容，所以只要看到script标签(无论内联还是外链)页面都会等待(页面的下载和渲染都停止)。</p>
+            <p class="my-p">脚本的执行在默认的情况下都是同步的和阻塞的，当HTML解析器遇到script的时候，会默认先执行脚本，然后再恢复文档的解析和渲染。如果是一个由src引入的外部脚本，那么要先下载和执行外部脚本，然后才执行文档部分的内容。</p>
+
+            <p class="my-p my-h">2.javascript阻塞时长</p>
+            <p class="my-p">首先js都是需要解析并执行的，另外对于外链的js，还需要花时间下载。这期间页面渲染(极端下白屏)和用户交互(极端下点不动)都是完全被阻塞的。</p>
+            <p class="my-p"><strong>这再多说一句js的整个生命历程</strong></p>          
+            <p class="my-p">a.通过http(s)请求下载文档(外链)</p>
+            <p class="my-p">b.解析脚本</p>
+            <p class="my-p">c.执行脚本(脚本中有事件逻辑的话跳到d)</p>
+            <p class="my-p">d.事件驱动阶段，这个是异步的</p>
+
+            <p class="my-p my-h">3.javascript适合放置的位置</p>
+            <p class="my-p">需要记住的一点：浏览器在解析到body标签之前(其实就是在解析head中的内容)，不会渲染页面的任何部分，所以<strong>把js放到head是绝对要阻塞页面渲染的，不合适</strong></p>
+            <p class="my-p">最好的地方就是放在body的结束标签之前</p>
+
+            <p class="my-p my-h">4.javascript在一个页面的数量</p>
+            <p class="my-p">现在的浏览器都允许并行下载js，但是要记住<strong>js的下载还是会阻止其他资源的下载，比如图片。（这个要验证一下）</strong></p>
+            <p class="my-p">过多外链的js也会发更多的http请求，所以个数越少越好。</p>
+
+            <p class="my-p my-h">5.无阻塞的脚本</p>
+            <p class="my-p">对于前端而言，页面性能问题主要在于http请求数量和DOM更新频率(重排和重绘)，这是两个值得优化的点。根据js优化原则如果我们只添加一个较大的js在页面，那么他也会锁死一段时间，这里面有个平衡的问题。所以我们希望在页面中添加一些js，这些js还不会阻塞浏览器，<strong>做这件事的技巧就在于页面加载完成后再加载js</strong></p>
+
+            <p class="my-p my-h">5.1.html5新属性下的延迟加载脚本</p>
+            <p class="my-p">延迟脚本执行--添加defer属性(defer="defer"),下载脚本的同时继续解析和渲染文档，在文档载入和解析完成后开始执行脚本，并且会按照文档中出现的顺序执行</p>
+
+            <p class="my-p my-h">5.2.html5新属性下的异步加载脚本</p>
+            <p class="my-p">异步执行的脚本--添加async属性(async="async")，下载脚本的同时继续解析和渲染文档，在下载完成后就开始执行脚本，但是不保证顺序（在js执行的时候还是会阻塞UI的渲染的）
+            </p>
+            <p class="my-p">如果defer和async都有的话，忽略defer</p>
+
+            <p class="my-p my-h">5.3.js动态加载脚本(html5新属性前的土方法+onload时机)</p>
+            <p class="my-p">
+                <pre>
+                    //动态加载一个外部js文件
+                    function loadScript( url ){
+                        var script = document.createElement("script");
+                        script.type = "text/javascript";
+                        script.src = url;
+                        document.body.appendChild(script);
+                    }
+                    loadScript("./sunny.js");
+                </pre>
+                这种方法等同于(async="async")
+            </p>
+
+            <p class="my-p my-h">5.4.ajax内联脚本(最大优点是：拉到脚本后不用立刻执行，自主选择时机)</p>
+            <p class="my-p">
+                <pre>
+                    $.ajax({
+                        url: '/path/to/file',
+                        type: 'default GET (Other values: POST)',
+                        dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+                        data: {param1: 'value1'},
+                    })
+                    .done(function(code) {
+                        console.log("success");
+                        //动态加载一个内部js文件
+                        function loadScriptString(){
+                            var script = document.createElement("script");
+                            script.type = "text/javascript";
+                            try{
+                                script.appendChild( document.createTextNode(code) );
+                            }catch(ex){
+                                script.text = code;
+                            }
+                            document.body.appendChild(script);
+                        }
+                    })
+                    .fail(function() {
+                        console.log("error");
+                    });
+
+                    ...
+                    //拉到脚本后不用立刻执行，自主选择时机
+                    loadScriptString();
+                </pre>
+                这种方法最大的有点就是下载解析后不执行，选择时间再执行
+            </p>
+
+            <p class="my-p my-h">5.5.js加载顺序测试</p>
+            <p class="my-p">
+                <pre>
+                //测试页面
+                //jquery-1.11.2.min.js中alert("000")
+                //jquery.validationEngine.js中alert("555")
+                //validation.js中alert("444")
+                &lt;!DOCTYPE html&gt;
+                &lt;html&gt;
+                &lt;head&gt;
+                    &lt;meta charset="utf-8"&gt;
+                    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+                    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+                    &lt;script type="text/javascript" src="js/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript" src="js/jquery.validationEngine.js" async="async"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript" src="js/validation.js" defer="defer"&gt;&lt;/script&gt;
+                &lt;/head&gt;
+                &lt;body&gt;
+
+                &lt;script type="text/javascript"&gt;
+                document.write(alert("666"));
+                &lt;/script&gt;
+
+                &lt;img id="test" src="http://bourbon.io/images/marketing/ruby.png"&gt;
+                &lt;script type="text/javascript"&gt;
+
+                    window.addEventListener("load",function(){
+                        alert("111");
+                    },false);
+
+                    $(document).ready(function(){
+                        alert("222");
+                    });
+
+                    $("#test").load(function(){
+                        alert("333");
+                    });
+
+                    var script = document.createElement("script");
+                    document.body.appendChild(script);
+                    script.src = "js/jquery-1.11.2.min.js";
+
+                &lt;/script&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+                </pre>
+            </p>
+            <p class="my-p">chrome: 000-666-444-222-555-333-000-111</p>
+            <p class="my-p">IE11:   000-666-555-444-222-000-333-111</p>
+            <p class="my-p">Firefox:000-666-555-444-333-000-222-111</p>
+            <p class="my-p my-h">说明如下：</p>
+            <p class="my-p">1)000-666无争议，在head中的纯script在页面白屏的时候下载执行，000一定最先执行，之后document.write()随页面同步执行</p>
+            <p class="my-p">2)555，因为是async，特点是下载非阻塞，下载后立即执行，所以我觉得可以是除了开头000和111外的任何位置，这个和下载组件的时长有关</p>
+            <p class="my-p">3)444-222,综合三大浏览器来看，两者都是在doc.ready的时候执行，但是defer应该会比内联的ready要快，或者说因为这个test页面的defer位置在内联script的ready上面造成的</p>           
+            <p class="my-p">4)333-000,第二个000和333前后顺序不定，因为这两个下载时间不定</p>
+            <p class="my-p">5)111，最后111无争议，在所有组件下载执行完成之后执行</p>
+            
+            <p class="my-p my-h">参考过的文章包括:</p>
+            <p class="my-p">1.高性能javascript--第一章</p>
+            <p class="my-p">2.<a href="http://777sunny777.github.io/sunnyblog/basic/2015/08/28/23.html" target="_blank">事件(3)关于js事件处理(持续更新)--关于load事件</a></p>
+            <p class="my-p">3.<a href="http://777sunny777.github.io/sunnyblog/basic/2015/07/22/18.html" target="_blank">客户端js相关问题--犀牛书13章总结</a></p>
+            <p class="my-p">4.<a href="http://777sunny777.github.io/sunnyblog/basic/2014/07/31/3.html" target="_blank">DOM(2)操作技术及扩展(selectors API Level 1)</a></p>
+            <p class="my-p">5.<a href="http://777sunny777.github.io/sunnyblog/performance/2014/08/11/6.html" target="_blank">高性能建站(5,6,7,8) -- javaScript，css优化</a></p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
+
