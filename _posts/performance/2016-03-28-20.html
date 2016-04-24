@@ -1,0 +1,59 @@
+---
+layout: default
+title: js编程中需要注意到的问题(持续更新2016/03/28)
+category: performance
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.避免双重求值</p>
+            <p class="my-p">js中可以动态执行包含代码的字符串的语句，有4种方法</p>
+            <p class="my-p">1)eval()---禁用，如果是解析字符串用的话要用JSON.parse()来代替//eval('s1+s2');</p>
+            <p class="my-p">2)Function()// sum=new Function('s1','s2', 'retun s1+s2');</p>
+            <p class="my-p">setTimeout和setInterval，第一个参数不要直接写字符串，写函数名</p>
+            <p class="my-p">原因在于每次调用这些语句去解析其中的字符串的时候，浏览器都要重新创建一个新的解析器/编译器实例，这使得代码执行的速度变慢</p>
+
+            <p class="my-p my-h">2.使用Object/Array直接量定义，快</p>
+            <p class="my-p my-h">3.避免重复工作</p>
+            <p class="my-p">这里我学会了两个概念叫：函数延迟加载和条件预加载</p>
+            <p class="my-p">
+                <pre>
+                    //函数延迟加载
+                    function addHandler(target, eventType, handler){
+                        //复写现有函数---这招要学会
+                        if( target.addEventListener ){
+                            addHandler = function(target, eventType, handler){
+                                target.addEventListener(target, eventType, handler);
+                            };
+                        }else{
+                            addHandler = function(target, eventType, handler){
+                                target.attachEvent("on"+eventType, handler);
+                            };                           
+                        }
+                        //调用一次
+                        addHandler(target, eventType, handler);
+                    }
+                    //在函数定义的时候判断一下，然后就覆写函数了，之后调用不再进行判断
+                </pre>
+                <pre>
+                    //条件预加载
+                    var addHandler = document.body.addEventListener?
+                                     function(target, eventType, handler){
+                                        target.addEventListener(target, eventType, handler);
+                                     }:
+                                     function(target, eventType, handler){
+                                        target.attachEvent(target, eventType, handler);
+                                     };
+                    //在脚本加载的时候就检测
+                </pre>
+            </p>
+            <p class="my-p my-h">4.使用速度快的部分</p>
+            <p class="my-p">位运算判断奇数偶数---(i & 1)</p>
+            <p class="my-p my-h">5.多使用原声方法</p>
+            <p class="my-p">比如，Math系列，比如querySelector()就比jquery选择器快的</p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

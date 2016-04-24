@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 有用的---(2015/08/01更新)
+title: 有用的---(2016/04/22更新)
 category: php
 ---
 
@@ -15,9 +15,29 @@ category: php
             <p class="my-p my-h">2.利用自带绘图板截图</p>
             <p class="my-p">1.alt+prtScn复制图 2.mspaint调出绘图板 3.select截图 4.A添加文字 5.保存截图</p>   
             <p class="my-p my-h">3.chrome调试</p>
-            <p class="my-p">https://developer.chrome.com/devtools/docs/javascript-debugging#pause-on-uncaught-exceptions</p>       
+            <p class="my-p">https://developer.chrome.com/devtools/docs/javascript-debugging#pause-on-uncaught-exceptions</p> 
+            <p class="my-p my-h">4.rimraf nod_modules 强力删除删不掉的nod_modules</p>
+            <p class="my-p">官方描述：A deep deletion module for node (like rm -rf) 简单点说，就是模拟unix或者linux下的rm -rf（强制删除命令）
+                <pre>
+                    安装 npm install -g rimraf
+                    使用 [code]cd xxx[include node_modules folder]
+                    rimraf nod_modules
+                </pre>
+            </p>
+            <p class="my-p my-h">5.gem改为淘宝源</p>
+            <p class="my-p">安装好Ruby以后gem的源一般默认为http://rubygems.org/，这个源有时候不太好用，我们可以改成国内淘宝的。目前我在windows下开发，打开cmd窗口，敲以下命令即可。</p>
+            <p class="my-p">
+                <pre>
+                    显示当前使用的sources
+                    gem sources
+                    删除默认sources
+                    gem sources -r http://rubygems.org/
+                    添加淘宝sources
+                    gem sources -a http://ruby.taobao.org/
+                    更新缓存
+                    gem sources -u
+                </pre>
+            </p>
         </div><!-- /.blog-main -->
     </div>
-
-
 </div>
