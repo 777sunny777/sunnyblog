@@ -57,6 +57,13 @@ title: Sunny's Blog
             {% endfor %}
             </ul>
 
+            <p class="ulp alert alert-info"><span class="glyphicon glyphicon-plus"></span>周易六十四卦象浅述</p>
+            <ul class="pul">
+            {% for post in site.categories.ps %}
+                <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
+            {% endfor %}
+            </ul>
+
             <div class="panel panel-info">
                 <div class="panel-heading">
                   <h3 class="panel-title" >一些前端工具最新版本及下载地址</h3>
@@ -84,13 +91,6 @@ title: Sunny's Blog
                  
                 </div>
             </div>
-
-            <!--   <p class="ulp alert alert-info"><span class="glyphicon glyphicon-plus"></span>PS相关(我逼stella写的)</p>
-            <ul class="pul">
-            {% for post in site.categories.ps %}
-                <li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}" target="_blank">{{ post.title }}</a></li>
-            {% endfor %}
-            </ul> -->
 
         </div><!-- /.blog-main -->
     </div>
