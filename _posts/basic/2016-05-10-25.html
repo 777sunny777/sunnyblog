@@ -1,0 +1,145 @@
+---
+layout: default
+title: jQuery的deferred对象学习
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">jQuery的deferred这个知识点绝对学晚了，想一想可能是在2014年的时候就有听到，但是一直没有用在项目中，多亏了最近我的同事wayne讲了一节basic jquery，我才真正意识到这个问题，所以要赶紧抓过来学学</p>
+            <p class="my-p my-h">什么是deferred对象?</p>
+            <p class="my-p"><strong>deferred对象就是jQuery的回调函数解决方案,</strong>在英语中，defer的意思是"延迟"，所以deferred对象的含义就是"延迟"到未来某个点再执行。它解决了如何处理耗时操作的问题，对那些操作提供了更好的控制，以及统一的编程接口。</p>
+            <p class="my-p my-h">优势1： ajax操作的链式写法</p>
+            <p class="my-p">$.ajax()操作完成后，如果使用的是低于1.5.0版本的jQuery，返回的是XHR对象，你没法进行链式操作；如果高于1.5.0版本，返回的是deferred对象，可以进行链式操作。</p>
+            <p class="my-p">
+                <pre>
+                    //采用链式写法以后，代码的可读性大大提高。
+                    $.ajax({
+                        url: './fake/test.json',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {param1: 'value1'},
+                    })
+                    .done(function(data) {
+                        console.log(data);
+                        data.test = "ssss";
+                    })
+                    .fail(function() {
+                        console.log("error");
+                    })
+                    .always(function() {
+                        console.log("complete");
+                    });
+                </pre>
+            </p>
+            <p class="my-p my-h">优势2： 允许自由添加多个回调函数,并且传参也是顺序的</p>
+            <p class="my-p">
+                <pre>   
+                    $.ajax({
+                        url: './fake/test.json',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {param1: 'value1'},
+                    })
+                    .done(function(data) {
+                        console.log(data);
+                        data.test = "ssss";
+                    })
+                    .fail(function() {
+                        console.log("error");
+                    })
+                    .always(function() {
+                        console.log("complete");
+                    })
+                    .done(function(data) {
+                        //这个data中包含了data.test
+                        console.log(data);
+                    });
+                </pre>
+            </p>
+            <p class="my-p my-h">优势3： 允许为多个事件指定一个回调函数，这是传统写法做不到的</p>
+            <p class="my-p">
+                <pre>
+                    // $.when() 为多个操作指定回调函数。
+                    $.when(
+                        $.ajax({
+                            url: './fake/test.json',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {param1: 'value1'},
+                        }),
+                        $.ajax({
+                            url: './fake/test1.json',
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {param1: 'value1'},
+                        })
+                    )
+                　　  .done(function(data,data2) {
+                        console.log("=============");
+                        console.log(data); //test.json
+                        console.log(data2); //test1.json
+                    });
+                </pre>
+            </p>
+            <p class="my-p my-h">优势4： 从ajax操作扩展到了所有操作</p>
+            <p class="my-p">deferred对象的最大优点，就是它把这一套回调函数接口，从ajax操作扩展到了所有操作。也就是说，任何一个操作----不管是ajax操作还是本地操作，也不管是异步操作还是同步操作----都可以使用deferred对象的各种方法，指定回调函数。</p>
+            <p class="my-p">
+                <pre>
+                var wait = function(){
+                    
+                    //在函数内部，新建一个Deferred对象，为的是不想让其他代码能改变 wait 方法内部的deferred对象的状态。
+                    //$.Deferred() 生成一个deferred对象
+
+                    var dtd = $.Deferred();
+
+                    var tasks = function(){
+                        alert("执行完毕！");
+
+                    //jQuery规定，deferred对象有三种执行状态:未完成，已完成和已失败。
+                    //1.如果执行状态是"已完成"（resolved）,deferred对象立刻调用done()方法指定的回调函数；
+                    //2.如果执行状态是"已失败"，调用fail()方法指定的回调函数；
+                    //3.如果执行状态是"未完成"，则继续等待，或者调用progress()方法指定的回调函数（jQuery1.7版本添加）。
+
+                    //前面部分的ajax操作时，deferred对象会根据返回结果，自动改变自身的执行状态；但是，在wait()函数中，这个执行状态必须由程序员手动指定。dtd.resolve()的意思是，将dtd对象的执行状态从"未完成"改为"已完成"，从而触发done()方法。
+                    //类似的，还存在一个deferred.reject()方法，作用是将dtd对象的执行状态从"未完成"改为"已失败"，从而触发fail()方法。
+
+                        dtd.resolve(); // 改变deferred对象的执行状态
+                    };
+                    setTimeout(tasks,5000);
+
+                    //deferred.promise() 只是阻止其他代码来改变这个 deferred 对象的状态。可以理解成，通过 deferred.promise() 方法返回的 deferred promise 对象，是没有 resolve ,reject, progress , resolveWith, rejectWith , progressWith 这些可以改变状态的方法，你只能使用 done, then ,fail 等方法添加 handler 或者判断状态。
+                    //也就是说wait()返回的对象是没有resolve等方法的。
+
+                    return dtd.promise();
+                };
+
+                $.when(wait())
+                .done(function(){ alert("哈哈，成功了！"); })
+                .fail(function(){ alert("出错啦！"); });
+
+                </pre>
+            </p>
+
+            <p class="my-p my-h">另外的二个重要方法</p>
+            <p class="my-p">1.deferred.then()，有时为了省事，可以把done()和fail()合在一起写，这就是then()方法。</p>
+            <p class="my-p">
+                <pre>
+                    $.when($.ajax( "/main.php" ))
+　　                  .then(successFunc, failureFunc );
+                </pre>
+            </p>
+            <p class="my-p">如果then()有两个参数，那么第一个参数是done()方法的回调函数，第二个参数是fail()方法的回调方法。如果then()只有一个参数，那么等同于done()。</p>
+            <p class="my-p">2.deferred.always()</p>
+            <p class="my-p">这个方法也是用来指定回调函数的，它的作用是，不管调用的是deferred.resolve()还是deferred.reject()，最后总是执行。</p>
+            
+            <p class="my-p my-h">参考文章：</p>
+            <p>jquery在线手册</p>
+            <p><a href="http://www.ruanyifeng.com/blog/2011/08/a_detailed_explanation_of_jquery_deferred_object.html" target="_blank">jQuery的deferred对象详解</a></p>
+            <p><a href="http://blog.allenm.me/2012/01/jquery_deferred_promise_method/" target="_blank">jQuery deferred 对象的 promise 方法</a></p>
+
+        </div><!-- /.blog-main -->
+    </div>
+</div>

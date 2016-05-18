@@ -1,0 +1,33 @@
+---
+layout: default
+title: 使用SVG中的Symbol元素制作Icon
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.相比png而言，SVG的优势</p>
+            <p class="my-p">1）SVG是矢量图形文件，可以随意改变大小，而不影响图标质量。</p>
+            <p class="my-p">2）可以用CSS样式来自由定义图标颜色，比如颜色/尺寸等效果。</p>
+            <p class="my-p">3）所有的SVG可以全部在一个文件中，节省HTTP请求。</p>
+            <p class="my-p">4）使用SMIL、CSS或者是javascript可以制作充满灵性的交互动画效果。</p>
+            <p class="my-p">5）由于SVG也是一种XML节点的文件，所以可以使用gzip的方式把文件压缩到很小。</p>
+            <p class="my-p my-h">2.在web开发中，SVG主要有下面几种使用方法</p>
+            <p class="my-p">1）使用img和object标签直接引用svg。这种方法的缺点主要在于要求每个图标都单独保存成一个SVG文件，使用时也是单独请求的，增加了HTTP请求。</p>
+            <p class="my-p">2）Inline SVG，直接把SVG写入 HTML 中，这种方法简单直接，而且具有非常好的可调性。Inline SVG 作为HTML文档的一部分，不需要单独请求。临时需要修改某个图标的形状也比较方便。但是Inline SVG使用上比较繁琐，需要在页面中插入一大块SVG代码不适合手写，图标复用起来也比较麻烦。</p>
+            <p class="my-p">3）SVG Sprite。这里所说的Sprite技术，没错，类似于CSS中的Sprite技术。图标图形整合在一起，实际呈现的时候准确显示特定图标。其实基础的SVG Sprite也只是将原来的位图改成了SVG而已。</p>
+            <p class="my-p">4）使用svg中的<symbol>元素来制作icon</p>
+            <p class="my-p my-h">3.how to use symbol svg</p>
+            <p class="my-p">推荐的方法是将上述SVG作为body的第一个元素插入在HTML中， 此后，在需要显示某个 Icon 的地方插入相应代码即可：
+                <pre>
+                    &lt;svg class="icon icon-tumblr2"&gt;&lt;use xlink:href="#icon-tumblr2"&gt;&lt;/use&gt;&lt;/svg&gt;
+                </pre>
+                这里面主要是靠id进行映射的。这种方法不需要像Sprite那样繁琐的设置图片的位移。
+            </p>
+            <p class="my-p my-h">参考文章：</p>
+            <p><a href="http://blog.jobbole.com/79078/" target="_blank">使用SVG中的Symbol元素制作Icon</a></p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
