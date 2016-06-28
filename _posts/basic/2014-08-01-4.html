@@ -193,7 +193,7 @@ category: basic
             <p class="my-p my-h">在最后补充两点：</p>
             <p class="my-p">1.在回掉函数中return false；等于stopPropagation()加上preventDefault()；</p>
             <p class="my-p">
-                2.event.target == $(this)用来判断是否是自身,这个方法我在obj的是否见到同事calvin用过，那个场景用的不太合适，改成了event.target.tagName=="a",来解决了，但是这仍然是一个判断是否是自身的好方法。
+                2.event.target == $(this)用来判断是否是自身,这个方法我在obj见到同事calvin用过，那个场景用的不太合适，改成了event.target.tagName=="a",来解决了，但是这仍然是一个判断是否是自身的好方法。
                 <pre>
                     //eg:
                     $(".test").click(function(event){
