@@ -11,8 +11,8 @@ category: basic
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
             <p class="my-p my-h">这块是前端比较重要的地方，需要深刻理解。我们说js与HTML之间的交互是通过事件实现的。页面接收事件是按照一个顺序的，也就是有相应的事件流，<span style="text-decoration: line-through;">有意思的是，IE和其他浏览器的事件流正相反，IE是事件冒泡流，讲究从具体到一般；其他浏览器是事件捕获流，讲究从一般到具体。</span></p>
             <p class="my-p">上面这一段划掉的地方说的不对，不管是IE还是其他浏览器，事件触发的顺序都是从一般到具体，然后在从具体回溯到一般的，现代浏览器（其他+IE9及以上）利用addEventListener()监听事件，这个函数有三个参数，其中第三个参数默认是false，如果是true的话就是事件捕获的顺序了。为什么老版的IE只有事件冒泡呢，因为老版IE用的是attachEvent方法，这个方法只有两个参数，没得选。</p>
-            <p class="my-p">对于事件处理程序来讲，目前有4种方式，其中HTML事件处理方式，就是直接在标签上绑个onclick之类的，因为缺点太多，尽量不用了。DOM0(不是标准，只是个时间点，IE4支持的DHTML)的方式比较简单，可以跨浏览器，但是不支持同时绑定多个事件处理程序，DOM2 IE8-不支持，IE也有一套自己的方式，我在下面都做了测试，例子的注释也比较详细。</p>
-            <p class="my-p">对于事件对象，所有浏览器都有的属性包括1，判断event的类型；2.获取event的目标；3.阻止冒泡；4.阻止默认行为，当然IE和其他浏览器属性的获取方式也不一样的，下面同样进行了测试。</p>
+            <p class="my-p">对于事件处理程序来讲，目前有4种方式，其中HTML事件处理方式，就是直接在标签上绑个onclick之类的，因为缺点太多，尽量不用了。<strong>这里面多说一句，html的tag上绑事件这种方式对于事件属性名是不分大小写的，就是oncLICK，ONCLICK，你怎么写都可以的，但是js是区分大小写的。</strong>DOM0(不是标准，只是个时间点，IE4支持的DHTML)的方式比较简单，可以跨浏览器，但是不支持同时绑定多个事件处理程序，DOM2 IE8-不支持，IE也有一套自己的方式，我在下面都做了测试，例子的注释也比较详细。</p>
+            <p class="my-p">对于事件对象，所有浏览器都有的属性包括: 1.判断event的类型；2.获取event的目标；3.阻止冒泡；4.阻止默认行为，当然IE和其他浏览器属性的获取方式也不一样的，下面同样进行了测试。</p>
             <p class="my-p my-h">EventUtil是编写的可以跨浏览器的事件工具，可以直接用</p>
             <p class="my-p">
                 <pre>
@@ -103,6 +103,8 @@ category: basic
                     // }
                     // div.onclick = null;
 
+                    //HTML的tag事件绑定也具有上面这种就近覆盖的方式
+
 
                     //DOM2 IE8不支持，可以添加多个事件处理程序
                     // var div = document.getElementById("testDiv");
@@ -188,7 +190,19 @@ category: basic
                     
                 </pre>
             </p>
-
+            <p class="my-p my-h">在最后补充两点：</p>
+            <p class="my-p">1.在回掉函数中return false；等于stopPropagation()加上preventDefault()；</p>
+            <p class="my-p">
+                2.event.target == $(this)用来判断是否是自身,这个方法我在obj的是否见到同事calvin用过，那个场景用的不太合适，改成了event.target.tagName=="a",来解决了，但是这仍然是一个判断是否是自身的好方法。
+                <pre>
+                    //eg:
+                    $(".test").click(function(event){
+                        if ( event.target == $(this) ) {
+                            ...
+                        }
+                    });
+                </pre>
+            </p>
         </div><!-- /.blog-main -->
     </div>
 </div>
