@@ -9,7 +9,8 @@ category: basic
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p">这个window.onload在项目中如果如果需要不要用DOM0的标准去写，很容易被覆盖的,一定记住要用window.addEventListener.
+            <p class="my-p">这个window.onload在项目中如果如果需要不要用DOM0的标准去写，很容易被覆盖的,一定记住要用window.addEventListener.</p>
+            <p class="my-p">
                 <pre>
                     window.onload = function(){
                         alert("111");
@@ -20,7 +21,6 @@ category: basic
                     });
                 </pre>
             </p>
-
             <p class="my-p">
                 <pre>
                     //onload事件总结
