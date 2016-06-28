@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 事件(2) onload事件
+title: 事件(2) onload事件(2016/06/28更新)
 category: basic
 ---
 
@@ -9,6 +9,19 @@ category: basic
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">
+                //这个window.onload在项目中如果如果需要不要用DOM0的标准去写，很容易被覆盖的
+                //一定记住要用window.addEventListener
+
+                window.onload = function(){
+                    alert("111");
+                }
+
+                window.addEventListener("load",function(){
+                    alert("333");
+                });
+            </p>
+
             <p class="my-p">
                 <pre>
                     //onload事件总结
@@ -39,10 +52,8 @@ category: basic
                         //脚本必须要设置了src，并添加到文档才开始下载
                         script.src = "./sunny.js";
                     });
-
                 </pre>
             </p>
-
         </div><!-- /.blog-main -->
     </div>
 </div>
