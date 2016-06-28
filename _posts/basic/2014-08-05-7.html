@@ -15,8 +15,11 @@ category: basic
                     // 方法一 看看它是不是存在
                     var hasThis = document.getElementById("testDiv");
                     console.log( hasThis == null );
+                    
+                    // 方法二 还可以用length == 0来进行判断
+                    document.querySelectorAll(".pul").length == 0
 
-                    // 方法二，特定标签下，绑定load事件，加载完成后提示
+                    // 方法三，特定标签下，绑定load事件，加载完成后提示
                     // 支持该事件的 HTML 标签：
                     // body, frame, frameset, iframe, img, link, script
                     
