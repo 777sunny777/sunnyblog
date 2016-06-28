@@ -1,0 +1,72 @@
+---
+layout: default
+title: 闭包计数器,AMD,CMD
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.闭包实现的计数器</p>
+            <p class="my-p">
+                <pre>
+                    //闭包经常说起，但是用的不多，他就是外部函数调用内部函数中变量的现象，和作用域有关，也可以说是外部作用域中调用内部作用域中函数，使得内部作用域中变量函数都得不到释放的现象。
+                    function computer(){ 
+                        var i=0; 
+                        function add(){  i++; return i;}  
+                        return add; 
+                    }
+                    var a1 = computer();
+                    a1() //1
+                    a1() //2
+                    a1() //3
+                    var a2 = computer();
+                    a2() //1
+                    a2() //2
+                    a2() //3
+                    a1() //4   
+                </pre>
+            </p>
+            <p class="my-p my-h">2.AMD模式和requireJs</p>
+            <p class="my-p">1)我个人理解的模块化是把复杂的系统按照一定规则分解为一组高内聚低耦合的模块的过程，这个是为了开发阶段分工合作的需要； 而组件化是将页面组件进行分割归类，这个是为了系统复用的需要，这个是指数性的提高系统时间的方法。模块一般考虑的是功能逻辑，组件考虑的是UI。组件比模块的粒度更细。requirejs是一个js模块化的解决方案，而nunjucks是UI组件化的解决方案，这个方案包括js，css和html。</p>
+            <p class="my-p">2）如果谈模块化设计，一个模块应该具有至少3个特点：a.模块是一个封闭的，这个封闭不光是形式上的封闭，更多考虑的是一种防止对全局变量造成污染的方法；b.新模块开发可以依赖其他已有模块。c.新模块开发后可以支持其他模块的开发。</p>
+            <p class="my-p">3)AMD（Asynchronous Module Definition）是其中一个模块开发思想，用白话文讲就是 异步模块定义，所有的模块将被异步加载，模块加载不影响后面语句运行。所有依赖某些模块的语句均放置在回调函数中。</p>
+            <p class="my-p">4)RequireJS是AMD规范下的实现，defined用于定义模块，RequireJS要求每个模块均放在独立的文件之中。require方法调用模块。</p>
+            <p class="my-p">
+                <pre>
+                    define([ 'module1', 'module2' ], function(m1, m2){
+                        ...
+                    });
+
+                    require( ['foo', 'bar'], function( foo, bar ){
+                        foo.func();
+                        bar.func();
+                    } );
+                </pre>
+            </p>
+            <p class="my-p my-h">3.CMD模式和seaJs</p>
+            <p class="my-p">CMD 推崇依赖就近，AMD 推崇依赖前置。看代码：
+                <pre>
+                    // CMD
+                    define(function(require, exports, module) {
+                        var a = require('./a')
+                        a.doSomething()
+                        // 此处略去 100 行
+                        var b = require('./b') // 依赖可以就近书写
+                        b.doSomething()
+                        // ...
+                    })
+
+                    // AMD 默认推荐的是
+                    define(['./a', './b'], function(a, b) { // 依赖必须一开始就写好
+                        a.doSomething()
+                        // 此处略去 100 行
+                        b.doSomething()
+                        // ...
+                    })
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
