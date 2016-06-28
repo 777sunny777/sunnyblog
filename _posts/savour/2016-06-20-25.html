@@ -1,0 +1,169 @@
+---
+layout: default
+title: Block Bindings - ECMAScript 6(1)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.用var声明造成的误解</p>
+            <p class="my-p">首先ES5没有块级作用域，所以变量可以在块外访问到，其次var还有变量和函数的声明提前，这样就会造成很多误解，如下：</p>
+            <p class="my-p">
+                <pre>
+                    function getValue(condition) {
+                        if (condition) {
+                            var value = "blue";
+
+                            // other code
+
+                            return value;
+                        } else {
+
+                            // value exists here with a value of undefined
+
+                            return null;
+                        }
+                        // value exists here with a value of undefined
+                    }
+                </pre>
+            </p>
+            <p class="my-p">
+                <pre>
+                    //这个写法js会解析为如下形式：
+                    function getValue(condition) {
+                        var value;
+
+                        if (condition) {
+                            value = "blue";
+
+                            // other code
+
+                            return value;
+                        } else {
+
+                            return null;
+                        }
+                    }
+                </pre>
+            </p>
+            <p class="my-p">为了解决这种误解，ES6增加了两种变量声明的形式： let和const</p>
+            <p class="my-p my-h">2.let声明</p>
+            <p class="my-p">首先它具有了块级作用域，如下：</p>
+            <p class="my-p">
+                <pre>
+                    function getValue(condition) {
+                        if (condition) {
+                            let value = "blue";
+
+                            // other code
+
+                            return value;
+                        } else {
+
+                            // value doesn't exist here
+
+                            return null;
+                        }
+                        // value doesn't exist here
+                    }
+                    //If condition evaluates to false, then value is never declared or initialized.
+                </pre>
+            </p>
+            <p class="my-p">其次在同一作用域下let不可以重复声明，但是可以修改</p>
+            <p class="my-p">
+                <pre>
+                    var count = 30;
+                    // Syntax error
+                    let count = 40;
+                </pre>
+                <pre>
+                    var count = 30;
+                    // Does not throw an error
+                    if (condition) {
+                        let count = 40;
+                        // more code
+                    }
+                </pre>
+            </p>
+            <p class="my-p my-h">3.const声明</p>
+            <p class="my-p">首先, Variables declared using const are considered constants, meaning their values cannot be changed once set. For this reason, every const variable must be initialized on declaration，const也是具有块级作用域的</p>
+            <p class="my-p">
+                <pre>
+                    // Valid constant
+                    const maxItems = 30;
+                    // Syntax error: missing initialization
+                    const name; 
+                    // 在声明的时候就要初始化，并且之后不可重复声明也不可改
+
+                    var message = "Hello!";
+                    let age = 25;
+
+                    // Each of these would throw an error.
+                    const message = "Goodbye!";
+                    const age = 30;
+
+                    const maxItems = 5;
+
+                    maxItems = 6;      // throws error
+                </pre>
+            </p>
+            <p class="my-p">其次, Just remember: const prevents modification of the binding, not modification of the bound value.</p>
+            <p class="my-p">
+                //这个验证过了，对于const的对象来说，可以修改对象的属性值，但是不能直接修改这个对象。
+
+                const person = {
+                    name: "Nicholas"
+                };
+
+                // works
+                person.name = "Greg";
+
+                // throws an error
+                person = {
+                    name: "Greg"
+                };
+            </p>
+            <p class="my-p my-h">4.let和const不具有声明提前</p>
+            <p class="my-p">
+                <pre>
+                    if (condition) {
+                        console.log(typeof value);  // ReferenceError!
+                        let value = "blue";
+                    }
+                </pre>
+                <pre>
+                    console.log(typeof value);     // "undefined"
+                    if (condition) {
+                        let value = "blue";
+                    }
+                    //但是这种不在同一个作用域的要小心点，value可能是一个window的全局属性
+                </pre>
+            </p>
+            <p class="my-p my-h">5.全局变量差异</p>
+            <p class="my-p">
+                <pre>
+                    // in a browser
+                    var RegExp = "Hello!";
+                    console.log(window.RegExp);     // "Hello!"
+
+                    var ncz = "Hi!";
+                    console.log(window.ncz);        // "Hi!"
+                </pre>
+                <pre>
+                    // in a browser
+                    let RegExp = "Hello!";
+                    console.log(RegExp);                    // "Hello!"
+                    console.log(window.RegExp === RegExp);  // false
+
+                    const ncz = "Hi!";
+                    console.log(ncz);                       // "Hi!"
+                    console.log("ncz" in window);           // false
+                </pre>
+            </p>
+            <p class="my-p my-h">总结一下</p>
+            <p class="my-p">ES5中只有函数作用域而没有块级作用域，同时var声明的变量具有声明提前的特性，这使得js代码会产生很多误解，为了优化这一部分，ES6中定义了let和const两种声明变量的方式，其中let用来定义局部变量，而const用来定义静态变量。A两者的共同点有：1.都具有块级作用域。2.在同一作用域下都不可以重复声明。3.都不具有声明提前的属性。4.不可用于声明全局变量。B两者的不同点有：1.const声明的时候就要同时初始化，之后不可更改。2.const的对象是可以修改他的对象的属性的。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
