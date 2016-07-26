@@ -15,6 +15,8 @@ category: basic
             <p class="my-p">3.按钮的onclick事件，如果返回false，按钮的默认动作就不再执行了。比如有submit的button，就可以不提交了，记住一定是纯js的dom元素才会起作用，不过一般不用这个方法来验证表单</p>
             <p class="my-p">4.单复选框都定义了checked属性，用纯js来检测这个是实时变化的，还有一个属性是defaultChecked，这个是元素初始状态（选中或未选中），已经过测试。关于label，常用的配置是label把checkbox/radio和相关文字包起来，保证点击文字也可以改变选中的状态。（有一点注意，当用户单击其他单选按钮而导致这个单选按钮状态改变时，后者不触发onchange事件）</p>
             <p class="my-p">5.select元素定义了options属性来判定下拉列表个数或者定义下拉列表个数，eg：xxx.options.length=3或者xxx.options[1]=null。</p>
+            <p class="my-p my-h">6.form表单中如果button不写type,默认就是submit</p>
+            <p class="my-p my-h">7.form表单中如果只有一个可见的input, Enter就会submit; 如果有多个可见的input, 就不会提交表单, 所以我们做表单异步提交的时候要注意这个问题</p>
 
         </div><!-- /.blog-main -->
     </div>
