@@ -38,6 +38,17 @@ category: php
                     gem sources -u
                 </pre>
             </p>
+            <p class="my-p my-h">6.Add HTTPS support for Youku</p>
+            <p class="my-p">All Youku videos went blank on HTTPS forums, because "player.youku.com" does not have SSL support. But actually Youku does support HTTPS, with a different URL.</p>
+            <p class="my-p">
+                <pre>
+                    e.g.
+                    Original link: http://v.youku.com/v_show/id_XMTU0MzMyNjg2NA.html
+                    HTTP player: http://player.youku.com/embed/XMTU0MzMyNjg2NA
+                    HTTPS player: https://players.youku.com/player.php/sid/XMTU0MzMyNjg2NA/v.swf
+                </pre>
+            </p>
+            <p class="my-p">https://github.com/s9e/flarum-ext-mediaembed/issues/5</p>
         </div><!-- /.blog-main -->
     </div>
 </div>
