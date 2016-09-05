@@ -1,8 +1,8 @@
 $(function(){
 
     $(".pul").slideUp("fast");
-    $(".pul:eq(1)").slideDown("fast");
-    $(".ulp:eq(1)").children().removeClass('glyphicon-plus').addClass('glyphicon-minus');
+    $(".pul:eq(0)").slideDown("fast");
+    $(".ulp:eq(0)").children().removeClass('glyphicon-plus').addClass('glyphicon-minus');
 
     $(".ulp").click(function(){
         $(".pul").slideUp("normal");
