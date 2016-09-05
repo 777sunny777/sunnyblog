@@ -1,0 +1,68 @@
+---
+layout: default
+title: Item 1 - Know which javascript you are using
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+             <p class="my-p my-h">Effective 系列，每天一个Item，轻松提高JS。</p>
+            <p class="my-p">在编写js代码之前，明确使用的版本是很重要的。当然我们目前主流用的是ES5的版本，ES6的版本chrome做的最好，但是要想全面实现，我可以在这赌一个时间点，2019年。</p>
+            <p class="my-p">对于历史我们最好也有点了解，比如你最好知道Eich在95年创建的js，期间两个重要的标准，ES3在1999年，ES5在2009年，十年一个变革，这也是我认为ES6在2019年全面实现的依据。</p>
+            <p class="my-p">ES上写的是标准规范，但是不同的浏览器多少还有一些自己的非标，比如ES6中的const，有的浏览器比如chrome已经实现，把它当做不能修改的静态常量，但是有的浏览器还是会把它等同于var。我们在书写的时候要注意这种兼容性，减少非标的写法。</p>
+            <p class="my-p">此外，好的习惯是加上严格模式，因为这个语法就是用来做向后兼容的。the syntax was designed to be backward-compatible so that environments that do not implement the strict-mode checks can still execute strict code.</p>
+            <p class="my-p">
+              <pre>
+                "use strict"  //top of js files, files level
+                //or
+                function(){
+                  "use strict"  //function level
+                  //...
+                }
+              </pre>
+            </p>
+            <p class="my-p">比如我们有如下两个文件，在线上环境需要把他俩写在一个文件中</p>
+            <p class="my-p">
+              <pre>
+                //file1.js
+                "use strict"
+                function(){
+                  //...
+                }
+                
+                //file2/js
+                //no strict-mode directive
+                function(){
+                  var arguments = [];
+                  //...
+                }
+              </pre>
+            </p>         
+            <p class="my-p">如果把file1写在file2上面，则file2也变成了严格模式，var arguments = [];这会报错的，think about why？By contrast，file2写在上面，则file1也变成了非严格模式，"use strict"写在程序中间是无效的。</p>
+            <p class="my-p">这种情况，我们可以用IIFEs来解决（immediately invoked function expressions）自执行函数。如下</p>
+            <p class="my-p">
+              <pre>
+                //no strict-mode
+                (function(){
+                  //file1.js
+                  "use strict"
+                  function(){
+                    //...
+                  }
+                })();
+                (function(){
+                  //file2/js
+                  //no strict-mode directive
+                  function(){
+                    var arguments = [];
+                    //...
+                  }
+                })();
+              </pre>
+            </p>       
+            <p class="my-p">现在唯一的问题是这样写就没有全局变量了，但是没关系，想想RequireJs的原理，你就知道了，这其实是模块话的雏形了。</p> 
+        </div><!-- /.blog-main -->
+    </div>
+</div>
