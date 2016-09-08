@@ -1,0 +1,23 @@
+---
+layout: default
+title: Item 2 - Understand JavaScript’s Floating-Point Numbers
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">Effective 系列，每天一个Item，轻松提高JS。</p>
+            <p class="my-p my-h">首先这个blog应该有一个更好的名字-- Why 0.1 + 0.2 ！== 0.3 is True in Javascript</p>
+            <p class="my-p">其次，我这篇其实主要参考了segmentfault技术社区一个网友的回答，<a href="https://segmentfault.com/q/1010000000137297" target="_blank">链接在这</a></p>
+            <p class="my-p">JavaScript的number类型是一个双精度浮点型，遵循IEEE 754的双精度数值标准，相当于java的double类型。IEEE 754标准《二进制浮点数算法》（www.ieee.org）就是一个对实数进行计算机编码的标准。因此精度问题不止JS这门语言独有。</p>
+            <p class="my-p">我们在计算浮点型数字的时候，比如0.1 + 0.2，得到的结果是0.30000000000000004，所以这个精度是会有一些偏差的，所以面对这些小数计算，我们尽量要去把握一些原则，详细如下：</p>
+            <p class="my-p">1.倍数放大原则：可以计算(1+2)/10 来代替0.1 + 0.2。</p>
+            <p class="my-p">2.整数回归原则：Math提供了我们很多方法，Math.ceil()用作向上取整，Math.floor()用作向下取整，Math.round() 我们数学中常用到的四舍五入取整。</p>
+            <p class="my-p">3.数值检验原则：isFinite(number) 函数用于检查其参数是否是无穷大，isNaN(number) 函数用于检查其参数是否是非数字值，尤其适用于在表单提交时的数字检验。</p>
+            <p class="my-p">4.避免在同一个表达式中使用相差太大或太小的数值，对两个非常接近的数值执行减法或比较操作很容易出错。将很小的数值和很大数值相加无异于浪费时间，小的数值很可能被当作0。不过，很小的数值乘以很大的数值一般不会出现问题，例如2 * 12345678会得到正确的结果24691356。但是，0.1 - 0.09的结果是0.010000000000000009。</p>
+            <p class="my-p my-h">最重要的是我们在进行小数元算的时候，要记得这个地方可能会出错，要加一层检验。</p>
+            </div><!-- /.blog-main -->
+    </div>
+</div>
