@@ -1,0 +1,63 @@
+---
+layout: default
+title: ajax请求为什么要refactor一个统一的方法？
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">我们开发一个project，必然要用到很多ajax异步调用。一般比较有经验的架构都会重构一个ajax方法，然后所有的ajax调用都统一用这个方法，比如我经历的一个项目，他的重构是这么做的：</p>
+            <p class="my-p">
+              <pre>
+                  //refactor
+                  var promise = function(options, query){
+                      return $.ajax({
+                        cache: options.cache,
+                        url: options.url,
+                        dataType: options.dataType,
+                        method: options.type,
+                        data: query
+                      })
+                      .done(function(data){
+                         ...
+                         ...
+                      })
+                      .fail(function(error){
+                         ...
+                         ...
+                      })
+                      .always(function(response){
+                         ...
+                         ...
+                      });
+                  }
+                  //call
+                 promise({
+                    url: xxxxxx,
+                    done: function(res){
+                      xxxxxx
+                    }
+                  });
+              </pre>
+            </p>
+            <p class="my-p">我在之前的一篇文章中也说过一个refactor的方法，他用到了jquery的defer对象，<a href="http://777sunny777.github.io/sunnyblog/basic/2015/07/04/17.html" target="_blank">ES6--Promise对象</a></p>
+            <p class="my-p my-h">这种refactor是非常必要的，比如团队协作的时候，不同人写了很多ajax，这时候如果要统一在ajax的时候加个loader或者计个时什么的，如果没有统一的方法，就显的很麻烦了，当然如果你用jquery也不是没有方法。这时候有一个统一的调用接口就显得特别的方便。</p>
+            <p class="my-p">下面我再说下如果你实在没有写这个接口，也总不至于一个一个ajax去添加，jquery提供了相应的方法，如下：</p>
+            <p class="my-p">
+              <pre>
+              $.ajaxSetup({
+                beforeSend:function(XMLHttpRequest){
+                    ...
+                },
+                complete:function(XMLHttpRequest,textStatus){
+                    ...
+                }
+              });
+              </pre>
+            </p>
+            <p class="my-p">这个方法也是可行的，你可以写到你的global中去。</p>
+            </div><!-- /.blog-main -->
+    </div>
+</div>
