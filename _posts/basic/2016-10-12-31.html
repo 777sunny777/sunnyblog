@@ -1,0 +1,64 @@
+---
+layout: default
+title: 如何写一个简单的input file
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">上传插件有很多，但是如果你只需要一个简单的上传，不需要花哨的功能，那么我建议自己写一个不要用插件。代码如下</p>
+            <p class="my-p">
+              <pre>
+                  &lt;div class="col-xs-8"&gt;
+                      &lt;input type="text" class="form-control form-input uploadShowInput"&gt;
+                      &lt;input type="file" class="form-control form-input uploadInput hidden" name="ssssss" accept=".pdf"&gt;
+                      &lt;input type="text" name="ssssss-fileName" class="hidden"&gt;
+                      &lt;textarea class="base64textarea hidden" name="ssssss-fileContent" value=""&gt;&lt;/textarea&gt;
+                  &lt;/div&gt;
+              </pre>
+            </p>
+            <p class="my-p">其中，uploadShowInput是你要显示出来的假的input上传文件框，uploadInput是真正的input上传框，ssssss-fileName是要往后台传的文件的name，ssssss-fileContent是要往后台传的文件的base64位编码。</p>
+            <p class="my-p">
+              <pre>
+                  //js的逻辑如下：
+                        // upload event
+                        if (window.File && window.FileReader && window.FileList && window.Blob) {
+                          $('.uploadButton').on('click', function(){
+                              $(this).parents('.upload-box').find('.uploadInput').trigger('click');
+                          });
+                          $('.uploadInput').on('change', function(event){
+                              var pathArray = [], fileName;
+                              var $self = $(this);
+                              if ( $(this).val().indexOf('\\') != -1 ){
+                                  pathArray = $(this).val().split('\\');
+                                  fileName = pathArray[ pathArray.length - 1 ];
+                              }else {
+                                  fileName = $(this).val();
+                              }
+                              $(this).prev('.uploadShowInput').val( fileName );
+                              $(this).next('.js-fileName').val( fileName );
+                              var files = event.target.files;
+                              var file = files[0];
+                              if (files && file) {
+                                  var reader = new FileReader();
+                                  reader.onload = function(readerEvt) {
+                                      var binaryString = readerEvt.target.result;
+                                      $self.parent().find('.base64textarea').val( btoa(binaryString) );
+                                  };
+                                  reader.readAsBinaryString(file);
+                              }
+                          });
+                        }
+              </pre>
+            </p>
+            <p class="my-p">js的逻辑中一部分是要把input file的name赋值给hidden的input，另一方面是要进行文件的base64编码。我把用到的相应网站的link写在下面。</p>
+            <p class="my-p">
+              1.<a href="http://jsfiddle.net/eliseosoto/JHQnk/" target="_blank">Demo for file to base64</a><br/>
+              2.<a href="https://developer.mozilla.org/en-US/docs/Web/API/FileReader" target="_blank">FileReader API</a>
+            </p>
+            
+            </div><!-- /.blog-main -->
+    </div>
+</div>
