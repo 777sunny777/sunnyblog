@@ -9,22 +9,56 @@ category: basic
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
             <p class="my-p my-h">Effective 系列，每天一个Item，轻松提高JS。</p>
-            <p class="my-p my-h"></p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
-            <p class="my-p"></p>      
+            <p class="my-p">这篇的题目是小心隐性强制转化，大概包括五个方面的内容</p>
+            <p class="my-p my-h">1.隐性强制转化可能会隐藏一些类型错误</p>
+            <p class="my-p">文章举了一个例子：3+true; //4. 在一些严格类型检测的语言中，这行代码会抛出异常。但是js不仅不会抛出异常，而且还算出了结果4.这种把true隐性转化为1进行计算的例子就是js独有的特性。</p>
+            <p class="my-p my-h">2.常用的运算符号都有一些隐性强制转化的特点，下面以+号举例子</p>
+            <p class="my-p">+号即可以计算数值，也可以进行字符串拼接，这个主要取决于它的参数类型，比如：</p>
+            <p class="my-p">2 + 3; //5</p>
+            <p class="my-p">"2" + 3 // "23"</p>
+            <p class="my-p">1 + 2 + "3" // "33"</p>
+            <p class="my-p">1+ "2" + 3 // "123"</p>
+            <p class="my-p my-h">3.关于NaN（not a number）</p>
+            <p class="my-p">NaN的特点是他自身不等于自身，这个是js中的一个特例，我们用这个特例可以判断是不是NaN。</p>
+            <pre>
+                function isReallyNaN(){
+                    return x != x;
+                }
+            </pre>
+            <p class="my-p">我们还可以通过isNaN()来检测是否是非数字。</p>
+            <p class="my-p my-h">4.关于Obj和string的强制转化</p>
+            <p class="my-p">Obj转化为number是通过valueOf方法，字符串是通过toString方法，Obj如果没有valueOf方法就会调用tostring方法</p>
+            <pre>
+                1.
+                var test1 = { name: "stella" }
+                1+test1  // "1[object Object]"
+                2.            
+                var test1 = { name: "stella", valueOf: function(){ return "stella"  } }
+                1+test1 // "1stella"
+                3.
+                var test1 = { name: "stella", valueOf: function(){ return "stella"  }, toString: function(){ return "sss"  } }
+                1+test1 // "1stella"
+                4.
+                var test1 = { name: "stella", toString: function(){ return "sss"  } }
+                1+test1 //"1sss"
+            </pre>
+            <p class="my-p my-h">5.js有7个强制转化为false的值（不一定==false，只是false值），其他都会转化为true值</p>
+            <p class="my-p">这七个值是：false，0，-0，null，"", undefined, NaN.这里不是说NaN == false是true，而是指的if(NaN){} 条件不成立。</p>
+            <pre>
+            //举一个例子
+            function(a,b){
+                if(!a) a = 100;
+                if(!b) b = 200;
+                return [a,b];
+            }
+            test(1,2) // [1,2];
+            test() // [100,200]
+            but
+            test(0,0) // [100,200]
+            这个就错误，忘记了0也是false值
+            
+            所以比较好的判断条件是 if( typeof a === undefined )
+            </pre>
             </div><!-- /.blog-main -->
     </div>
 </div>
