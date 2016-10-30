@@ -1,0 +1,33 @@
+---
+layout: default
+title: Item 4 - Prefer Primitives to Object Wrappers
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">Effective 系列，每天一个Item，轻松提高JS。</p>
+            <p class="my-p">js把一些原始类型封装成对象，js封装了3种基本类型为Obj：string，booleans，number，这些对象就有了一些js内置的方法，方便我们编程，但是还有2点需要注意。</p>
+            <p class="my-p my-h">1.相同值得对象不相等。Obj内存地址不同，是不相等的，引用是相等的，副本是不相等的。</p>
+            <pre>
+                1.
+                var s1 = new String('sunny');
+                var s2 = new String('sunny');
+                s1 === s2 //false
+                2.
+                var s3 = s1;
+                s3 === s1 //true
+                3.比如我们使得字符串都变大写
+                "hello".toUpperCase(); //这个就是用到了封装对象的方法。
+            </pre>
+            <p class="my-p my-h">2.封装基本类型的对象的属性改变了是不会保存的。</p>
+            <pre>
+                "hello".test1 = 17;
+                "hello".test1; //undefined
+                这个再次调用的时候就已经清空了，所以这个是要在编码中避免的。
+            </pre>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
