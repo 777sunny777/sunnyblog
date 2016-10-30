@@ -10,8 +10,14 @@ category: basic
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
             <p class="my-p my-h">Effective 系列，每天一个Item，轻松提高JS。</p>
             <p class="my-p">避免使用 == </p>
-            <p class="my-p my-h">1.严格模式下也是要求用===的，因为==中含有了隐性的q强制类型转化，这里主要是把类型转化表show出来</p>
-            
+            <p class="my-p my-h">严格模式下也是要求用===的，因为==中含有了隐性的q强制类型转化，这里主要是把类型转化表show出来</p>
+            <pre>
+               1.null == undefined  //true
+               2.null/undefined == not null/undefined  //false
+               3.原生的string/boolean/number == Date obj (先找toString，再找valueOf)
+               4.原生的string/boolean/number == not Date obj (先找cvalueOf，再找toString)
+               5.原生的string/boolean/number == 原生的string/boolean/number （转为number比较）
+            </pre>
         </div><!-- /.blog-main -->
     </div>
 </div>
