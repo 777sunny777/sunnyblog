@@ -7,17 +7,16 @@ category: basic
     <div class="col-sm-12 blog-main">
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
-            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p my-h">Effective 系列，每天一个Item，轻松提高JS</p>
-            <p class="my-p">避免使用 == </p>
-            <p class="my-p my-h">严格模式下也是要求用===的，因为==中含有了隐性的q强制类型转化，这里主要是把类型转化表show出来</p>
-            <pre>
-               1.null == undefined  //true
-               2.null/undefined == not null/undefined  //false
-               3.原生的string/boolean/number == Date obj (先找toString，再找valueOf)
-               4.原生的string/boolean/number == not Date obj (先找cvalueOf，再找toString)
-               5.原生的string/boolean/number == 原生的string/boolean/number （转为number比较）
-            </pre>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>            
+            <p class="my-p">Sharing这个系列是我在公司的一些技术分享，现在的项目中有很多使用icons的方式，哪种方式最灵活，使用最简单，消耗资源最少，扩展最方便。我们在最近的一个项目中用到了symbol，我觉得比较符合这些要求。</p>
+            <p class="my-p">我只是搬运工，除了项目中的几位大神需要感谢之外，用到的一些文章链接如下：</p>
+            <p><a href="http://blog.jobbole.com/79078/" target="_blank">使用SVG中的Symbol元素制作Icon</a></p>
+            <p><a href="https://icomoon.io/app/#/select" target="_blank">icomoon, 方便的提供了数量众多的svg及其代码</a></p>
+            <p><a href="http://777sunny777.github.io/sunnyblog/basic/2016/05/18/26.html" target="_blank">使用SVG中的Symbol元素制作Icon</a></p>
+            <p class="my-p">言归正传，Sharing现在开始。。。</p>
+            <p class="my-p my-h">1.相比png而言，SVG的优势</p>
+            
+            
         </div><!-- /.blog-main -->
     </div>
 </div>
