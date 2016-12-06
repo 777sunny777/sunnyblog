@@ -1,0 +1,295 @@
+---
+layout: default
+title: Sharing2 -- 如何在项目中写好你的ajax
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">ajax我估计自称前端的工程师很少有人会承认“我不会写”, jquery为我们提供了很好的接口，更降低了ajax的难度，但是在项目中，可能用到对ajax的统一管理，所以，我们需要学习在项目中如何写好我们的ajax。</p>
+            <p class="my-p my-h">1.为什么要在项目中为ajax写统一的接口?</p>
+            <p class="my-p">我们在做项目的后期，有两个才提出的需求，如果没有统一的接口，修改起来将会很艰难。这件事让我觉得的在项目中有统一的接口很有必要，直接看例子吧。</p>
+            <pre>
+              我们的接口形式：
+
+              // AJAX PROMISE LAND
+                sunny.get = function(options){
+                    … …
+                    return $.ajax({
+                      cache: options.cache,
+                      url: options.url,
+                      dataType: options.dataType,
+                      contentType: options.contentType,
+                      method: options.type,
+                      data: options.data
+                    })
+                    .done(function(response){
+                if (typeof options.done == 'function') { options.done(response); };
+                    })
+                    .fail(function(error){
+                if (typeof options.fail == 'function') { options.fail(error); };
+                    })
+                    .always(function(response){
+                if (typeof options.always == 'function') { options.always(response); };
+                    });
+              }
+
+            </pre>
+            <p class="my-p">需求1： 请求期间要有loading…</p>
+            <pre>
+
+              //在我们的项目ajax接口上加loading。。。
+              // AJAX PROMISE LAND
+                sunny.get = function(options, className){
+                   
+                   //在这个地方加上loading。。。
+                    sunny.addLoader(className);
+                    … …
+                    return $.ajax({
+                … …
+                    })
+                    .done(function(response){
+                if (typeof options.done == 'function') { options.done(response); };
+                    })
+                    .fail(function(error){
+                if (typeof options.fail == 'function') { options.fail(error); };
+                    })
+                    .always(function(response){
+
+                //在这个地方去掉loading。。。
+                dcc.removeLoader(className);
+
+                if (typeof options.always == 'function') { options.always(response); };
+                    });
+              }
+
+            </pre>
+            <p class="my-p">这个时候有人会说，我不用统一接口，我也不用每个ajax挨个去加啊，那太傻了。我可以用$.ajaxSetup来做啊。所以我们需求2恰好就用了这个$.ajaxSetup， 但是我要说这是个灾难，不要这么写，除非你也逼不得已。</p>
+            <pre>
+              //需求2： session Timeout 要求跳转页面
+              //我们在这个平台早期没有做统一的接口，所以我们逼不得已
+
+              $.ajaxSetup({
+                beforeSend: function(XMLHttpRequest){
+                  … …
+                },
+                complete: function(XMLHttpRequest,textStatus){
+                var sessionstatus = XMLHttpRequest.getResponseHeader("sessionTimeout");
+                var url = XMLHttpRequest.getResponseHeader("redirectUrl");
+                if(sessionstatus == "sessionTimeout"){
+                        window.location.href = url;
+                }
+                }
+              });
+            </pre>
+            <p class="my-p my-h">但是： 这是一种可能被覆写的方式，你只能找没有用过的api，而且不能用deferred对象，找不到就没有办法了.</p>
+            <pre>
+              //举个栗子：
+              $.ajaxSetup({
+                  success: function(res){
+                      alert("success");
+                  },
+                  complete:function(XMLHttpRequest,textStatus){
+                      alert("complete");
+                  }
+              });
+
+              $.ajax({
+                  url: './symbol/symbol.html',
+                  dataType: 'html',
+                  success: function(res){
+                      alert(res);
+                  },
+                  error: function(error){
+                      console.log(error);
+                  }
+              });
+
+              //你可以去试试这个结果是什么，它只会弹yes，complete 而不会弹success，所以这就是我说的这是一种可能被覆写的方式，你根本不能确定会全局把控。
+            </pre>
+            <p class="my-p my-h">2.其实我有更好的写法，但是之前，你要看一看ES6的promise</p>
+            <p class="my-p my-h">2-1.我们不用promise，就用ajax有啥问题?</p>
+            <pre>
+              //主要有两个问题：
+              $.ajax({
+                  url: '......',
+                  success: function (data) {
+                      $.ajax({
+                          // 要在第一个请求成功后才可以执行下一步
+                          url: '......',
+                          success: function (data) {
+                               // ......
+                          }
+                      });
+                  }
+              });
+            </pre>
+            <p class="my-p">缺点1： 在需要多个操作的时候，会导致多个回调函数嵌套，导致代码不够直观，就是常说的 Callback Hell。</p>
+            <p class="my-p">缺点2： 如果几个异步操作之间并没有前后顺序之分（例如不需要前一个请求的结果作为后一个请求的参数）时，同样需要等待上一个操作完成再实行下一个操作。</p>
+            <p class="my-p my-h">所以，Promise对象可以用链式结构组织代码，并且可以同时执行多个操作，它就是为解决这两个问题而生的。那么它是如何解决的。</p>
+
+            <pre>
+              //针对缺点1, 用then来解决：
+              function test (ready) {
+                  return new Promise(function (resolve, reject) {
+                      if (ready) {
+                          resolve("success!");
+                          //将 Promise 对象的状态改变成成功，同时传递一个参数用于后续成功后的操作
+                      } else {
+                          reject("error!");
+                          //将 Promise 对象的状态改变为失败，同时将错误的信息传递到后续错误处理的操作
+                      }
+                  });
+              }
+
+              test(true).then(function (message) {
+                  alert(message);
+              }, function (error) {
+                  alert(error);
+              });
+
+              //Promise对象有三种状态，成功()/失败(onRejected)/初始态onFulfilled
+              //Promise对象重要的方法
+
+              //then 用于链式调用
+              //then每一次执行总会返回一个 Promise 对象, 
+              //并且在 onFulfilled 时的返回值，可以作为后续操作的参数
+
+              test(true).then(function (message) {
+                  return message;
+              }).then(function (message) {
+                  return message  + ',again';
+              }).then(function (message) {
+                  return message + ',and again';
+              }).then(function (message) {
+                  alert(message);
+              });
+
+              //catch 用来捕获错误的简写方法
+              then(fn).catch(fn)，相当于 then(fn).then(null, fn)
+
+              test(false).catch(function(message){
+                  alert(message);
+              });
+            </pre>
+
+            <pre>
+              //针对缺点2, 用all来解决：
+
+              //Promise.all
+              //可以接收一个元素为 Promise 对象的数组作为参数，
+              //当这个数组里面所有的 Promise 对象都变为 resolve 时，该方法才会返回
+
+              function test2 () {
+                  return new Promise(function (resolve) {
+                      setTimeout(function(){
+                          resolve("test2 success!");
+                      }, 5000);
+                  });
+              }
+
+              Promise.all([test(true), test2()]).then(function (result) {
+                console.log(result); 
+              });
+
+              //Promise.race
+              //只要该数组中的 Promise 对象的状态发生变化该方法都会返回
+
+              Promise.race([test(true), test2()]).then(function (result) {
+                console.log(result); 
+              });
+            </pre>
+            <p class="my-p my-h">2-2，Promise对象的兼容性问题，IE11及以下不支持，其他主流浏览器最新版本都支持了。但是如果你想支持全浏览器，怎么办?</p>
+            <p class="my-p">如果要兼容旧的浏览器，建议可以寻找一些第三方的解决方案，例如 jQuery 的 $.Deferred。所以我们还要说说Deferred</p>
+            <p class="my-p my-h">3.看来我们还要看一看jQuery 的 $.Deferred了</p>
+            <p class="my-p">$.Deferred是用来解决promise兼容问题的，所以我们重点看的也是通过$.Deferred如何解决那两个缺点。</p>
+            <pre>
+              //针对缺点1, 用done/fail/always来解决：
+
+              // 高于1.5.0版本的jquery，ajax返回的是deferred对象，可以进行链式操作
+              $.ajax({
+                  url: './fake/test.json',
+                  type: 'POST',
+                  dataType: 'json',
+                  data: {param1: 'value1'},
+              })
+              .done(function(data) {
+                  console.log(data);
+                  data.test = "ssss";
+              })
+              .fail(function() {
+                 console.log("error");
+              })
+              .always(function() {
+                 console.log("complete");
+              })
+              .done(function(data) {
+                 //这个data中包含了data.test
+                 console.log(data);
+              });
+            </pre>
+
+            <pre>
+              //针对缺点2, 用$.when()来解决：
+              $.when(
+                  $.ajax({
+                      url: './fake/test.json',
+                      type: 'POST',
+                      dataType: 'json',
+                      data: {param1: 'value1'},
+                  }),
+                  $.ajax({
+                      url: './fake/test2.json',
+                      type: 'POST',
+                      dataType: 'json',
+                      data: {param1: 'value1'},
+                  })
+              ).done(function(data,data2) {
+                  console.log("=============");
+                  console.log(data); //test.json
+                  console.log(data2); //test1.json
+              });
+            </pre>
+            <p class="my-p my-h">4.如果你看懂了我上面的胡言乱语，恭喜你，下面讲新的方法，估计你很快能懂。</p>
+
+            <pre>
+              function getAjax(option) {
+                  return $.when(
+                      $.ajax({
+                          url: option.url,
+                          method: option.method,
+                          data: option.data,
+                          dataType: 'json',
+                      })
+                      //扩展
+                  ).then(function(message){
+                      return option.done(message);
+                  },function(error){
+                      option.fail();
+                  }).then(function(message){
+                      option.done1(message);
+                  },function(error){
+                  });//扩展
+              }
+
+              getAjax({
+                  url: './fake/test.json',
+                  method: 'POST',
+                  data: { param1: 'value1' },
+                  done: function(message){
+                      return message.name + ' cool';
+                  },
+                  fail: function(){
+                      alert('error');
+                  },
+                  done1: function(message){
+                      console.log(message + ' !');
+                  },
+              });
+            </pre>
+            <p class="my-p">牛逼再吹一吹，这个ajax接口，可以链式，可以并行调用，还保留了原有接口统一管理的优点。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
