@@ -1,0 +1,158 @@
+---
+layout: default
+title: Sharing3 -- 前端验证插件parsley
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">最近的项目在前端验证这块用到了parsley，还不错，而且可以做国际化，所以在这里简单的介绍一下，详细的下面有链接。</p>
+            <p class="my-p"><a href="http://parsleyjs.org/" target="_blank">parsley</a> </p>
+            <pre>
+              //DEMO:
+
+              HTML:
+              ...
+              &lt;body&gt;
+                &lt;div id="svg-symbol" class="hidden"&gt;&lt;/div&gt;
+
+                &lt;div&gt;parsley demo:&lt;/div&gt;
+
+
+                &lt;form id="test1" data-parsley-validate action="#test1"&gt;
+                  &lt;input type="text" placeholder="input" data-parsley-required="true"&gt;
+                  &lt;button type="submit"&gt;submit&lt;/button&gt;
+                &lt;/form&gt;
+
+                &lt;div&gt;===================================&lt;/div&gt;
+
+                &lt;form id="test2" action="#test2"&gt;
+                  &lt;input type="text" placeholder="input" data-parsley-required="true"&gt;
+                  &lt;button type="submit"&gt;submit&lt;/button&gt;
+                &lt;/form&gt;
+
+                &lt;div&gt;===================================&lt;/div&gt;
+
+                &lt;form id="test3" action="#test3"&gt;
+                  &lt;input type="text" placeholder="input1" data-parsley-required="true" data-parsley-group="one"&gt;
+                  &lt;input type="text" placeholder="input2" data-parsley-required="true" data-parsley-group="one"&gt;
+                  &lt;input type="text" placeholder="input3" data-parsley-required="true" data-parsley-group="one"&gt;
+                  &lt;input type="text" placeholder="input4" data-parsley-required="true" data-parsley-group="one"&gt;
+                  &lt;input type="text" placeholder="input5" data-parsley-required="true" data-parsley-group="two"&gt;
+                  &lt;input type="text" placeholder="input6" data-parsley-required="true" data-parsley-group="two"&gt;
+                  &lt;input type="text" placeholder="input7" data-parsley-required="true" data-parsley-group="three"&gt;
+                  &lt;button type="button" id="test3Button"&gt;submit&lt;/button&gt;
+                &lt;/form&gt;
+
+                &lt;div&gt;===================================&lt;/div&gt;
+
+                &lt;form id="test4" action="#test4"&gt;
+
+                  //tip4： data-parsley-value是实际验证的value，和你input里面填的没有关系了
+                  &lt;input type="text" placeholder="input"  data-parsley-value="autoInput1" data-parsley-required="true"&gt;
+
+                  //tip5： data-parsley-debounce时延
+                  &lt;input type="text" placeholder="input" data-parsley-required="true" data-parsley-debounce="3000"&gt;
+
+                  //tip6： data-parsley-pattern正则
+                  &lt;input type="text" placeholder="input" data-parsley-required="true" data-parsley-pattern="\d+"&gt;
+
+                  //tip6： data-parsley-equal自定义的validator
+                  &lt;input type="text" placeholder="input" data-parsley-required="true" data-parsley-equal="sheldon"&gt;
+
+                  //tip7 data-parsley-error-message自定义的error-message
+                  &lt;input type="text" placeholder="input" data-parsley-required="true" data-parsley-error-message="this is my message"&gt;
+
+                  //tip8 data-parsley-errors-container，error
+                  &lt;input type="text" placeholder="input" data-parsley-required="true" data-parsley-errors-container=".errorMessage" data-parsley-error-message="this is my location"&gt;
+
+                  &lt;button type="button" id="test4Button"&gt;submit&lt;/button&gt;
+                &lt;/form&gt;
+
+                &lt;div&gt;===================================&lt;/div&gt;
+
+                &lt;div&gt;&lt;span&gt;Error Message:&lt;/span&gt;&lt;span class="errorMessage"&gt;&lt;/span&gt;&lt;/div&gt;
+
+                &lt;div&gt;===================================&lt;/div&gt;
+
+                &lt;form id="test5" action="#test5" data-parsley-validate&gt;
+                  &lt;input type="text" placeholder="input" data-parsley-required="true"&gt;
+                  &lt;button type="submit"&gt;submit&lt;/button&gt;
+                &lt;/form&gt;
+
+                &lt;script type="text/javascript" src="js/jquery-1.11.2.min.js"&gt;&lt;/script&gt;
+                &lt;script type="text/javascript" src="js/parsley.min.js"&gt;&lt;/script&gt;
+                &lt;script type="text/javascript" src="test.js"&gt;&lt;/script&gt;
+              &lt;/body&gt;
+              ...
+
+              test.js
+
+              //1.基本表单验证
+
+              // tip1: 验证有两种方式，form的tag上加data-parsley-validate属性，或者用下面js的方法。
+              $("#test2").parsley(); // work
+              //new Parsley('#test2'); // issue
+
+
+              //2.分组验证
+              // $('#test3Button').click(function(event) {
+              //     var one = $("#test3").parsley().validate({group: 'one'});
+              //     if (one){
+              //        var two = $("#test3").parsley().validate({group: 'two'}); 
+              //        if(two){
+              //             var three = $("#test3").parsley().validate({group: 'three'});
+              //             if(three){
+              //                 $("#test3").submit();
+              //             }
+              //        }
+              //     }
+              // });
+
+
+              //isValid不验证提示只用于验证判断
+              $('#test3Button').click(function(event) {
+                  var one = $("#test3").parsley().isValid({group: 'one'});
+                  if (one){
+                     alert('one done');
+                     var two = $("#test3").parsley().isValid({group: 'two'}); 
+                     if(two){
+                          alert('two done');
+                          var three = $("#test3").parsley().isValid({group: 'three'});
+                          if(three){
+                              alert('all done');
+                              $("#test3").submit();
+                          }
+                     }
+                  }
+              });
+
+
+              $("#test4Button").click(function(event) {
+                  $("#test4").parsley();
+                  $("#test4").submit();
+              });
+
+              //tip2: 自己写一个Validator
+              window.Parsley.addValidator('equal', {
+                  requirementType: 'string',
+                  validateString: function(value, requirement) {
+                    return value == requirement;
+                  },
+                  messages: {
+                    en: 'This value should be sheldon'
+                  }
+              });
+
+              //tip3: 异步提交表单需要return false了
+              $('#test5').parsley().on('form:submit',function(){
+                return false;
+              });
+
+            </pre>
+          
+        </div><!-- /.blog-main -->
+    </div>
+</div>
