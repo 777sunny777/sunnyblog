@@ -1,0 +1,196 @@
+---
+layout: default
+title: what is webpack
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">这篇blog,希望读到的人可以理解webpack并且能简单上手。这里面重在理解。其次我要声明一个很重要的观点,webpack和grunt,gulp的出发点是不一样的,我会另外写一篇blog来进一步说明这个事。</p>
+            
+            <p class="my-p my-h">0.Reference</p>
+            <p class="my-p">先来参考的目的是如果不愿意看我的,你可以直接看参考文档</p>
+            <p><a href="https://webpack.js.org/" target="_blank">1.webpack官方文档</a></p>
+            <p>2.知乎很好的起步文档<a href="https://zhuanlan.zhihu.com/p/20367175?columnSlug=FrontendMagazine" target="_blank">(1)</a><a href="https://zhuanlan.zhihu.com/p/20397902?columnSlug=FrontendMagazine" target="_blank">(2)</a><a href="https://zhuanlan.zhihu.com/p/20522487?columnSlug=FrontendMagazine" target="_blank">(3)</a></p>
+            <p><a href="http://survivejs.com/webpack/webpack-compared/" target="_blank">3.webpack和其他构建工具的比较</a></p>
+            <p><a href="http://webpack.github.io/docs/" target="_blank">4.webpack github document</a></p>
+            <p><a href="http://webpack.github.io/docs/webpack-dev-server.html" target="_blank">5.webpack-dev-server api</a></p>
+
+            <p class="my-p my-h">1.Install</p>
+            <p class="my-p">webpack is a module bundler。module bundler的工作主要是项目文件打包，比如编译，合并，压缩等等工作。下面的图可以很清晰的说明。</p>
+            <img src="/sunnyblog/img/32.png" class="codeimg">
+            <p class="my-p">全局安装webpack方法：<strong>npm install -g webpack</strong></p>
+            
+            <p class="my-p my-h">2.Simple demo(只讲部署的方式)</p>
+            <p class="my-p">Step:</p>
+            <p class="my-p">2-1.add entry.js</p>
+            <pre>
+              document.write("hello webpack!");
+            </pre>
+            <p class="my-p">2-2.add index.html</p>
+            <pre>
+              &lt;html&gt;
+                  &lt;head&gt;
+                      &lt;meta charset="utf-8"&gt;
+                  &lt;/head&gt;
+                  &lt;body&gt;
+                      &lt;script type="text/javascript" src="bundle.js" charset="utf-8"&gt;&lt;/script&gt;
+                  &lt;/body&gt;
+              &lt;/html&gt;
+            </pre>           
+            <p class="my-p">2-3.add main.css</p>
+            <pre>
+              body {
+                  background: red;
+              }
+            </pre>
+            <p class="my-p">2-4.add webpack.config.js</p>
+            <pre>
+              module.exports = {
+                  entry: "./entry.js",
+                  output: {
+                      path: __dirname,
+                      filename: "bundle.js"
+                  },
+                  module: {
+                      loaders: [
+                        {
+                          test: /\.css$/,
+                          loaders: ['style', 'css']
+                        }
+                      ]
+                  }
+              };
+            </pre>
+            <p class="my-p">2-5.run command</p>
+            <p class="my-p">2-5-1.npm install css-loader style-loader --save-dev,生成对应的package。json(或者我直接提供一份常规的)</p>
+            <p class="my-p">add package.json(别忘了npm install)</p>
+            <pre>
+              {
+                "name": "webpack",
+                "version": "1.0.0",
+                "description": "",
+                "main": "index.js",
+                "scripts": {
+                  "test": "echo \"Error: no test specified\" && exit 1",
+                },
+                "author": "",
+                "license": "ISC",
+                "devDependencies": {
+                  "babel-core": "^6.21.0",
+                  "babel-loader": "^6.2.10",
+                  "babel-preset-es2015": "^6.18.0",
+                  "css-loader": "^0.26.1",
+                  "extract-text-webpack-plugin": "^1.0.1",
+                  "file-loader": "^0.9.0",
+                  "html-webpack-plugin": "^2.24.1",
+                  "jquery": "^3.1.1",
+                  "jshint": "^2.9.4",
+                  "jshint-loader": "^0.8.3",
+                  "moment": "^2.17.1",
+                  "node-sass": "^4.1.0",
+                  "sass-loader": "^4.1.0",
+                  "style-loader": "^0.13.1",
+                  "url-loader": "^0.5.7",
+                  "webpack": "^1.14.0",
+                  "webpack-dev-server": "^1.16.2"
+                }
+              }
+            </pre>
+            <p class="my-p">2-5-2.webpack(默认执行 webpack.config.js)</p>
+            <p class="my-p">2-5-3.webpack --progress --colors</p>
+            <p class="my-p">If the project grows the compilation may take a bit longer. So we want to display some kind of progress bar. And we want colors…</p>
+            <p class="my-p">2-5-4.webpack --progress --colors --watch</p>
+            <p class="my-p my-h">We don’t want to manually recompile after every change</p>
+            
+            <p class="my-p my-h">3.Interface introduce</p>
+            <p class="my-p">配置文件主要分为如下几块：</p>
+            <p class="my-p">3-1.entry 入口文件</p>
+            <p class="my-p">3-2.output 出口文件</p>
+            <p class="my-p">3-3.module 模块，主要是loader要用什么不同的模块来处理各种类型的文件</p>
+            <p class="my-p">3-4.plugins 插件，主要是提供合并压缩等工作，有点像task runner</p>
+            <p class="my-p"><a href="https://webpack.js.org/configuration/" target="_blank">webpack官方配置文档</a></p>
+            
+            <p class="my-p my-h">4.Question</p>
+            <p class="my-p"><strong>4-1.webpack/style-loader 是用来干什么的? 如果style-loader是将css插入到页面的style，那么外链的css样式应该如何写?</strong></p>
+            <pre>
+                style-loader to be transformed into a <style> tag.
+                对于外链的css,
+                需要用到如下的插件
+                https://github.com/webpack/extract-text-webpack-plugin
+                在config中主要配置如下：
+                1)var ExtractTextPlugin = require("extract-text-webpack-plugin");
+                2)  plugins: [
+                    new ExtractTextPlugin("main.css"),
+                3)  loaders: [
+                      {
+                        //test里面包含一个正则，包含需要匹配的文件
+                        test: /\.scss$/, 
+                        //注意loaders的处理顺序是从右到左的
+                        loader: ExtractTextPlugin.extract(['css','sass']),
+                        include: APP_PATH
+                      },
+                //去掉了style在loader中
+            </pre>
+            <p class="my-p"><strong>4-2.source-map如何生效?</strong></p>
+            <pre>
+                1)config中配置devtool: 'source-map'
+                2)对应的loader中配置['css?sourceMap', 'sass?sourceMap']
+            </pre>
+            <p class="my-p"><strong>4-3.ajax如何配置</strong></p>
+            <pre>
+                用get请求直接访问，做统一端口，我已经放弃了代理
+                $.ajax({
+                    url: 'http://localhost:8080/app/api/test1.json',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {param1: 'value1'},
+                })
+            </pre>
+            <p class="my-p"><strong>4-4.如何改变端口号</strong></p>
+            <pre>
+                参考：
+                http://webpack.github.io/docs/webpack-dev-server.html#webpack-dev-server-cli
+                devServer: {
+                    port: 10007
+                },
+                配置port就可以了
+            </pre>
+            <p class="my-p"><strong>4-5.templates变量没有生效?</strong></p>
+            <pre>
+                知乎网站上给的例子是错误的，正确的如下：
+                在templates上：
+                <title><%= htmlWebpackPlugin.options.title %></title>
+                在config中对应部署：
+                    new HtmlwebpackPlugin({
+                        title: 'Hello World app'
+                    })
+                就可以读取出来了
+            </pre>
+            <p class="my-p"><strong>4-6.你是看不到静态资源的，webpack通过loader将module生成了你看到的对应的静态资源?</strong></p>
+            <pre>
+                这个是不对的，可以看到静态资源，webpack通过loader生成了静态资源，你可以获取到。
+            </pre>
+            <p class="my-p"><strong>4-7.jshint does not work</strong></p>
+            <pre>
+                我check了很长时间，不能工作的原因是不能用preLoader，要用postLoader，无语了我都
+                下面是关键配置,
+                    postLoaders: [
+                      {
+                        test: /\.jsx?$/,
+                        exclude: /node_modules/, 
+                        loader: 'jshint-loader'
+                      }
+                    ],
+
+                  jshint: {
+                    camelcase: true,
+                    esnext: true,
+                    quotmark: "single"
+                  }
+            </pre>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
