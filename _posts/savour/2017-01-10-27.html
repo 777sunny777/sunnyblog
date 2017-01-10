@@ -103,7 +103,7 @@ category: savour
             <p class="my-p">2-5-3.webpack --progress --colors</p>
             <p class="my-p">If the project grows the compilation may take a bit longer. So we want to display some kind of progress bar. And we want colors…</p>
             <p class="my-p">2-5-4.webpack --progress --colors --watch</p>
-            <p class="my-p my-h">We don’t want to manually recompile after every change</p>
+            <p class="my-p">We don’t want to manually recompile after every change</p>
             
             <p class="my-p my-h">3.Interface introduce</p>
             <p class="my-p">配置文件主要分为如下几块：</p>
@@ -116,7 +116,7 @@ category: savour
             <p class="my-p my-h">4.Question</p>
             <p class="my-p"><strong>4-1.webpack/style-loader 是用来干什么的? 如果style-loader是将css插入到页面的style，那么外链的css样式应该如何写?</strong></p>
             <pre>
-                style-loader to be transformed into a <style> tag.
+                style-loader to be transformed into a &lt;style&lt; tag.
                 对于外链的css,
                 需要用到如下的插件
                 https://github.com/webpack/extract-text-webpack-plugin
@@ -162,7 +162,7 @@ category: savour
             <pre>
                 知乎网站上给的例子是错误的，正确的如下：
                 在templates上：
-                <title><%= htmlWebpackPlugin.options.title %></title>
+                &lt;title&gt;&lt;%= htmlWebpackPlugin.options.title %&gt;&lt;/title&gt;
                 在config中对应部署：
                     new HtmlwebpackPlugin({
                         title: 'Hello World app'
