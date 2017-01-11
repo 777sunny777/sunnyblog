@@ -63,6 +63,7 @@ category: php
             <p class="my-p">查看分支: git branch –a/git branch –r,,,,查看当前在哪个分支上也可以用cat .git/HEAD</p>
             <p class="my-p">创建一个分支  1） git branch 分支名  虽然创建了分支，但是不会将当前工作分支切换到新创建的分支上，因此，还需要命令“git checkout 分支名” 来切换，  2） git checout –b 分支名  不但创建了分支，还将当前工作分支切换到了该分支上。</p>
             <p class="my-p">删除分支：git branch –D 分支名  注意：删除后，发生在该分支的所有变化都无法恢复。强制删除此分支。</p>
+            <p class="my-p">（2017-01-11）批量删除分支：git branch |grep '分支名' |xargs git branch -d 。</p>
             <p class="my-p">比较两个分支上的文件的区别  ：git diff master 分支名 （比较主分支和另一个分支的区别）</p>
             <p class="my-p">查看当前分支的操作记录：git whatchanged</p>
             <p class="my-p my-h">15.git rebase</p>
