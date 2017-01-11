@@ -1,0 +1,21 @@
+---
+layout: default
+title: Compare Webpack with Other Auto FE Tools
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">我之前想写这篇blog是因为想翻译一下 <a href="http://survivejs.com/webpack/webpack-compared/" target="_blank">Webpack Compared</a> 这篇文章。但是后来发现这个即使翻译了也还是没有很深的体会，所以还是不做为妙，下面是我查到的觉得还靠谱的解释，然后等做完了一个webpack的项目再update这块。</p>
+            <p class="my-p">先来一张图</p>
+            <img src="/sunnyblog/img/33.png" class="codeimg">
+            
+            <p class="my-p">Gulp/Grunt是一组, 他们都是task runner, 可以优化前端工作流程。比如复制，查找，替换，压缩，编译等等，这些工作可以通过task runner进行自动化处理。</p>
+            <p class="my-p">browserify/webpack是一组, 他俩是JS模块化的解决方案,是一个预编译模块的方案,不需要在浏览器中加载解释器。另外，你在本地直接写JS，不管是 AMD / CMD / ES6 风格的模块化，它都能认识，并且编译成浏览器认识的JS。</p>
+            <p class="my-p">seajs/require是一组, 他俩是一种在线"编译"JS模块的方案，相当于在页面上加载一个 CMD/AMD解释器。这样浏览器就认识了 define、exports、module 这些东西。也就实现了模块化。</p>
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>
