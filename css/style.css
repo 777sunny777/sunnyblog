@@ -1,0 +1,118 @@
+/*svg icon style*/
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+.sky-land {
+    text-align: center;
+    color: white;
+    background-color: black;
+    font-weight: bold;
+}
+
+body{
+    background: url(../images/gezi.jpg);
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: 25%;
+}
+
+/*Uses a header that contracts as the page scrolls down. */
+.demo-layout-waterfall .mdl-layout__header-row .mdl-navigation__link:last-of-type  {
+  padding-right: 0;
+}
+
+.demo-layout-waterfall .mdl-layout__drawer-button {
+    line-height: 42px;
+}
+
+@media screen and (max-width: 1024px){
+    main.mdl-layout__content {
+        margin-top: 30px;
+    }
+}
+
+/*Square card*/
+.demo-card-square.mdl-card {
+  width: 100%;
+}
+.demo-card-square > .mdl-card__title {
+  
+  height: 200px
+}
+.mdl-tabs__tab-bar a{
+    font-weight: bold;
+}
+
+.topContent{
+    color: black;
+    background: url(../images/main.jpg);
+    background-position: 0px 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.mainContent{
+    color: white;
+    background: url(../images/zhiding.jpg);
+    background-position: 0px 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.mdl-mini-footer{
+  padding-bottom: 70px;
+}
+.mdl-mini-footer__middle-section {
+    margin: 0 auto;
+}
+.shareTo {
+    margin-right: 10px;
+    color: white;
+    font-weight: bold;
+}
+.footerContent {
+    width: 100%;
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+    font-family: "微软雅黑";
+}
+a.mdl-navigation__link.active {
+    font-weight: bolder;
+    color: #000;
+    font-size: 20px;
+}
+.mdl-card__supporting-text {
+    width: 96%;
+
+}
+
+/* add some style*/
+.my-p {
+  text-indent:2em;
+}
+.my-h{
+  font-weight: bold;
+  color: red;
+}
+
+.codeimg {
+  width: 66%;
+  vertical-align: middle;
+  display: block;
+  margin: 20px auto;
+}
+.topContentMain {
+  text-align: left;
+  display: inline-block;
+}
+.topContentMain a{
+  line-height: 1.8;
+}
+.icon-github, .icon-mail4{
+  font-size: 26px;
+  padding-right: 10px;
+}
