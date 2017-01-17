@@ -1,50 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>{{ page.title }}</title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="author" content="sunny"/>
-<meta name="description" content="My Blog {{ page.title }}"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" type="text/css" href="/sunnyblog/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/sunnyblog/css/blog.css">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="sunny"/>
+    <meta name="description" content="My Blog {{ page.title }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" type="text/css" href="./css/material.deep_orange-orange.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
 <body>
-    <div id="savour">Savour</div>
-    <div class="blog-masthead">
-      <div class="container">
-        <nav class="blog-nav">
-          <a class="blog-nav-item active" href="http://777sunny777.github.io/sunnyblog/">Home</a>
+  <div class="sky-land">天行健, 君子以自强不息</div>
+  <div class="sprite-svgs hidden">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <symbol id="icon-search" viewBox="0 0 32 32">
+          <title>search</title>
+          <path class="path1" d="M31.008 27.231l-7.58-6.447c-0.784-0.705-1.622-1.029-2.299-0.998 1.789-2.096 2.87-4.815 2.87-7.787 0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12c2.972 0 5.691-1.081 7.787-2.87-0.031 0.677 0.293 1.515 0.998 2.299l6.447 7.58c1.104 1.226 2.907 1.33 4.007 0.23s0.997-2.903-0.23-4.007zM12 20c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"></path>
+        </symbol>
+
+        <symbol id="icon-menu" viewBox="0 0 32 32">
+          <title>menu</title>
+          <path class="path1" d="M2 6h28v6h-28zM2 14h28v6h-28zM2 22h28v6h-28z"></path>
+        </symbol>
+
+        <symbol id="icon-mail4" viewBox="0 0 32 32">
+          <title>mail4</title>
+          <path class="path1" d="M16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zM8 8h16c0.286 0 0.563 0.061 0.817 0.177l-8.817 10.286-8.817-10.287c0.254-0.116 0.531-0.177 0.817-0.177zM6 22v-12c0-0.042 0.002-0.084 0.004-0.125l5.864 6.842-5.8 5.8c-0.045-0.167-0.069-0.34-0.069-0.517zM24 24h-16c-0.177 0-0.35-0.024-0.517-0.069l5.691-5.691 2.826 3.297 2.826-3.297 5.691 5.691c-0.167 0.045-0.34 0.069-0.517 0.069zM26 22c0 0.177-0.024 0.35-0.069 0.517l-5.8-5.8 5.865-6.842c0.003 0.041 0.004 0.083 0.004 0.125v12z"></path>
+        </symbol>
+
+        <symbol id="icon-github" viewBox="0 0 32 32">
+          <title>github</title>
+          <path class="path1" d="M16 0.395c-8.836 0-16 7.163-16 16 0 7.069 4.585 13.067 10.942 15.182 0.8 0.148 1.094-0.347 1.094-0.77 0-0.381-0.015-1.642-0.022-2.979-4.452 0.968-5.391-1.888-5.391-1.888-0.728-1.849-1.776-2.341-1.776-2.341-1.452-0.993 0.11-0.973 0.11-0.973 1.606 0.113 2.452 1.649 2.452 1.649 1.427 2.446 3.743 1.739 4.656 1.33 0.143-1.034 0.558-1.74 1.016-2.14-3.554-0.404-7.29-1.777-7.29-7.907 0-1.747 0.625-3.174 1.649-4.295-0.166-0.403-0.714-2.030 0.155-4.234 0 0 1.344-0.43 4.401 1.64 1.276-0.355 2.645-0.532 4.005-0.539 1.359 0.006 2.729 0.184 4.008 0.539 3.054-2.070 4.395-1.64 4.395-1.64 0.871 2.204 0.323 3.831 0.157 4.234 1.026 1.12 1.647 2.548 1.647 4.295 0 6.145-3.743 7.498-7.306 7.895 0.574 0.497 1.085 1.47 1.085 2.963 0 2.141-0.019 3.864-0.019 4.391 0 0.426 0.288 0.925 1.099 0.768 6.354-2.118 10.933-8.113 10.933-15.18 0-8.837-7.164-16-16-16z"></path>
+        </symbol>
+
+    </svg>
+  </div>
+
+  <div class="demo-layout-waterfall mdl-layout mdl-js-layout">
+    <header class="mdl-layout__header mdl-layout__header--waterfall">
+      <!-- Top row, always visible -->
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title">Sunny's Blog</span>
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                    mdl-textfield--floating-label mdl-textfield--align-right">
+          <label class="mdl-button mdl-js-button mdl-button--icon"
+                 for="waterfall-exp">
+            <svg class="icon icon-search"><use xlink:href="#icon-search"></use></svg>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" type="text" name="sample"
+                   id="waterfall-exp">
+          </div>
+        </div>
+      </div>
+      <!-- Bottom row, not visible on scroll -->
+      <div class="mdl-layout__header-row">
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation -->
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link active" href="./index.html">Sunny'blog</a>
+          <a class="mdl-navigation__link" href="./TecAddress.html">Tec Address</a>
+          <a class="mdl-navigation__link" href="./ContactMe.html">Contact Me</a>
         </nav>
       </div>
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">Title</span>
+      <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="./index.html">Sunny'blog</a>
+          <a class="mdl-navigation__link" href="./TecAddress.html">Tec Address</a>
+          <a class="mdl-navigation__link" href="./ContactMe.html">Contact Me</a>
+      </nav>
     </div>
+    <main class="mdl-layout__content">
+      <div class="page-content">
+        <!-- Your content goes here -->
+        {{ content }}
 
+      </div>
+    </main>
+    <footer class="mdl-mini-footer">
+      <div class="footerContent">
+        Blog template built for Material Design Lite by Sunny Sun, Thanks MDL.
+      </div>
+      <div class="mdl-mini-footer__middle-section">
+        <div class="bshare-custom icon-medium-plus"><span class="shareTo">分享到:</span><a title="分享到QQ好友" class="bshare-qqim"></a><a title="分享到微信" class="bshare-weixin"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到电子邮件" class="bshare-email"></a><a title="分享到Twitter" class="bshare-twitter"></a><a title="分享到Facebook" class="bshare-facebook"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count">0</span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#style=-1&amp;uuid=&amp;pophcol=3&amp;lang=zh"></script><a class="bshareDiv" onclick="javascript:return false;"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+      </div>
+    </footer>
+    <div class="sky-land">地势坤，君子以厚德载物</div>
+  </div>
 
-    <div class="container">
-
-    <div class="blog-header">
-        <h1 class="blog-title">Sunny's Blog</h1>
-        <p class="lead blog-description">天行健, 君子以自强不息</p>
-    </div>
-
-    {{ content }}
-
-    </div>
-
-    <div class="blog-footer">
-      <p>Blog template built for <a href="http://getbootstrap.com">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>, Thanks!</p>
-      <p>暂不提供评论功能，有需要交流，请发邮件：sunnysunyan7@163.com,谢谢！</p>
-      <div class="bshare-custom"><div class="bsPromo bsPromo1"></div><a title="分享到" href="http://www.bShare.cn/" id="bshare-shareto" class="bshare-more">分享到</a><a title="分享到新浪微博" class="bshare-sinaminiblog" href="javascript:void(0);">新浪微博</a><a title="分享到腾讯微博" class="bshare-qqmb" href="javascript:void(0);">腾讯微博</a><a title="分享到QQ空间" class="bshare-qzone">QQ空间</a><a title="分享到微信" class="bshare-weixin" href="javascript:void(0);">微信</a><a title="分享到QQ好友" class="bshare-qqim" href="javascript:void(0);">QQ好友</a><a title="分享到人人网" class="bshare-renren" href="javascript:void(0);">人人网</a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count" style="float: none;">36.2K</span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script><a class="bshareDiv" onclick="javascript:return false;"></a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
-    </div>
-
-    <script src="js/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="js/blog.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        var savour = document.getElementById("savour");
-        savour.onclick = function(){
-          window.open("https://github.com/savour/savour");
-        } 
-    </script>
+<script src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script src="http://cdn.hcharts.cn/highcharts/modules/drilldown.js"></script>
+<script src="./js/material.js"></script>
+<script src="./js/main.js"></script>
 </body>
 </html>
