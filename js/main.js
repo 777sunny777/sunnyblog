@@ -169,6 +169,11 @@ $(function () {
         $(this).addClass('active');
         window.location.href = $(this).data('url');
     });
+    $('.mobile-link').on('click', function(event) {
+        $('header .desktop-link').removeClass('active');
+        var index = $(this).index('mobile-link');
+        $('header .desktop-link').index(index).addClass('active');
+    });
     
 });
 
