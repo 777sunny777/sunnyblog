@@ -15,7 +15,7 @@
 }
 
 body{
-    background: url(../images/gezi.jpg);
+    background: url(../img/gezi.jpg);
     background-position: 0 0;
     background-repeat: repeat;
     background-size: 25%;
@@ -50,14 +50,14 @@ body{
 
 .topContent{
     color: black;
-    background: url(../images/main.jpg);
+    background: url(../img/main.jpg);
     background-position: 0px 50%;
     background-repeat: no-repeat;
     background-size: cover;
 }
 .mainContent{
     color: white;
-    background: url(../images/zhiding.jpg);
+    background: url(../img/zhiding.jpg);
     background-position: 0px 50%;
     background-repeat: no-repeat;
     background-size: cover;
