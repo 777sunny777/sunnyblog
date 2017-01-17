@@ -174,6 +174,18 @@ $(function () {
     }else{
         $('header .desktop-link').eq(0).addClass('active');
     };
+    
+    if ( searchKey.indexOf('20')!==-1 ) {
+        $('.page-content .row').css({
+            'padding': '40px',
+            'paddingTop': 0
+        });
+        $('.page-content .row').wrap('<div class="mdl-card__supporting-text"></div>');
+        $('.page-content .row').wrap('<div class="demo-card-square mdl-card mdl-shadow--2dp"></div>');
+        $('.page-content .row').parent().wrap('<div class="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop mdl-cell--12-col-tablet"></div>');
+        $('.page-content .row').parent().parent().wrap('<div class="mdl-grid"></div>');
+    };
+    
 });
 
 window.addEventListener('load', function(){ 
