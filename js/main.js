@@ -166,18 +166,14 @@ $(function () {
             }
         });        
     };
-
-
-    $('.desktop-link').on('click', function(event) {
-        $('header .desktop-link').removeClass('active');
-        $(this).addClass('active');
-        window.location.href = $(this).data('url');
-    });
-    $('.mobile-link').on('click', function(event) {
-        $('header .desktop-link').removeClass('active');
-        var index = $(this).index('mobile-link');
-        $('header .desktop-link').index(index).addClass('active');
-    });
+    var searchKey = window.location.href;
+    if ( searchKey.indexOf('TecAddress.html')!==-1 ) {
+        $('header .desktop-link').eq(1).addClass('active');
+    }else if( searchKey.indexOf('ContactMe.html')!==-1 ){
+        $('header .desktop-link').eq(2).addClass('active');
+    }else{
+        $('header .desktop-link').eq(0).addClass('active');
+    };
 });
 
 window.addEventListener('load', function(){ 
