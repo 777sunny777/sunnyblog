@@ -182,7 +182,7 @@ $(function () {
         });
         $('.page-content .row').wrap('<div class="mdl-card__supporting-text"></div>');
         $('.page-content .row').wrap('<div class="demo-card-square mdl-card mdl-shadow--2dp"></div>');
-        $('.page-content .row').parent().wrap('<div class="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop mdl-cell--12-col-tablet"></div>');
+        $('.page-content .row').parent().wrap('<div class="mdl-cell mdl-cell--10-col mdl-cell--1-offset-desktop mdl-cell--12-col-tablet"></div>');
         $('.page-content .row').parent().parent().wrap('<div class="mdl-grid"></div>');
     };
     
