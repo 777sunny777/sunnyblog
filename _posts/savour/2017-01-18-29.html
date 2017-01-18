@@ -1,0 +1,43 @@
+---
+layout: default
+title: what is MDL
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">MDL(Material Design Lite)是Google提供的一个css/html框架，同比于boostrap。具有和类似UI框架一样的有点：提供现成的components，支持跨浏览器，支持响应式，提供sass版本等等。它的比较明显的特点有：</p>
+            <p class="my-p">1.UI设计扁而不平(其实就是Google各个网站的设计风格，比如：<a href="https://www.google.com/wallet/" target="_blank">GOOGLE WALLET</a>,<a href="https://developers.google.com/web/fundamentals/" target="_blank">GOOGLE DEVELOPERS</a>, Google把这个叫工业化设计。</p>
+            <p class="my-p">2.样式遵循<a href="https://en.bem.info/method/" target="_blank">BEM</a>规范。BEM 是一种前端项目开发的方法学，由 Yandex 公司提出。BEM 的名称来源于该方法学的三个组成部分的英文首字母，分别是块（Block）、元素（Element）和修饰符（Modifier）。这三个不同的组成部分称为 BEM 实体。这种定义方式十分适合sass编程管理，相关文章：<a href="http://www.ibm.com/developerworks/cn/web/1512_chengfu_bem/" target="_blank">从 BEM 谈大型项目中 CSS 的组织和管理</a>。</p>
+            <p class="my-p">3.无任何js依赖。BS是依赖jquery的。</p>
+            <p class="my-p">4.提供了blog, dashboard等模板，还可以自定义UI整体色调，生成需要加载的css。</p>
+            <p class="my-p my-h">MDL相关的网站如下：</p>
+            <p class="my-p"><a href="https://getmdl.io/index.html" target="_blank">官网</a></p>
+            <p class="my-p"><a href="https://getmdl.io/components/index.html" target="_blank">组件</a></p>
+            <p class="my-p my-h">安装：</p>
+            <p class="my-p"><a href="https://getmdl.io/started/index.html#download" target="_blank">安装指引</a></p>
+            <p class="my-p">首先按照指引，直接DOWNLOAD不下来，应该是Google大陆被和谐了。用git clone了之后，gulp插件安不了老报错，应该是网络问题npm install不全。最后我用npm install material-design-lite --save-dev直接抓下来的。里面去找需要的组件就行了，这个非常的全。</p>           
+            <p class="my-p my-h">下面是引用的方法：</p>  
+            <pre>
+              Refer to these files by adding a &lt;link&gt; and a &lt;script&gt; element into your HTML pages 
+              and also include the Material Icon font:
+              &lt;link rel="stylesheet" href="./material.min.css"&gt;
+              &lt;script src="./material.min.js"&gt;&lt;/script&gt;
+              &lt;link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"&gt;
+            </pre>
+            <p class="my-p">这个icons不是必须的，也不是很好替换，但是可以替换。我下面说缺点的时候会提到</p>  
+            <p class="my-p my-h">因为用MDL update了我这个blog的模板，所以也可以说说缺点：</p>
+            <p class="my-p">1.components太少，至少比BS少。举一个例子，没有轮播图。你只有用其他的插件实现了，去找猫头鹰。当然这个也好也不好，看个人的编码风格了。</p>
+            <p class="my-p">2.icon不好替换，如果你不想用Google的icon，我就想用symbol自定义，那么有些icon是用js添加的，开始的时候并不会在dom中出现，所以你也只能用js去替换，比如我就写了如下一段恶心的代码：</p>
+            <pre>
+              window.addEventListener('load', function(){ 
+                  var mdlLayoutDrawerButton = document.querySelectorAll('.mdl-layout__drawer-button');
+                  mdlLayoutDrawerButton[0].innerHTML = '&lt;svg class="icon icon-menu"&gt;&lt;use xlink:href="#icon-menu"&gt;&lt;/use&gt;&lt;/svg&gt;';
+              });
+            </pre>
+            <p class="my-p">我之前有过一段时间对MDL的学习，竟然还是在2015年的时候。<a href="http://777sunny777.github.io/sunnyblog/savour/2015/11/13/21.html" target="_blank">Material Design Lite 学习</a></p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
