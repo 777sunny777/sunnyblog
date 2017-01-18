@@ -116,3 +116,6 @@ a.mdl-navigation__link.active {
   font-size: 26px;
   padding-right: 10px;
 }
+pre {
+    overflow-x: scroll;
+}
