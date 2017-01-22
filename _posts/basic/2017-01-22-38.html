@@ -1,0 +1,50 @@
+---
+layout: default
+title: 如何判断用iframe下载xls完毕
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">有一个比较变态的需求：利用iframe的src下载文档，在下载的中途，展示一个loading...,在下载完成之后删掉loading...。这里面的关键就是如何回去loading完成后的点。</p>
+            <p class="my-p">经过查找和测试，总结下来还没有找到完全跨浏览器的方法，主要是在FF上有问题，但是可以解决IE11及老版本IE以及chrome下的问题。</p>
+            <p class="my-p">详细如下：</p>
+            <p class="my-p my-h">1.IE11+chrome</p>
+            <p class="my-p">可以用document.onreadystatechange和document.readyState解决。记住是document的不是iframe的onreadystatechange和readyState。</p>
+            <pre>
+                html:
+                &lt;h1 id="loading"&gt;loading...&lt;/h1&gt;
+                &lt;iframe id="test" src="SoftwareLists.xls" style="display:none"&gt;&lt;/iframe&gt;
+                js:
+                document.onreadystatechange = function () {
+                    if(document.readyState === 'complete') {
+                       var loading = document.getElementById('loading');
+                       document.body.removeChild(loading);
+                    };
+                }
+            </pre>
+            <p class="my-p my-h">2.<=IE10 </p>
+            <pre>
+                html:
+                &lt;h1 id="loading"&gt;loading...&lt;/h1&gt;
+                &lt;iframe id="test" src="SoftwareLists.xls" style="display:none"&gt;&lt;/iframe&gt;
+                js:
+                document.getElementById('test').onreadystatechange = function () {
+                    if ( document.getElementById('test').readyState === 'complete' ) {
+                       var loading = document.getElementById('loading');
+                       document.body.removeChild(loading);
+                    };
+                };
+            </pre>
+            <p class="my-p my-h">3.document.readyState </p>
+            <p class="my-p">这是官方的文档：<a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState" target="_blank">readyState</a> </p>
+            <p class="my-p">FF不是不支持，问题是弹出complete的时机是在select download file对话框之前，所以没法做loading的删除。</p>
+            <p class="my-p">3.document.readyState相关的三个状态</p>
+            <p class="my-p">loading：The document is still loading.</p>
+            <p class="my-p">interactive：The document has finished loading and the document has been parsed but sub-resources such as images, stylesheets and frames are still loading.</p>
+            <p class="my-p">complete：The document and all sub-resources have finished loading. The state indicates that the load event is about to fire.</p>            
+        </div><!-- /.blog-main -->
+    </div>
+</div>
