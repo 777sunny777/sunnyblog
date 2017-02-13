@@ -1,0 +1,53 @@
+---
+layout: default
+title: apply和call的用法(补充)
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">之前我写过一次apply和call的用法，这次我会更详细的总结一下。</p>
+            <p class="my-p my-h">1.apply和call的用法定义</p>
+            <p class="my-p">在犀牛书的第六版的8.7.3章节有对apply和call的定义，但是理解起来有些绕，也有一部分翻译的原因。我还是觉得比较好理解的说法是：<strong>apply和call用来劫持其他对象的方法(或方法)归自己(新对象)所有。举个不恰当的例子，就是你有自行车我没有，所以我劫持你的骑一下。</strong></p>
+            <p class="my-p">对于里面的参数，两者第一个参数都是主动劫持的对象，比如f.call(o,1,2),就是要以对象o的方法的形式调用函数f(),对于后面的参数，apply会把这些参数放入到一个数组里面。</p>
+            <p class="my-p my-h">2.apply和call的用法例子</p>
+            <p class="my-p">1)用于类的继承</p>
+            <p class="my-p">js在模拟类的写法中，对于继承的功能实现可以用到call/apply, 详见<a href="http://777sunny777.github.io/sunnyblog/basic/2015/05/27/16.html" target="_blank">类的封装和继承最佳方法和解析</a></p>
+            <p class="my-p">这里面的Person.call(this,name,age,job);也可以写成 Person.apply(this,arguments);用arguments代替。另外我们发现方法并没有用到call，还是因为共享的原因，使用了//子类的原型去继承父类的实例：Sub.prototype = new Person();</p>
+            <p class="my-p">2)js逻辑模块化的需要</p>
+            <p class="my-p">这一块详见<a href="http://777sunny777.github.io/sunnyblog/basic/2016/03/23/24.html" target="_blank">apply和call的用法</a></p>
+            <p class="my-p">3)利用Apply的参数数组化来简化写法</p>
+            <pre>
+                //例子1
+                Math.max(3,6,9,1); //print 9
+                //如果我们定义一个数组
+                var array1 = [3,6,9,1];
+                Math.max(array1); //print NaN
+                //这样是不行的，可以自定义函数用循环比较的方式但是比较麻烦
+                function getMax(arr){
+                    var arrLen=arr.length;
+                    for(var i=0,ret=arr[0];i<arrLen;i++){
+                        ret=Math.max(ret,arr[i]);       
+                    }
+                    return ret;
+                }
+                //如果想到apply实现就会很优雅
+                var array1 = [3,6,9,1];
+                Math.max.apply(Math,array1); //print 9
+
+                //例子2
+                var arr1=[1,3,4];
+                var arr2=[3,4,5];
+                //要求把arr2放到arr1后面，使得arr1成为[1,3,4，3,4,5];
+                //可以用concat,但是arr1并没有改变
+                arr1.concat(arr2) //print [1, 3, 4, 3, 4, 5]
+                arr1 //print [1, 3, 4]
+                //也可以用apply优雅实现
+                Array.prototype.push.apply(arr1,arr2) // print 6
+                arr1 // print [1, 3, 4, 3, 4, 5]
+            </pre> 
+        </div><!-- /.blog-main -->
+    </div>
+</div>
