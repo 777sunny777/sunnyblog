@@ -1,0 +1,42 @@
+---
+layout: default
+title: HTML mailto link
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">What is mailto link</p>
+            <p class="my-p">Mailto link is a type of HTML link that activates the default mail client on the computer for sending an e-mail. The web browser requires a default e-mail client software installed on his computer in order to activate the e-mail client. If you have Microsoft Outlook, for example as your default mail client, pressing a mailto link will open a new mail window.</p>
+            <p class="my-p my-h">How to set mailto link</p>
+            <p class="my-p">1.Basic</p>
+            <pre>
+              Nothing just open the mail window.
+              &lt;a href="mailto:"&gt;mailto&lt;/a&gt;
+              
+              Add 'to' info
+              &lt;a href="mailto:obama@whitehouse.gov"&gt;mailto&lt;/a&gt;
+              
+              Add more 'to' info
+              &lt;a href="mailto:obama@whitehouse.gov,michelle@whitehouse.gov"&gt;mailto&lt;/a&gt;
+            </pre> 
+            <p class="my-p">2.Adding CC and BCC</p>
+            <pre>
+              &lt;a href="mailto:obama@whitehouse.gov?cc=michelle@whitehouse.gov&bcc=joe@whitehouse.gov"&gt;mailto&lt;/a&gt;
+              Here "?" is first parameter delimiter, "&" is other parameters delimiter  
+            </pre> 
+            <p class="my-p">3.Adding a subject</p>
+            <pre>
+              &lt;a href="mailto:obama@whitehouse.gov?subject=Congrats%20Obama"&gt;mailto&lt;/a&gt;
+              You can replace spaces with "%20", encodeURIComponent first is better.
+            </pre> 
+            <p class="my-p">4.Adding Body Text</p>
+            <pre>
+              &lt;a href="mailto:obama@whitehouse.gov?subject=Congrats%20Obama&body=Enjoy%20your%20stay%0ARegards%20"&gt;mailto&lt;/a&gt;
+              Here "%0A" is change another line
+            </pre>    
+        </div><!-- /.blog-main -->
+    </div>
+</div>
