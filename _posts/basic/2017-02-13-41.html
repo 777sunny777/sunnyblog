@@ -1,0 +1,36 @@
+---
+layout: default
+title: bind()方法
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">这里面的bind方法主要是指javascript在ES5中新增的原生方法。</p>
+            <p class="my-p my-h">bind()的主要作用就是将函数绑定至某个对象</p>
+            <p class="my-p">下面这个例子就是把f()绑定到了对象o上</p>
+            <pre>
+               function f(y){ return this.x + y; }
+                var o = {x:1};
+                var g = f.bind(o);
+                g(2);  //print 3
+            </pre> 
+            <p class="my-p">bind()还可以传参数，这个有了点apply的感觉</p>
+            <pre>
+               function f(y,z){ return this.x + y + z; }
+                var o = {x:1};
+                var g = f.bind(o, 2); //y is 2
+                g(3);  //print 6
+            </pre> 
+            <p class="my-p">bind()传的参数会初始化进去</p>
+            <pre>
+                function f(y,z){ return this.x + y + z; }
+                var o = {x:1};
+                var g = f.bind(o, 2, 4); //y is 2
+                g(3000);  //print 6
+            </pre>             
+        </div><!-- /.blog-main -->
+    </div>
+</div>
