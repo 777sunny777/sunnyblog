@@ -17,6 +17,7 @@ category: savour
             <p class="my-p">b.新模块开发可以依赖其他已有模块；</p>
             <p class="my-p">c.新模块开发后可以支持其他模块的开发。</p>
             <p class="my-p">在这篇文章中，我们会对三种模块化编码js的方式进行梳理：AMD，CommonJS以及下一代ES Harmony。</p>
+            
             <p class="my-p my-h">2.CommonJS</p>
             <p class="my-p"><strong>1）什么是CommonJS</strong></p>
             <p class="my-p my-h">CJS是一种为server-side定义的js模块化规范。</p>
@@ -56,14 +57,135 @@ category: savour
             <p class="my-p">d.所有代码都运行在模块作用域，不会污染全局作用域（Module definitions are encapsulated, helping us to avoid pollution of the global namespace）。</p>
             <p class="my-p">e.模块加载的顺序，按照其在代码中出现的顺序。</p>
             
-            
-            
-            
-            
-            <p class="my-p"></p>
-            <a href="" target="_blank"></a>
+            <p class="my-p my-h">3.AMD</p>
+            <p class="my-p"><strong>1）什么是AMD</strong></p>
+            <p class="my-p my-h">AMD（异步模块定义）是根据客户端特点定义的js模块化规范。</p>
+            <p class="my-p">ADDY OSMANI在他的 <a href="https://addyosmani.com/resources/essentialjsdesignpatterns/book/#detailcommonjs" target="_blank">Learning JavaScript Design Patterns</a> 书中明确说到AMD（Asynchronous Module Definition） is <strong>A Format For Writing Modular JavaScript In The Browser</strong>.明显可以看出AMD（异步模块定义）是根据客户端特点定义的js模块化规范。</p>
+            <p class="my-p">AMD was born out of a group of developers that were displeased with the direction adopted by CommonJS. In fact, AMD was split from CommonJS early in its development. <strong>The main difference between AMD and CommonJS lies in its support for asynchronous module loading.</strong></p>
+            <p class="my-p">异步加载对于客户端来说很重要，如果你对这个概念不是很清楚，可以去看我写的一篇blog-- <a href="http://777sunny777.github.io/sunnyblog/savour/2015/06/10/11.html" target="_blank">对于js各种加载方式我的理解</a>。而我们需要了解的是为什么AMD可以进行异步加载。详细解释如下：</p>
+            <p class="my-p">Asynchronous loading is made possible by using JavaScript's traditional closure idiom: a function is called when the requested modules are finished loading. Module definitions and importing a module is carried by the same function: when a module is defined its dependencies are made explicit. An AMD loader can therefore have a complete picture of the dependency graph for a given project at runtime. Libraries that do not depend on each other for loading can thus be loaded at the same time. This is particularly important for browsers, where startup times are essential to a good user experience.</p>
+            <p class="my-p">AMD不是简单的用define/require来代替CommonJS的export/require。关键在于它引入了define中模块依赖参数，这个特点是说该模块中的函数需要在它依赖的模块加载完成之后再运行。这使得模块编译器（比如RequireJS）可以知道项目中不同模块间的一个依赖关系图。没有依赖关系的模块就可以并行下载。</p>
+            <p class="my-p"><strong>2）AMD规范如何定义使用</strong></p>
+            <p class="my-p">Understanding AMD: define()</p>
             <pre>
+                // A module_id (myModule) is used here for demonstration purposes only
+                define( "myModule",
+                    ["foo", "bar"],
+                    // module definition function
+                    // dependencies (foo and bar) are mapped to function parameters
+                    function ( foo, bar ) {
+                        // return a value that defines the module export
+                        // (i.e the functionality we want to expose for consumption)
+
+                        // create your module here
+                        var myModule = {
+                            doStuff: function () {
+                                console.log( "Yay! Stuff" );
+                            }
+                        };
+
+                    return myModule;
+                });
+
+                // An alternative version could be..
+                define( "myModule",
+
+                    ["math", "graph"],
+
+                    function ( math, graph ) {
+
+                        // Note that this is a slightly different pattern
+                        // With AMD, it's possible to define modules in a few
+                        // different ways due to it's flexibility with
+                        // certain aspects of the syntax
+                        return {
+                            plot: function( x, y ){
+                                return graph.drawPie( math.randomGrid( x, y ) );
+                            }
+                        };
+                });
             </pre>
+            <p class="my-p">Understanding AMD: require()</p>
+            <pre>
+                // Consider "foo" and "bar" are two external modules
+                // In this example, the "exports" from the two modules
+                // loaded are passed as function arguments to the
+                // callback (foo and bar) so that they can similarly be accessed
+
+                require(["foo", "bar"], function ( foo, bar ) {
+                    // rest of your code here
+                    foo.doSomething();
+                });
+            </pre>
+            <p class="my-p">Dynamically-loaded Dependencies</p>
+            <pre>
+                define(function ( require ) {
+                    var isReady = false, foobar;
+
+                    // note the inline require within our module definition
+                    require(["foo", "bar"], function ( foo, bar ) {
+                        isReady = true;
+                        foobar = foo() + bar();
+                    });
+
+                    // we can still return a module
+                    return {
+                        isReady: isReady,
+                        foobar: foobar
+                    };
+                });
+            </pre>
+            <p class="my-p">RequireJS是AMD规范下的实现，RequireJS要求每个模块均放在独立的文件之中。require方法调用模块。</p>
+            <pre>
+                define([ 'module1', 'module2' ], function(m1, m2){
+                    ...
+                });
+
+                require( ['foo', 'bar'], function( foo, bar ){
+                    foo.func();
+                    bar.func();
+                } );
+            </pre>       
+            <p class="my-p"><strong>3）AMD规范主要特点</strong></p>
+            <p class="my-p">a.模块可以异步加载，The main difference between AMD and CommonJS lies in its support for asynchronous module loading。</p>
+            <p class="my-p">b.可动态加载模块(Dynamically-loaded Dependencies)。</p>
+            <p class="my-p">c.Modules can be split in multiple files if necessary。</p>
+            <p class="my-p">d.Browsers require a loader library or transpiling(比如webpack预编译,RequireJS在线编译)。</p>
+            <p class="my-p">e.所有代码都运行在模块作用域，不会污染全局作用域（Module definitions are encapsulated, helping us to avoid pollution of the global namespace）。</p>
+            
+            <p class="my-p my-h">4.ES Harmony</p>
+            <p class="my-p"><strong>1）什么是ES Harmony</strong></p>
+            <p class="my-p my-h">ES Harmony指得是Modules Of The Future，你可以叫它ES6 Modules规范或者更细一些叫ES2015 Modules和ES2017 Modules规范。具体我会再写一篇blog来说明一下ECMAScript各种版本之间的关系。</p>
+            <p class="my-p my-h"><strong>ES6 Modules规范才是我们最应该学习和掌握的Modules规范，这是前端未来的趋势。</strong></p>
+            <p class="my-p">Fortunately, the ECMA team behind the standardization of JavaScript decided to tackle the issue of modules. The result can be seen in the latest release of the JavaScript standard: ECMAScript 2015 (previously known as ECMAScript 6). The result is syntactically pleasing and compatible with both synchronous and asynchronous modes of operation.</p>
+            <p class="my-p"><strong>2）ES Harmony规范如何定义使用</strong></p>
+            <p class="my-p">import declarations bind a modules exports as local variables and may be renamed to avoid name collisions/conflicts.</p>
+            <p class="my-p">export declarations declare that a local-binding of a module is externally visible such that other modules may read the exports but can't modify them. Interestingly, modules may export child modules but can't export modules that have been defined elsewhere. We can also rename exports so their external name differs from their local names.</p>
+            <pre>
+                //------ lib.js ------
+                export const sqrt = Math.sqrt;
+                export function square(x) {
+                    return x * x;
+                }
+                export function diag(x, y) {
+                    return sqrt(square(x) + square(y));
+                }
+
+                //------ main.js ------
+                import { square, diag } from 'lib';
+                console.log(square(11)); // 121
+                console.log(diag(4, 3)); // 5
+            </pre>
+            <p class="my-p"><strong>3）ES Harmony规范主要特点</strong></p>
+            <p class="my-p">a.Synchronous and asynchronous loading supported(The result is syntactically pleasing and compatible with both synchronous and asynchronous modes of operation).</p>
+            <p class="my-p">b.Syntactically simple.</p>
+            <p class="my-p">c.Support for static analysis tools.Still not supported everywhere(这里我们用babel来降级使用).</p>
+            
+            <p class="my-p my-h">5.参考</p>
+            <p class="my-p">除了上文中引用到的，涉及到的其他文章有：</p>
+            <p class="my-p"><a href="https://addyosmani.com/writing-modular-js/" target="_blank">ADDY OSMANI--Writing Modular JavaScript With AMD, CommonJS, ES Harmony</a></p>
+            <p class="my-p"><a href="https://auth0.com/blog/javascript-module-systems-showdown/" target="_blank">Sebastián Peyrott--JavaScript Module Systems Showdown: CommonJS vs AMD vs ES2015</a></p>
+            <p class="my-p"><a href="http://777sunny777.github.io/sunnyblog/basic/2016/06/27/27.html" target="_blank">Sunny Sun--闭包计数器,AMD,CMD</a></p>
         </div><!-- /.blog-main -->
     </div>
 </div>
