@@ -1,0 +1,69 @@
+---
+layout: default
+title: JavaScript模块化方式：AMD, CommonJS和ES Harmony
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">开头闲谝传，这个内容我老早就想总结一下了，因为这对于前端来讲算是一个比较资深的问题，如果没有经验估计是总结不好的。理解需要时间，所以我一直放着，直到最近我觉得自己这三个规范都用过了，别人写的总结差不多能看懂了，也能分出好与不好，所以自己总结一下子。以后备用。</p>
+            <p class="my-p">下面正文。。。</p>
+            <p class="my-p my-h">1.模块化</p>
+            <p class="my-p">1）你要知道什么是模块化，我个人理解的模块化是把复杂的系统按照不同功能划分为一组松耦合的模块(文件)的过程，这个是为了降低项目的管理和维护成本。说到这儿小聊一下组件化，组件化是将页面组件进行分割归类，这个是为了系统复用的需要，这个是指数性的提高系统时间的方法。模块一般考虑的是功能逻辑，组件考虑的是UI。组件比模块的粒度更细。比如requirejs是一个js模块化的解决方案，而nunjucks是UI组件化的解决方案。</p>
+            <p class="my-p">2）如果谈模块化设计，一个模块应该具有至少3个特点：</p>
+            <p class="my-p">a.模块是一个封闭的，这个封闭不光是形式上的封闭，更多考虑的是一种防止对全局变量造成污染的方法；</p>
+            <p class="my-p">b.新模块开发可以依赖其他已有模块；</p>
+            <p class="my-p">c.新模块开发后可以支持其他模块的开发。</p>
+            <p class="my-p">在这篇文章中，我们会对三种模块化编码js的方式进行梳理：AMD，CommonJS以及下一代ES Harmony。</p>
+            <p class="my-p my-h">2.CommonJS</p>
+            <p class="my-p"><strong>1）什么是CommonJS</strong></p>
+            <p class="my-p my-h">CJS是一种为server-side定义的js模块化规范。</p>
+            <p class="my-p">ADDY OSMANI在他的 <a href="https://addyosmani.com/resources/essentialjsdesignpatterns/book/#detailcommonjs" target="_blank">Learning JavaScript Design Patterns</a> 书中明确说到CommonJS is <strong>A Module Format Optimized For The Server</strong>.所以可以说CJS是一种为server-side定义的js模块化规范，具体来说，Node应用由模块组成，采用CommonJS模块规范。当然你也可以把这种规范用到浏览器端。</p>
+            <p class="my-p">One evening at Joyent, when I mentioned being a bit frustrated some ludicrous request for a feature that I knew to be a terrible idea, he said to me, "Forget CommonJS. It's dead. We are server side JavaScript." - NPM creator Isaac Z. Schlueter quoting Node.js creator Ryan Dahl</p>
+            <p class="my-p"><strong>CommonJS modules were designed with server development in mind. Naturally, the API is synchronous.</strong> In other words, modules are loaded at the moment and in the order they are required inside a source file.</p>
+            <p class="my-p"><strong>2）CommonJS规范如何定义使用</strong></p>
+            <p class="my-p">根据CommonJS规范，<strong>每个文件就是一个模块</strong>，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见。下面用node代码来举例。</p>
+            <pre>
+              // example.js
+              var x = 5;
+              var addX = function (value) {
+                return value + x;
+              };
+              上面代码中，变量x和函数addX，是当前文件example.js私有的，其他文件不可见。
+            </pre>
+            <p class="my-p">CommonJS规范规定，每个模块内部，module变量代表当前模块(仅在nodejs中，客户端js没有module)。这个变量是一个对象，它的exports属性（即module.exports）是对外的接口(客户端js直接使用exports作为对外接口)。加载某个模块，其实是加载该模块的module.exports属性。</p>
+            <pre>
+              var x = 5;
+              var addX = function (value) {
+                return value + x;
+              };
+              module.exports.x = x;
+              module.exports.addX = addX;
+              上面代码通过module.exports输出变量x和函数addX。
+            </pre>            
+            <p class="my-p">require方法用于加载模块。</p>
+            <pre>
+              var example = require('./example.js');
+              console.log(example.x); // 5
+              console.log(example.addX(1)); // 6
+            </pre>
+            <p class="my-p"><strong>3）CommonJS规范主要特点</strong></p>
+            <p class="my-p">a.模块同步加载： 模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。要想让模块再次运行，必须清除缓存。Synchronous API makes it not suitable for certain uses (client-side)。</p>
+            <p class="my-p">b.每个文件就是一个模块(One file per module)。</p>
+            <p class="my-p">c.Browsers require a loader library or transpiling(比如webpack，Browserify： 浏览器不兼容CommonJS的根本原因，在于缺少四个Node.js环境的变量--module、exports、require、global。要能够提供这四个变量，浏览器就能加载 CommonJS 模块)。</p>
+            <p class="my-p">d.所有代码都运行在模块作用域，不会污染全局作用域（Module definitions are encapsulated, helping us to avoid pollution of the global namespace）。</p>
+            <p class="my-p">e.模块加载的顺序，按照其在代码中出现的顺序。</p>
+            
+            
+            
+            
+            
+            <p class="my-p"></p>
+            <a href="" target="_blank"></a>
+            <pre>
+            </pre>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
