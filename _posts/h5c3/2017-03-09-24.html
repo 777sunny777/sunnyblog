@@ -1,0 +1,77 @@
+---
+layout: default
+title: input checkout纯css美化方法
+category: h5c3
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">input checkout纯css美化方法</p>
+            <p class="my-p">
+                <pre>
+                    //jade template
+
+                    div.beautyCheckbox
+                      input.beautyCheckboxInput(type='checkbox' name='recieveEmails' id='recieveEmails')
+                      label(for='recieveEmails')
+                    label(for='recieveEmails')
+                      span Subscribe to recieve emails about lorem ipsum
+
+                    css
+
+                    /* start checkout global style  */
+                    .beautyCheckbox {
+                      width: 25px;
+                      position: relative;
+                      display: inline-block;
+                      vertical-align: text-bottom;
+                      margin-right: 10px;
+                    }
+                    .beautyCheckbox .beautyCheckboxInput {
+                      visibility: hidden;
+                    }
+                    .beautyCheckbox label {
+                      cursor: pointer;
+                      position: absolute;
+                      width: 25px;
+                      height: 25px;
+                      top: 0;
+                      left: 0;
+                      background: #fff;
+                      border: 1px solid #ccc;
+                    }
+                    .beautyCheckbox label:after {
+                      opacity: 0.2;
+                      content: '';
+                      position: absolute;
+                      width: 9px;
+                      height: 5px;
+                      background: transparent;
+                      top: 6px;
+                      left: 7px;
+                      border: 3px solid #333;
+                      border-top: none;
+                      border-right: none;
+                      -webkit-transform: rotate(-45deg);
+                      -moz-transform: rotate(-45deg);
+                      -o-transform: rotate(-45deg);
+                      -ms-transform: rotate(-45deg);
+                      transform: rotate(-45deg);
+                    }
+                    .beautyCheckbox label:hover::after {
+                      opacity: 0.5;
+                    }
+                    .beautyCheckbox input[type=checkbox]:checked + label:after {
+                      opacity: 1;
+                    }
+                    .beautyCheckbox span {
+                      font-size: 1rem;
+                    }
+                    /* end checkout global style  */
+                </pre>
+            </p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
