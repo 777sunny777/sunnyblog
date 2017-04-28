@@ -1,0 +1,53 @@
+---
+layout: default
+title: 获取url中search参数值以及删除search参数的通用方法
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">这两个方法是在两个项目中测试过的，应该是比较通用的方法，记录在这。</p>
+            <p class="my-p">1.获取url中search参数值</p>
+            <pre>
+                getParameter: function(param){
+                    var url = window.location.search.substring(1),
+                      paramValues = url.split('&'),
+                      paramName,
+                      i;
+                    for(i = 0; i<paramValues.length; i++){
+                      paramName = paramValues[i].split('=');
+                      if(paramName[0] === param){
+                        return paramName[1] === undefined ? true : decodeURIComponent(paramName[1]);
+                      }
+                    }
+                    return '';
+                }
+            </pre>
+            <p class="my-p">2.删除url中search参数</p>
+            <pre>
+                removeQueryParameter: function(url, parameter) {
+                    var urlparts = url.split('?');
+                    var url = '';
+                    var i = 0;
+                    if (urlparts.length == 2) {
+                      url = urlparts[0];
+                      i = 1;
+                    }
+                    var prefix = encodeURIComponent(parameter) + '=';
+                    var pars = urlparts[i].split(/[&;]/g);
+
+                    for (var i = pars.length; i-- > 0;) {
+                      if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+                        pars.splice(i, 1);
+                      }
+                    }
+
+                    url= url + (pars.length > 0 ? '?' + pars.join('&') : '');
+                    return url;
+                }
+            </pre>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
