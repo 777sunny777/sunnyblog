@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Sharing3 -- 前端验证插件parsley
+title: Sharing3 -- 前端验证插件parsley(2017/04/28更新)
 category: basic
 ---
 <div class="row">
@@ -150,9 +150,21 @@ category: basic
               $('#test5').parsley().on('form:submit',function(){
                 return false;
               });
-
             </pre>
-          
+            <p class="my-p">Add(2017/04/28):我们还可以更改parsley error message的样式。</p>
+            <pre>
+                var $form = $('form.parsley-frm-aem');
+                $form.parsley({
+                    trigger: 'blur',
+                    successClass: 'has-success',
+                    errorClass: 'has-error',
+                    errorsWrapper: '<span class="help-block"></span>',
+                    errorTemplate: '<span></span>',
+                    classHandler: function(el) {
+                        return el.$element.closest('label');
+                    }
+                });            
+            </pre>
         </div><!-- /.blog-main -->
     </div>
 </div>
