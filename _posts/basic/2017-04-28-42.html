@@ -16,7 +16,7 @@ category: basic
                       paramValues = url.split('&'),
                       paramName,
                       i;
-                    for(i = 0; i<paramValues.length; i++){
+                    for(i = 0; i &lt; paramValues.length; i++){
                       paramName = paramValues[i].split('=');
                       if(paramName[0] === param){
                         return paramName[1] === undefined ? true : decodeURIComponent(paramName[1]);
@@ -38,13 +38,13 @@ category: basic
                     var prefix = encodeURIComponent(parameter) + '=';
                     var pars = urlparts[i].split(/[&;]/g);
 
-                    for (var i = pars.length; i-- > 0;) {
+                    for (var i = pars.length; i-- &gt; 0;) {
                       if (pars[i].lastIndexOf(prefix, 0) !== -1) {
                         pars.splice(i, 1);
                       }
                     }
 
-                    url= url + (pars.length > 0 ? '?' + pars.join('&') : '');
+                    url= url + (pars.length &gt; 0 ? '?' + pars.join('&') : '');
                     return url;
                 }
             </pre>
