@@ -1,0 +1,74 @@
+---
+layout: default
+title: 如何调用bing地图
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">1.申请mapBingKey</p>
+            <p class="my-p">2.引用地图包</p>
+            <pre>
+               v是版本，s=1应该是https协议
+               &lt;script src="//ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&s=1" &gt;&lt;/script&gt;
+            </pre>
+            <p class="my-p">3.常用定位方法以及pushpin</p>
+            <pre>
+                initBingMap: function(currentFromIndex) {
+                  var obj = [], latitude = null, longitude = null;
+                  $.each($('.item-index'), function(index, item) {
+                    latitude = $(item).data('latitude');
+                    longitude = $(item).data('longitude');
+                    obj.push( {'latitude': latitude, "longitude":longitude} );
+                  });
+                  var locationFlags = null,
+                    pushpin = null,
+                    locationArray = [];
+                    bingMapOptions = {
+                    credentials: mapBingKey(这个是要申请的),
+                    enableClickableLogo: false,
+                    enableSearchLogo: false,
+                    mapTypeId: Microsoft.Maps.MapTypeId.road,
+                    showCopyright: false,
+                    showDashboard: true,
+                    showMapTypeSelector: true,
+                    customizeOverlays: true,
+                    disableKeyboardInput: true          
+                    };
+                    locationFlags = new Microsoft.Maps.EntityCollection();
+                    $.each(obj, function(i, n) {
+                        var location = new Microsoft.Maps.Location(n.latitude, n.longitude);
+                        locationArray.push(location);
+                    });
+                    if (obj.length === 1) {
+                      bingMapOptions.center = locationArray[0];
+                      bingMapOptions.zoom = 12;
+                    } else {
+                      bingMapOptions.bounds = Microsoft.Maps.LocationRect.fromLocations(locationArray);
+                    }
+                    var bingMap = new Microsoft.Maps.Map($('.bingMap')[0],bingMapOptions);
+                    var clickMapPushpin = function (e) {
+                      bingMap.setView({ zoom: 16, center: new Microsoft.Maps.Location(e.latitude, e.longitude) });
+                      //click event to do
+
+                    }
+                    $.each(obj, function(i, n) {
+                        var location = new Microsoft.Maps.Location(n.latitude, n.longitude);
+                        pushpin = new Microsoft.Maps.Pushpin(location, {
+                          htmlContent: '&lt;div class="bingLocation"&gt;&lt;span class="bingIndex"&gt;'+(i + currentFromIndex).toString()+'&lt;/span&gt;&lt;div class="send-to__svg"&gt;&lt;svg&gt;&lt;use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-mapPin-red"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;/div&gt;&lt;/div&gt;'
+                        });
+                        Microsoft.Maps.Events.addHandler(pushpin, 'click', clickMapPushpin.bind(this, {'latitude': n.latitude, 'longitude': n.longitude, 'index': i+currentFromIndex })); 
+                        bingMap.entities.push(pushpin);
+                    });
+                }
+            </pre>
+            <p class="my-p">4.有一些必用的网站记录如下：</p>
+            <p class="my-p"><a href="https://www.bingmapsportal.com/Isdk/AjaxV7" target="_blank">Bing map APIs</a></p>
+            <p class="my-p"><a href="https://msdn.microsoft.com/en-us/library/ff428643.aspx" target="_blank">Getting Started with Bing Maps Doc</a></p>
+            
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>
