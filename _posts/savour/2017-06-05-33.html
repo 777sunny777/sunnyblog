@@ -1,0 +1,35 @@
+---
+layout: default
+title: handlebars相关问题
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">这里面记录handlebars的相关问题</p>
+            <p class="my-p my-h">1.Handlebars.registerHelper. Handlebars比较灵活（也可以说不方便）所以你可以自定义逻辑，比如==，没有现成的逻辑，就需要自己来写。</p>
+            <pre>
+               //注意这个不要加载在document.ready()里面，你就写在Handlebars的插件的下面就可以了。
+               
+               Handlebars.registerHelper('if_eq', function(a, b, opts) {
+                  if (a == b) { // Or === depending on your needs
+                    return opts.fn(this);
+                  } else {
+                    return opts.inverse(this);
+                  }
+                });
+                
+                引用的例子
+                
+                {{#each buttons}}
+                    &lt;a href="{{ link }}" class="{{#if_eq type 'search'}}searchClass{{/if_eq}} anotherClass"&gt;{{ name }}&lt;/a&gt;
+                {{/each}}
+                
+                这样buttons.type就会和search进行对比了。
+                
+            </pre>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
