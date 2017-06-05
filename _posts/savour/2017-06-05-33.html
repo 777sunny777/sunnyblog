@@ -23,9 +23,9 @@ category: savour
                 
                 引用的例子
                 
-                {{#each buttons}}
-                    &lt;a href="{{ link }}" class="{{#if_eq type 'search'}}searchClass{{/if_eq}} anotherClass"&gt;{{ name }}&lt;/a&gt;
-                {{/each}}
+                { {#each buttons} }
+                    &lt;a href="{ { link } }" class="{ {#if_eq type 'search'} }searchClass{ {/if_eq} } anotherClass"&gt;{ { name } }&lt;/a&gt;
+                { {/each} }
                 
                 这样buttons.type就会和search进行对比了。
                 
