@@ -1,0 +1,29 @@
+---
+layout: default
+title: 如何打印modal中的内容
+category: basic
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">这个用到的技术没有复杂的，关键是一种思想，我解决的时候查了各种方法都有弊端，比如修改document，可以保证打印的内容，但是取消打印的时候，即使你把内容重新修改回来，但是绑定的事件没有了。比如你如果用@media的print，你是无法打印modal中的完整内容的。</p>
+            <p class="my-p">可以成功解决的一个方法思路如下：</p>
+            <p class="my-p">1.把modal里面要打印的内容copy一份在页面,一定要插在body中，是body的第一层子元素之一(比如叫contentPrint)，然后把它隐藏。</p>
+            <p class="my-p">2.点击打印的时候，将body的所有子元素隐藏，将contentPrint显示，然后window.print()</p>
+            <p class="my-p">3.之后进行相反的显示隐藏操作即可。</p>
+            <pre>
+                Related code:
+                $('.modalPrint').on('click', function() {
+                    $('body').children().addClass('hidden');
+                    $('body').children('.contentPrint').removeClass('hidden');
+                    window.print();
+                    $('body').children().removeClass('hidden');
+                    $('body').children('.contentPrint').addClass('hidden');
+                };
+            </pre>
+            <p class="my-p">此法在项目中用的，验证过虽然稍显麻烦但是有效。</p>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
