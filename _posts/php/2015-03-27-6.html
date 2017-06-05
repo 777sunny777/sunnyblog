@@ -17,38 +17,43 @@ category: php
             <p class="my-p my-h">3.chrome调试</p>
             <p class="my-p">https://developer.chrome.com/devtools/docs/javascript-debugging#pause-on-uncaught-exceptions</p> 
             <p class="my-p my-h">4.rimraf nod_modules 强力删除删不掉的nod_modules</p>
-            <p class="my-p">官方描述：A deep deletion module for node (like rm -rf) 简单点说，就是模拟unix或者linux下的rm -rf（强制删除命令）
-                <pre>
-                    安装 npm install -g rimraf
-                    使用 [code]cd xxx[include node_modules folder]
-                    rimraf nod_modules
-                </pre>
-            </p>
+            <p class="my-p">官方描述：A deep deletion module for node (like rm -rf) 简单点说，就是模拟unix或者linux下的rm -rf（强制删除命令）</p>
+            <pre>
+                安装 npm install -g rimraf
+                使用 [code]cd xxx[include node_modules folder]
+                rimraf nod_modules
+            </pre>
             <p class="my-p my-h">5.gem改为淘宝源</p>
             <p class="my-p">安装好Ruby以后gem的源一般默认为http://rubygems.org/，这个源有时候不太好用，我们可以改成国内淘宝的。目前我在windows下开发，打开cmd窗口，敲以下命令即可。</p>
-            <p class="my-p">
-                <pre>
-                    显示当前使用的sources
-                    gem sources
-                    删除默认sources
-                    gem sources -r http://rubygems.org/
-                    添加淘宝sources
-                    gem sources -a http://ruby.taobao.org/
-                    更新缓存
-                    gem sources -u
-                </pre>
-            </p>
+            <pre>
+                显示当前使用的sources
+                gem sources
+                删除默认sources
+                gem sources -r http://rubygems.org/
+                添加淘宝sources
+                gem sources -a http://ruby.taobao.org/
+                更新缓存
+                gem sources -u
+            </pre>
             <p class="my-p my-h">6.Add HTTPS support for Youku</p>
             <p class="my-p">All Youku videos went blank on HTTPS forums, because "player.youku.com" does not have SSL support. But actually Youku does support HTTPS, with a different URL.</p>
-            <p class="my-p">
-                <pre>
-                    e.g.
-                    Original link: http://v.youku.com/v_show/id_XMTU0MzMyNjg2NA.html
-                    HTTP player: http://player.youku.com/embed/XMTU0MzMyNjg2NA
-                    HTTPS player: https://players.youku.com/player.php/sid/XMTU0MzMyNjg2NA/v.swf
-                </pre>
-            </p>
+            <pre>
+                e.g.
+                Original link: http://v.youku.com/v_show/id_XMTU0MzMyNjg2NA.html
+                HTTP player: http://player.youku.com/embed/XMTU0MzMyNjg2NA
+                HTTPS player: https://players.youku.com/player.php/sid/XMTU0MzMyNjg2NA/v.swf
+            </pre>
             <p class="my-p">https://github.com/s9e/flarum-ext-mediaembed/issues/5</p>
+            <p class="my-p my-h">7.通过url参数控制youtube视频自动播放，循环播放，无控制按键</p>
+            <p class="my-p">参考：https://developers.google.com/youtube/player_parameters#loop</p>
+            <pre>
+                关键参数：
+                autoplay=1&amp;loop=1
+                rel=0&amp;loop=1&amp;autoplay=1&amp;controls=0&amp;showinfo=0&amp;autohide=1
+                例子：
+                https://www.youtube.com/embed/XS7jXQAnG5k?rel=0&amp;?autohide=1&amp;iv_load_policy=3&amp;enablejsapi=1&amp;loop=1&amp;autoplay=1 
+            </pre>
+
         </div><!-- /.blog-main -->
     </div>
 </div>
