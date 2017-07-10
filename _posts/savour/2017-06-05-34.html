@@ -1,0 +1,109 @@
+---
+layout: default
+title: 如何调用bing地图(二)Direction
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <pre>
+               this.searchDirections = function(){
+                    if( $('.searchDirectionsInput').val().trim() != "" ){
+                        var locationA = $('.searchDirectionsInput').val();
+                    }else{
+                        $('.searchDirectionsInput').val('');
+                        var locationA = $('.searchDirectionsInput').attr('placeholder');
+                    }
+                    var storelatitude = $('.commerce-store-details-component').find('.storeName').data('latitude')|| 0;
+                    var storelongitude = $('.commerce-store-details-component').find('.storeName').data('longitude')|| 0;
+                    var locationB = new Microsoft.Maps.Location(storelatitude, storelongitude);
+                    Sunny._createDirections(locationA, locationB);
+                };
+                this._createDirections = function(locationA, locationB) {
+                    Sunny.searchDirectionsMap.entities.clear();
+                    if (!Sunny.directionsManager){
+                        Microsoft.Maps.loadModule('Microsoft.Maps.Directions', { callback: Sunny._createDrivingRoute.bind(this, locationA, locationB) });
+                    }else{
+                        Sunny._createDrivingRoute(locationA, locationB);
+                    }
+                };
+                this._createDirectionsManager = function(){
+                    if (!Sunny.directionsManager){
+                      Sunny.directionsManager = new Microsoft.Maps.Directions.DirectionsManager(Sunny.searchDirectionsMap);
+                    }
+                    Sunny.directionsManager.resetDirections();
+                    Sunny.directionsErrorEventObj = Microsoft.Maps.Events.addHandler(Sunny.directionsManager, 'directionsError', function(arg) {  });
+                    Sunny.directionsUpdatedEventObj = Microsoft.Maps.Events.addHandler(Sunny.directionsManager, 'directionsUpdated', function() { });
+                };
+                this._createDrivingRoute = function(locationA, locationB){
+                    var pushpinA = new Microsoft.Maps.Pushpin(locationA, {
+                      htmlContent: '<svg class="pin"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-mapPin-A"></use></svg>'
+                    });
+                    var pushpinB = new Microsoft.Maps.Pushpin(locationB, {
+                      htmlContent: '<svg class="pin"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-mapPin-B"></use></svg>'
+                    });            
+                    if (!Sunny.directionsManager) { Sunny._createDirectionsManager(); }
+                    Sunny.directionsManager.resetDirections();
+                    // Set Route Mode to driving 
+                    Sunny.directionsManager.setRequestOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
+                    var pointA = new Microsoft.Maps.Directions.Waypoint({ address: locationA, pushpin: pushpinA });
+                    Sunny.directionsManager.addWaypoint(pointA);
+                    var pointB = new Microsoft.Maps.Directions.Waypoint({ location: locationB, pushpin: pushpinB });
+                    Sunny.directionsManager.addWaypoint(pointB);
+                    // Set the element in which the itinerary will be rendered
+                    $('.store-directions-details').empty();
+                    Sunny.directionsManager.setRenderOptions({ itineraryContainer: $('.store-directions-details')[0] });
+                    Sunny.directionsManager.calculateDirections();
+                };
+                this._getDirectionsMap = function(storelatitude, storelongitude){
+
+                    if ( sessionStorage.getItem("storeQueryString") == null ) {
+                        Sunny.searchDirectionsMap = new Microsoft.Maps.Map($(".store-directions-map")[0], {
+                            center: new Microsoft.Maps.Location(storelatitude, storelongitude),
+                            credentials: Sunny.mapBingKey,
+                            enableClickableLogo: false,
+                            enableSearchLogo: false,
+                            mapTypeId: Microsoft.Maps.MapTypeId.road,
+                            showCopyright: false,
+                            showDashboard: true,
+                            showMapTypeSelector: true,
+                            zoom: 4,
+                            customizeOverlays: true,
+                            disableKeyboardInput: true
+                        });
+                        var locationB = new Microsoft.Maps.Location(storelatitude, storelongitude);
+                        var pushpinB = new Microsoft.Maps.Pushpin(locationB, {
+                          htmlContent: '<svg class="pin"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-mapPin-B"></use></svg>'
+                        });
+                        Sunny.searchDirectionsMap.entities.push(pushpinB);
+
+                    }else{
+                        $('.searchDirectionsInput').val(sessionStorage.getItem("storeQueryString"));
+                        Sunny.searchDirectionsMap = new Microsoft.Maps.Map($(".store-directions-map")[0], {
+                            center: new Microsoft.Maps.Location(39,-100),
+                            credentials: Sunny.mapBingKey,
+                            enableClickableLogo: false,
+                            enableSearchLogo: false,
+                            mapTypeId: Microsoft.Maps.MapTypeId.road,
+                            showCopyright: false,
+                            showDashboard: true,
+                            showMapTypeSelector: true,
+                            zoom: 4,
+                            customizeOverlays: true,
+                            disableKeyboardInput: true
+                        });
+                        var locationA = sessionStorage.getItem("storeQueryString");
+                        var storelatitude = $('.commerce-store-details-component').find('.storeName').data('latitude')|| 0;
+                        var storelongitude = $('.commerce-store-details-component').find('.storeName').data('longitude')|| 0;
+                        var locationB = new Microsoft.Maps.Location(storelatitude, storelongitude);
+                        Sunny._createDirections(locationA, locationB);
+                    };
+                };
+
+            </pre>
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>
