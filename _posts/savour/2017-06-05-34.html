@@ -39,10 +39,10 @@ category: savour
                 };
                 this._createDrivingRoute = function(locationA, locationB){
                     var pushpinA = new Microsoft.Maps.Pushpin(locationA, {
-                      htmlContent: '<svg class="pin"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-mapPin-A"></use></svg>'
+                      htmlContent: '&lt;svg class="pin"&gt;&lt;use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-mapPin-A"&gt;&lt;/use&gt;&lt;/svg&gt;'
                     });
                     var pushpinB = new Microsoft.Maps.Pushpin(locationB, {
-                      htmlContent: '<svg class="pin"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-mapPin-B"></use></svg>'
+                      htmlContent: '&lt;svg class="pin"&gt;&lt;use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-mapPin-B"&gt;&lt;/use&gt;&lt;/svg&gt;'
                     });            
                     if (!Sunny.directionsManager) { Sunny._createDirectionsManager(); }
                     Sunny.directionsManager.resetDirections();
@@ -75,7 +75,7 @@ category: savour
                         });
                         var locationB = new Microsoft.Maps.Location(storelatitude, storelongitude);
                         var pushpinB = new Microsoft.Maps.Pushpin(locationB, {
-                          htmlContent: '<svg class="pin"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-mapPin-B"></use></svg>'
+                          htmlContent: '&lt;svg class="pin"&gt;&lt;use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shape-mapPin-B"&gt;&lt;/use&gt;&lt;/svg&gt;'
                         });
                         Sunny.searchDirectionsMap.entities.push(pushpinB);
 
