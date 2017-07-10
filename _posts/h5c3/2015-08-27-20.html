@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 一些有意思的HTML5 API (持续更新)
+title: 一些有意思的HTML5 API
 category: h5c3
 ---
 
@@ -33,6 +33,13 @@ category: h5c3
             </p>
             <p class="my-p my-h">但是要注意的是这个需要在两端页面的js写入代码，一个接一个收。用img的ping方法，是单向的，用jsonp可以做到回掉函数接受，而iframe和ajax都要同源，如果不配置apache的CORS策略，现有的方法应该就这么多了。</p>
 
+            <p class="my-p my-h">3.IE edge页面自带的scroll长时间不用会自动隐藏，如果你如要它一直在，如下：</p>
+            <pre>
+                body {
+                  -ms-overflow-style: scrollbar;
+                }
+            </pre>
+        
         </div><!-- /.blog-main -->
     </div>
 </div>
