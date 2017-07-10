@@ -9,12 +9,12 @@ category: basic
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p">1)$("xxx").each()方法--(return false来终止each)</p>
-            <p class="my-p">2)获取和设置元素的宽高</p>
-            <table class="table">
+            <p class="my-p my-h">1)$("xxx").each()方法--(return false来终止each)</p>
+            <p class="my-p my-h">2)获取和设置元素的宽高</p>      
+            <table class="mdl-data-table mdl-js-data-table">
               <thead>
                 <tr>
-                  <th>#</th>
+                  <th class="mdl-data-table__cell--non-numeric">#</th>
                   <th>内容content</th>
                   <th>内距padding</th>
                   <th>边border</th>
@@ -23,21 +23,21 @@ category: basic
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">W/H</th>
+                  <td class="mdl-data-table__cell--non-numeric"><strong>W/H</strong></td>
                   <td>是</td>
                   <td>否</td>
                   <td>否</td>
                   <td>否</td>
                 </tr>
                 <tr>
-                  <th scope="row">inner</th>
+                  <td class="mdl-data-table__cell--non-numeric"><strong>inner</strong></td>
                   <td>是</td>
                   <td>是</td>
                   <td>否</td>
                   <td>否</td>
                 </tr>
                 <tr>
-                  <th scope="row">outer</th>
+                  <td class="mdl-data-table__cell--non-numeric"><strong>outer</strong></td>
                   <td>是</td>
                   <td>是</td>
                   <td>是</td>
@@ -45,13 +45,24 @@ category: basic
                 </tr>
               </tbody>
             </table>          
-            <p class="my-p">3)clone(true) 会复制事件处理函数</p>
-            <p class="my-p">4)关于删除元素</p>
+            <p class="my-p my-h">3)clone(true) 会复制事件处理函数</p>
+            <p class="my-p my-h">4)关于删除元素</p>
             <p class="my-p">empty(): 移除选中元素的子元素;remove(): 移除选中元素+事件;detach(): 移除选中元素+不移除事件;unwrap(): 只移除选中元素+不动子元素;filter(): 过滤选中.关于remove和detach，$test = $(".test"); $test.remove();//再append回来就没有事件了，用detach还有事件</p>
-            <p class="my-p">5）关于bind(), bind("click",data,test);//这个data会在test函数中的event.data中取到。</p>
-            <p class="my-p">6)如果用CDN来加载第三方库的话，最好用裸协议，也就是去掉http:或者https:直接用//开始。</p>
-            <p class="my-p">7)指定选择的上下文，这条要牢记并且要常用。$('.class');// 劣质的代码：因为需要遍历整个DOM来找到.class。$('.class', '#class-container');//高品代码：因为只需在指定容器范围内进行查找</p>
-            <p class="my-p">8)判断dom上有无某个属性$('.xxxxxx').is('[data-redirect]')</p>
+            <p class="my-p my-h">5）关于bind(), bind("click",data,test);//这个data会在test函数中的event.data中取到。</p>
+            <p class="my-p my-h">6)如果用CDN来加载第三方库的话，最好用裸协议，也就是去掉http:或者https:直接用//开始。</p>
+            <p class="my-p my-h">7)指定选择的上下文，这条要牢记并且要常用。$('.class');// 劣质的代码：因为需要遍历整个DOM来找到.class。$('.class', '#class-container');//高品代码：因为只需在指定容器范围内进行查找</p>
+            <p class="my-p my-h">8)判断dom上有无某个属性$('.xxxxxx').is('[data-redirect]')</p>
+            <p class="my-p my-h">Updated: 2017-07-10</p>
+            <p class="my-p my-h">9)如果你的id中有".",那么就需要用属性选择器来提取：$("[id='vehicle.model']").length</p>
+            <p class="my-p my-h">10)ajax的问题</p>
+            <p class="my-p">a.如果打开f12就好了，关上就不好，先考虑是不是ajax的cache没有设置成false的问题。</p>
+            <p class="my-p">b.打开f12后，如果加断点就好了，不加断点就不好，先考虑是不是async没有设置成false的问题。</p>
+            <p class="my-p my-h">11)给同一个dom绑定多个相同的event事件，后面只要删除特定的某一个事件，那么定义的时候你需要如下：</p>
+            <pre>
+                $('body').on('click.test1',function(){ alert(111) })
+                $('body').on('click.test2',function(){ alert(222) })
+                $('body').off('click.test1')
+            </pre>
         </div><!-- /.blog-main -->
     </div>
 </div>
