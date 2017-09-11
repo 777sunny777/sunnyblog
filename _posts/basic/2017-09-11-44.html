@@ -22,6 +22,22 @@ category: basic
 
             <p class="my-p my-h">3.IE不支持css中的initial属性，一个可选的方式是在IE浏览器下面直接写死initial本身所代表的属性。</p>
             
+            <p class="my-p my-h">4.IE/Safari下的new Date()格式问题</p>
+            <pre>
+              这样的格式在IE/Safari下会报非法数据，或者NaN. 最新版的edge貌似已经不报错了。
+              var d = new Date("2011-02-07");
+            </pre>
+            <p class="my-p">Anyway, 如果你报了这个错，可行的一个方案如下：</p>
+            <pre>
+                用，或者 / 代替
+                var d = new Date(2011, 01, 07); // yyyy, mm-1, dd  
+                var d = new Date(2011, 01, 07, 11, 05, 00); // yyyy, mm-1, dd, hh, mm, ss  
+                var d = new Date("02/07/2011"); // "mm/dd/yyyy"  
+                var d = new Date("02/07/2011 11:05:00"); // "mm/dd/yyyy hh:mm:ss"  
+                var d = new Date(1297076700000); // milliseconds  
+                var d = new Date("Mon Feb 07 2011 11:05:00 GMT"); // ""Day Mon dd yyyy
+            </pre>            
+            
         </div><!-- /.blog-main -->
     </div>
 </div>
