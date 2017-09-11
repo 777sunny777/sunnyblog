@@ -1,0 +1,60 @@
+---
+layout: default
+title: Print打印出来的样式问题
+category: h5c3
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">前端样式问题中，有两块超级麻烦还不好调整，1是svg在不同浏览器中的兼容问题，尤其是IE下。2就是print的打印style的样式，你的页面是好的，但你打印出来各种丢失，layout各种乱都是有可能的。而且你还不好调，因为没有调试print的工具。</p> 
+            <p class="my-p">下面是我总结的一些print style解决方法</p>
+            <p class="my-p my-h">1.有时候打印时a的href也打印出来了.</p>
+            <pre>
+              比如:
+              <a href="http://www.google.com">Google</a>
+              打印出来
+              Google (http://www.google.com)
+            </pre>
+            <p class="my-p">这是因为bootstrap在搞鬼</p>
+            <pre>
+            
+              @media print {
+                a[href]:after {
+                  content: " (" attr(href) ")";
+                }
+                 @page {
+                    size: auto;  /* auto is the initial value */
+                    margin: 0mm; /* this affects the margin in the printer settings */
+                  }
+              }  
+              只能在打印时再给它一个css了
+              @media print {
+                a[href]:after {
+                  content: none !important;
+                }
+              }
+            </pre>
+            <p class="my-p my-h">2.有时候明明是在桌面打印，打印出来的确实mobile样式，也没有特殊写print样式啊</p>
+            <p class="my-p"> @media 不写设备类型 and (max-width:768), 不写设备类型打印出来的就是 all, 因为你用了media还没写screen，所以print就是你的mobile style了。 </p>
+            
+            <p class="my-p my-h">3.有时候打印出来只有第一页，还不全，后面几页都没有？</p>
+            <p class="my-p">原因主要有两处，1.设置了CSS样式表属性overflow:hidden，隐藏超出指定宽度、高度的对象-CSS隐藏。 2.CSS中设置了高度 </p>
+            <pre>
+              尤其是body，html，header， footer， container等等，下面是我解决的方式，主要一般要加!important
+                  html, body {
+                    overflow-y: visible !important;
+                    overflow-x: visible !important;
+                    height: auto!important;
+                  }
+                  .wrapper, .content-container, .container, main {
+                    overflow-y: visible !important;
+                    overflow-x: visible !important;
+                    height: auto!important;
+                  }
+            
+            </pre>
+        </div><!-- /.blog-main -->
+    </div>
+</div>
