@@ -1,0 +1,27 @@
+---
+layout: default
+title: 关于IE的一些前端issues
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.IE edge页面自带的scroll长时间不用会自动隐藏，如果你如要它一直在，如下：</p>
+            <pre>
+                body {
+                  -ms-overflow-style: scrollbar;
+                }
+            </pre>          
+
+            <p class="my-p my-h">2.IE中查询document.referrer</p>
+            <p class="my-p">1)IE当前页面刷新后( location.reload() )查询document.referrer是"", 其他浏览器中当前页面刷新后查询document.referrer是当前页面的url</p> 
+            <p class="my-p">2)如果需要IE刷新当前页面后查询document.referrer是当前页面的url，需要用location.href = location.href </p> 
+
+            <p class="my-p my-h">3.IE不支持css中的initial属性，一个可选的方式是在IE浏览器下面直接写死initial本身所代表的属性。</p>
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>
