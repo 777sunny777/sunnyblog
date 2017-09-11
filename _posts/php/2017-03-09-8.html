@@ -11,6 +11,7 @@ category: php
             <p class="my-p">我不会正则，反复学了忘，忘了学，折腾，干脆直接记录下来。</p>
             <p class="my-p my-h">1.Password： The password must be a minimum of 8 characters having at least 1 number, 1 lower, 1 upper, and 1 special character.</p>
             <p class="my-p"><strong>pattern='/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$%^&+=])(?=\\S+$).{8,}$/'</strong></p>
+            <p class="my-p"><strong>pattern='/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$%^&+=!\"'()*,-./:;<>?\\[\\\\\\]_`{|}~])(?=\\S+$).{8,}$/'</strong></p>
          
             <p class="my-p my-h">2.将string中的非数字去掉</p>
             <p class="my-p"><strong> string.replace(/[^0-9]/g, "") </strong></p>
