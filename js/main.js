@@ -53,7 +53,7 @@ $(function () {
                     drilldown: '2016'
                 }, {
                     name: '2017',
-                    y: 19,
+                    y: 20,
                     drilldown: '2017'
                 }]
             }],
@@ -147,7 +147,7 @@ $(function () {
                         ],
                         [
                             'H5C3',
-                            2
+                            3
                         ],
                         [
                             'Web性能',
