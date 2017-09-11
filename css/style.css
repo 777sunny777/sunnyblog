@@ -106,6 +106,7 @@ a.mdl-navigation__link.active {
   margin: 20px auto;
 }
 .topContentMain {
+  padding-left: 10%;
   text-align: left;
   display: inline-block;
 }
