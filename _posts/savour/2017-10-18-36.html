@@ -1,0 +1,304 @@
+---
+layout: default
+title: ES6 Demos(一): Block Bindings(块级绑定)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">这个系列大概十三四章，计划在12月底前完成它，对应的还有一个demos的网站，会在完成之后发布。</p>
+            <p class="my-p">参考文档主要如下：</p>
+            <p class="my-p"><a href="https://leanpub.com/understandinges6/read#leanpub-auto-introduction" target="_blank">感谢永远的大神Nicholas C. Zakas</a></p>
+            <p class="my-p"><a href="https://zhuanlan.zhihu.com/p/24023171" target="_blank">感谢sagittarius-rev的翻译</a></p>
+            <p class="my-p">话不多说，第一章Block Bindings开始：</p>
+            
+            <p class="my-p my-h">Demo1: ES中var的声明与变量提升</p>
+            <pre>
+                function getValue(condition) {
+                    if (condition) {
+                        var value = "blue";
+                        // 其他代码
+                        console.log(value); //blue
+                    } else {
+                        console.log(value); //undefined，其他后端语言这个地方是没有声明的。
+                    }
+                    console.log(value); //if condition is true, here is blue, otherwise is undefined.
+                    console.log(anotherValue); //error: anotherValue is not defined
+                }
+                getValue(true);
+                getValue(false);
+
+                如果你不太熟悉 JS ，或许会认为仅当 condition 的值为 true 时，变量 value 才会被创建。
+                但实际上，value 无论如何都会被创建。 JS 引擎在后台对 getValue 函数进行了调整。
+
+                function getValue(condition) {
+                   var value; //这个调整就是var的变量提升
+                   if (condition) {
+                       ...
+                   } else {
+                       ...
+                   }
+                }
+            </pre>
+            <p class="my-p my-h">Demo2: ES6引入块级作用域</p>
+            <pre>
+                function testBlock(){
+                      if (true) {
+                          var pointA = "this is A";
+                      };
+                      console.log(pointA) //this is A
+
+                      if (true) {
+                          let pointB = "this is B";
+                      };
+                      console.log(pointB) //error: pointB is not defined, 更类C语言，直接没有声明
+                  }
+
+                  //testBlock();
+            </pre>
+            <p class="my-p">块级声明也就是让所声明的变量在指定块的作用域外无法被访问。块级作用域（又被称为词法作用域）在如下情况被创建：</p>
+            <p class="my-p">1. 在一个函数内部</p>
+            <p class="my-p">2. 在一个代码块（由一对花括号包裹）内部</p>
+            
+            <p class="my-p my-h">Demo3: let 声明</p>
+            <pre>
+                function getValue(condition) {
+                      if (condition) {
+                          let value = "blue";
+                          //let value = "red"; //error: Identifier 'value' has already been declared,同一级别作用域中禁止重复声明
+                          if (true) {
+                              let value = "red";
+                              console.log(value); //red
+                          };
+                          // 其他代码
+                          console.log(value); //blue
+                      } else {
+                          console.log(value); //error: value is not defined, 没有了提前声明
+                      }
+                      console.log(value); //error: value is not defined，没有了提前声明
+
+                  }
+                  //getValue(true);
+                  //getValue(false);
+            </pre>          
+            <p class="my-p">let 声明的语法与 var 的语法一致</p>
+            <p class="my-p">1.没有声明提前</p>
+            <p class="my-p">2.同一级别作用域中禁止重复声明</p>
+            <p class="my-p">好的编码习惯是你需要手动将 let 声明放置到顶部，以便让变量在整个代码块内部可用</p>
+
+            <p class="my-p my-h">Demo4: const声明</p>
+            <pre>
+                function testConst(){
+                    const maxItems = 30;
+                    //onst maxItems = 100; //error: Identifier 'maxItems' has already been declared, 同一级别作用域中禁止重复声明
+                    //maxItems = 100; //error: Assignment to constant variable., 声明后不能被修改
+                    //const name; //error: Missing initializer in const declaration, 声明时要求进行初始化
+                    if (true) {
+                        const maxItems = 100;
+                        console.log(maxItems); //100
+                    };
+
+                    const person = {
+                        name: "Stella"
+                    };
+
+                    person.name = "Sunny"; 
+                    console.log(person.name); //Sunny, 不阻止对成员值的修改
+
+                    person = {
+                        name: "Sunny"
+                    };
+
+                    console.log(person.name); //error: Assignment to constant variable, 阻止的是对于变量绑定的修改
+                    //person本身是不能被修改的
+                }
+                //testConst();
+            </pre>    
+            <p class="my-p">1.const 声明的变量会被认为是常量，声明后不能被修改，所以声明时要求进行初始化</p>
+            <p class="my-p">2.没有声明提前</p>
+            <p class="my-p">3.同一级别作用域中禁止重复声明</p>
+            <p class="my-p">4.const 阻止的是对于变量绑定的修改，而不阻止对成员值的修改</p>
+
+            <p class="my-p my-h">Demo5: temporal dead zone(TDZ)</p>
+            <pre>
+                function testTDZ(){
+                    console.log(typeof value); // undefined
+                    if (true) {
+                        console.log(typeof value2); // undefined
+                        console.log(typeof value); // error: value is not defined
+                        let value = "blue";
+                    }
+                }
+                //testTDZ();
+            </pre>
+            <p class="my-p">TDZ经常被用于描述let或const声明的变量在声明处之前无法被访问的现象。</p>
+            <p class="my-p">同一级别作用域中， 在let，const声明变量之前访问它，就会有TDZ</p>
+            <p class="my-p">理论上即使在同一级别作用域中，在let，const声明变量之前，访问任何一个变量都应该是undefined类型，但是TDZ会让一个即将被声明的变量提前被预定，这是块级绑定的一个独特表现</p>
+            
+            <p class="my-p my-h">Demo6: 循环中的var</p>
+            <pre>
+                function testLoopVar() {
+
+                    for (var i = 0; i < 10; i++) { }
+                    //console.log(i); // 10, var不具有块级作用域的体现
+
+                    var funcs = [];
+                    for (var i = 0; i < 10; i++) {
+                        funcs.push(function() { console.log(i); });
+                    }
+
+                    funcs.forEach(function(func) {
+                        func(); // 输出数值 "10" 十次
+                    });
+
+                    //为了输出0到9，在循环内使用立即调用函数表达式immediately-invoked function expressions(IIFEs)
+                    var funcs = [];
+                    for (var i = 0; i < 10; i++) {
+                        funcs.push(
+                            ( function(value) {
+                                return function() {
+                                    console.log(value);
+                                }
+                            }(i) )  //在这里以参数的形式传入此时刻的副本i
+                        );
+                    }
+
+                    funcs.forEach(function(func) {
+                        func(); // 从 0 到 9 依次输出
+                    });
+                    //这种写法在循环内使用了 IIFE 。变量 i 被传递给 IIFE ，从而创建了 value 变量作为自身副本并将值存储于其中。 
+                    //value 变量的值被迭代中的函数所使用，因此在循环从 0 到 9 的过程中调用每个函数都返回了预期的值.
+                    //在let和const声明的变量中可以不用IIFE了
+
+                }
+                //testLoopVar();            
+            </pre>   
+            <p class="my-p my-h">Demo7: 循环中的let</p>
+            <pre>
+                function testLoopLet() {
+
+                    for (let i = 0; i < 10; i++) { }
+                    //console.log(i); //error: i is not defined
+
+                    var funcs = [];
+                    for (let i = 0; i < 10; i++) {
+                        funcs.push(function() {
+                            console.log(i);
+                        });
+                    }
+                    //与使用 var 声明以及 IIFE 相比，这里代码能达到相同效果，但无疑更加简洁
+
+                    funcs.forEach(function(func) {
+                        func(); // 从 0 到 9 依次输出
+                    })
+
+                    //for in循环的性能很差，建议少用，这里需要知道的是
+                    // 本例中的 for-in 循环体现出了与 for 循环相同的行为。每次循环，一个新的 key 变量绑
+                    // 定就被创建，因此每个函数都能够拥有它自身的 key 变量副本，结果每个函数都输出了一个
+                    // 不同的值。而如果使用 var 来声明 key ，则所有函数都只会输出 "c" 。
+
+                    var funcs = [],
+                    object = {
+                        a: true,
+                        b: true,
+                        c: true
+                    };
+                    for (let key in object) {
+                        funcs.push(function() {
+                            console.log(key);
+                        });
+                    }
+                    funcs.forEach(function(func) {
+                        func(); // 依次输出 "a"、 "b"、 "c"
+                    });
+
+                }
+                //testLoopLet();            
+            </pre>  
+            <p class="my-p">需要重点了解的是： let 声明在循环内部的行为是在规范中特别定义的，而与不提升变量声明的特征没有必然联系。事实上，在早期 let 的实现中并没有这种行为，它是后来才添加的。</p>
+            
+            <p class="my-p my-h">Demo8: 循环中的const</p>
+            <pre>
+                function testLoopLet() {
+
+                    var funcs = [];
+                    // 在一次迭代后抛出错误
+                    for (const i = 0; i < 10; i++) {
+                        funcs.push(function() {
+                            console.log(i);
+                        });
+                    }
+                    //因为每次循环要修改i的值，所以const会报错
+
+
+                    //const 能够在 for-in 与 for-of 循环内工作，是因为循环为每次迭代创建了一个新的变量绑定，而不是试图去修改已绑定的变量的值
+                    //这个比较特殊，不好理解，你可以认为是key的值并没有被重新赋予，而是每次新循环都生成一个新key
+                    var funcs = [],
+                    object = {
+                        a: true,
+                        b: true,
+                        c: true
+                    };
+                    // 不会导致错误
+                    for (const key in object) {
+                        funcs.push(function() {
+                            console.log(key);
+                        });
+                    }
+                    funcs.forEach(function(func) {
+                        func(); // 依次输出 "a"、 "b"、 "c"
+                    });
+                }            
+            </pre>   
+            
+            <p class="my-p my-h">Demo9: 全局块级绑定</p>
+            <pre>
+                //eg1
+                // console.log(window.RegExp); // ƒ RegExp() { [native code] }
+                // var RegExp = "Hello!";
+                // console.log(window.RegExp); // "Hello!", 这意味着使用 var 可能会无意覆盖一个已有的全局属性
+                // var ncz = "Hi!";
+                // console.log(window.ncz); // "Hi!"
+
+                //eg2, let和const是一样的
+                console.log(window.RegExp); // ƒ RegExp() { [native code] }
+                let RegExp = "Hello!"; 
+                console.log(window.RegExp); // ƒ RegExp() { [native code] }
+                console.log(RegExp); // "Hello!"
+                console.log(window.RegExp === RegExp); // false           
+            </pre>  
+            <p class="my-p">此代码的 let 声明创建了 RegExp 的一个绑定，并屏蔽了全局的 RegExp 。这表示window.RegExp 与 RegExp 是不同的，因此全局作用域没有被污染。</p>
+            <p class="my-p">若想让代码能从全局对象中被访问，你仍然需要使用 var 。在浏览器中跨越帧或窗口去访问代码时，这种做法非常普遍。</p>
+            
+            
+            <p class="my-p my-h">Demo10: 块级绑定新的最佳实践</p>
+            <p class="my-p">在 ES6 的发展阶段，被广泛认可的变量声明方式是：默认情况下应当使用 let 而不是 var。对于多数 JS 开发者来说， let 的行为方式正是 var 本应有的方式，因此直接用 let
+            替代 var 更符合逻辑。在这种情况下，你应当对需要受到保护的变量使用 const 。
+            然而，随着更多的开发者迁移到 ES6 上，一种替代方案变得更为流行，那就是在默认情况下
+            使用 const 、并且只在知道变量值需要被更改的情况下才使用 let 。其理论依据是大部分
+            变量在初始化之后都不应当被修改，因为预期外的改动是 bug 的源头之一。这种理念有着足
+            够强大的吸引力，在你采用 ES6 之后是值得在代码中照此进行探索实践的。</p>
+                       
+            <p class="my-p my-h">总结：</p>
+            <p class="my-p"><strong>Block Bindings主要讲了如下几件事：</strong></p>
+            <p class="my-p">1.var，let，const的区别和特点</p>
+            <p class="my-p">2.块级绑定带来的let和const的TDZ现象和循环特点</p>
+            <p class="my-p">3.var，let，const在全局声明初始化上的不同</p>
+            <p class="my-p">4.如何从var更好的升级到let和const</p>
+            <p class="my-p"><strong>For 1：<strong></p>
+            <p class="my-p">var特点： 声明提前，无块级作用域，</p>
+            <p class="my-p">let特点： 无声明提前，块级作用域，禁止重复声明</p>
+            <p class="my-p">const特点： 无声明提前，块级作用域，禁止重复声明，不可修改</p>
+            <p class="my-p"><strong>For 2：<strong></p>
+            <p class="my-p">TDZ经常被用于描述let或const声明的变量在声明处之前无法被访问的现象。同一级别作用域中， 在let，const声明变量之前访问它，就会有TDZ</p>
+            <p class="my-p">let和const循环不需要var中IIFEs</p>
+            <p class="my-p"><strong>For 3：<strong></p>
+            <p class="my-p">let和const声明全局变量不会污染window对象</p>
+            <p class="my-p"><strong>For 4：<strong></p>
+            <p class="my-p">升级ES6，建议先把var都改为const，再对需要修改的变量改为let，其理论依据是大部分变量在初始化之后都不应当被修改，因为预期外的改动是 bug 的源头之一</p>
+            
+            </div><!-- /.blog-main -->
+    </div>
+</div>
