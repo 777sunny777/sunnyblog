@@ -1,0 +1,31 @@
+---
+layout: default
+title: error code 415 错误处理
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p"><a href="http://blog.csdn.net/yixiaoping/article/details/45281721" target="_blank">SpringMVC @ResponseBody 415错误处理</a></p>
+            <pre>
+                var data = {  
+                    userAccount: lock_username,  
+                    userPasswd:hex_md5(lock_password).toUpperCase()  
+                }  
+                $.ajax({  
+                    url : ctx + "/unlock.do",  
+                    type : "POST",  
+                    data : JSON.stringify(data),  
+                    dataType: 'json',  
+                    contentType:'application/json;charset=UTF-8',      
+                    success : function(result) {  
+                        console.log(result);  
+                    }  
+                }); 
+            </pre>
+            </div><!-- /.blog-main -->
+    </div>
+</div>
