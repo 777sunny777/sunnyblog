@@ -1,0 +1,18 @@
+---
+layout: default
+title: 事件event的相关属性
+category: basic
+---
+
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.target和currentTarget</p>
+            <p class="my-p">
+              比如说现在有A和B， A.addChild(B) A监听鼠标点击事件 那么当点击B时，target是B，currentTarget是A 也就是说，currentTarget始终是监听事件者，而target是事件的真正发出者event.currentTarget指向事件所绑定的元素，而event.target始终指向事件发生时的元素。
+            </p>    
+            </div><!-- /.blog-main -->
+    </div>
+</div>
