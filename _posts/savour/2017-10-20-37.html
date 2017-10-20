@@ -1,0 +1,184 @@
+---
+layout: default
+title: ES6 Demos(二) Strings and Regular Expressions(字符串与正则表达式)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">Demo1: 更好的 Unicode 支持</p>
+            <p class="my-p">这块用到很少，简单说明： 在 ES6 之前， JS 的字符串以 16 位字符编码（ UCS-2 ）为基础，然而由于Unicode 引入了扩展字符集，这就不再够用了。</p>
+            <p class="my-p">ES5原有的匹配string的方法不够用了，所以进行了几个方法的扩展。由此，ES6 为全面支持 UTF-16新增了一些方法，具体有： </p>
+            <pre>
+                //codePointAt()/String.fromCodePoint() 这两个是一对，是字符于代码点的互换
+                let text = '𠮷';
+                console.log(text.codePointAt(0)); // 134071
+                console.log(String.fromCodePoint(134071)); //𠮷
+
+                //normalize()
+
+                //ES6 为正则表达式定义了用于处理Unicode 的 u 标志
+                console.log(text.length); // 2
+                console.log(/^.$/.test(text)); // false
+                console.log(/^.$/u.test(text)); // true
+            </pre>
+            <p class="my-p my-h">Demo2: 字符串的其他改动</p>
+            <p class="my-p">1.includes() 方法，在给定文本存在于字符串中的任意位置时会返回 true ，否则返回 false</p>
+            <p class="my-p">2.startsWith() 方法，在给定文本出现在字符串起始处时返回 true ，否则返回 false</p>
+            <p class="my-p">3.endsWith() 方法，在给定文本出现在字符串结尾处时返回 true ，否则返回 false</p>
+            <p class="my-p">每个方法都接受两个参数：需要搜索的文本，以及可选的搜索起始位置索引</p>
+            <pre>
+                var msg = "Hello world!";
+                console.log(msg.startsWith("Hello")); // true
+                console.log(msg.endsWith("!")); // true
+                console.log(msg.includes("o")); // true
+                console.log(msg.startsWith("o")); // false
+                console.log(msg.endsWith("world!")); // true
+                console.log(msg.includes("x")); // false
+                console.log(msg.startsWith("o", 4)); // true
+                console.log(msg.endsWith("o", 8)); // true, 8-1（o的length）=7,从7开始往前
+                console.log(msg.includes("o", 8)); // false
+
+                //ES5
+                console.log( msg.indexOf('orl') !== -1 ) //true
+                //ES6
+                console.log( msg.includes('orl') ) //true
+            </pre>
+            <p class="my-p">4.repeat() 方法, 它接受一个参数作为字符串的重复次数</p>
+            <pre>
+                console.log("x".repeat(3)); // "xxx"
+                console.log("hello".repeat(2)); // "hellohello"
+                console.log("abc".repeat(4)); // "abcabcabcabc"
+            </pre>           
+
+            <p class="my-p my-h">Demo3: 正则表达式的其他改动</p>
+            <p class="my-p">1.正则表达式 y 标志, 不常用暂时忽略</p>
+            <p class="my-p">2.复制正则表达式</p>
+            <pre>
+                var re1 = /ab/i,
+                // ES5 中会抛出错误, ES6 中可用
+                re2 = new RegExp(re1, "g");
+                console.log(re1.toString()); // "/ab/i"
+                console.log(re2.toString()); // "/ab/g"
+            </pre>
+            <p class="my-p">3.flags属性</p>
+            <pre>
+                var re = /ab/g;
+                console.log(re.source); // "ab"
+                console.log(re.flags); // "g"
+            </pre>            
+            
+            <p class="my-p my-h">Demo4: 模板字面量(template literal)</p>
+            <p class="my-p">ES6的模板字面量（ template literal ）提供了创建领域专用语言（ domain-specific language ，DSL ）的语法</p>
+            <pre>
+                //1.模板字面量的最简单语法，是使用反引号（ ` ）来包裹普通字符串
+                let message1 = `Hello world!`;
+                console.log(message1) // Hello world!
+                //若你想在字符串中包含反引号，只需使用反斜杠（ \ ）转义即可
+                let message2 = `\`Hello\` world!`;
+                console.log(message2) // `Hello` world!
+                //2.多行字符串
+                let message3 = `Multiline
+                string`;
+                console.log(message3) 
+                // Multiline
+                // string
+
+                //反引号之内的所有空白符都是字符串的一部分，因此需要留意缩进
+                let message4 = `Multiline
+                                string`;
+                console.log(message4)
+                // Multiline
+                //                  string
+
+                //HTML 标签的缩进增强了可读性，之后再调用 trim() 方法移除了起始的空行
+                let html = `
+                <div>
+                    <h1>Title</h1>
+                </div>`.trim();
+                console.log(html)
+
+                //3.制造替换位,加变量
+                //替换位由起始的 ${ 与结束的 } 来界定，之间允许放入任意的 JS 表达式
+
+                //简单变量
+                let name = "Nicholas",
+                message5 = `Hello, ${name}.`;
+                console.log(message5); // "Hello, Nicholas."
+                //变量计算
+                let count = 10,
+                price = 0.25,
+                message6 = `${count} items cost $${(count * price).toFixed(2)}.`;
+                console.log(message6); // "10 items cost $2.50."
+                //模板嵌套
+                let name2 = "Nicholas",
+                message7 = `Hello, ${
+                `my name is ${ name2 }`
+                }.`;
+                console.log(message7); // "Hello, my name is Nicholas."
+            </pre>
+
+            <p class="my-p my-h">Demo5: 标签化模板</p>
+            <p class="my-p">标签模板其实不是模板，而是函数调用的一种特殊形式。“标签”指的就是函数，紧跟在后面的模板字符串就是它的参数。</p>
+            <pre>
+                let count4 = 10,
+                price4 = 0.25,
+                message = passthru`${count4} items cost $${(count4 * price4).toFixed(2)}.`;
+
+                function passthru(literals, ...substitutions) {
+                    // 仅使用 substitution 的元素数量来进行循环
+                    for (let i = 0; i < substitutions.length; i++) {
+                        console.log(literals[i]);
+                        console.log(substitutions[i]);
+                    }
+                    console.log(literals[literals.length - 1]);
+                }
+                //results:
+                // ''
+                // 10
+                // items cost $
+                // 2.50
+                // .
+
+                //用途1： 可以过滤 HTML 字符串，防止用户输入恶意内容
+
+                function SaferHTML(literals, ...substitutions) {
+                    let result = "";
+                    // 仅使用 substitution 的元素数量来进行循环
+                    for (let i = 0; i < substitutions.length; i++) {
+                        result += literals[i];
+                        result += substitutions[i].replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    }
+                    // 添加最后一个字面量
+                    result += literals[literals.length - 1];
+                    return result;
+                }
+                let test1 = `<script>alert("abc")</script>`;
+                let results1 = SaferHTML`<p>${test1} this is bad.</p>`;
+
+                console.log(results1);
+
+                //用途2： i18n国际化
+                function i18n(literals, ...substitutions){
+                    let result = "";
+                    let CN = ['欢迎', '您的号码是'];
+
+                    // 仅使用 substitution 的元素数量来进行循环
+                    for (let i = 0; i < substitutions.length; i++) {
+                        result += literals[i].replace(literals[i], CN[i] );
+                        result += substitutions[i];
+                    }
+                    // 添加最后一个字面量
+                    result += literals[literals.length - 1];
+                    return result;
+                }
+                let userName = `Sheldon`, userNumber = 10001;
+                let results2 = i18n`Welcome to ${userName}, your number is ${userNumber}!`;
+                console.log(results2);
+                //欢迎Sheldon您的号码是10001!
+            </pre>
+            </div><!-- /.blog-main -->
+    </div>
+</div>
