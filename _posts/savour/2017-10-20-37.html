@@ -95,9 +95,9 @@ category: savour
 
                 //HTML 标签的缩进增强了可读性，之后再调用 trim() 方法移除了起始的空行
                 let html = `
-                <div>
-                    <h1>Title</h1>
-                </div>`.trim();
+                &lt;div&gt;
+                    &lt;h1&gt;Title&lt;/h1&gt;
+                &lt;/div&gt;`.trim();
                 console.log(html)
 
                 //3.制造替换位,加变量
@@ -155,8 +155,8 @@ category: savour
                     result += literals[literals.length - 1];
                     return result;
                 }
-                let test1 = `<script>alert("abc")</script>`;
-                let results1 = SaferHTML`<p>${test1} this is bad.</p>`;
+                let test1 = `&lt;script&gt;alert("abc")&lt;/script&gt;`;
+                let results1 = SaferHTML`&lt;p&gt;${test1} this is bad.&lt;/p&gt;`;
 
                 console.log(results1);
 
