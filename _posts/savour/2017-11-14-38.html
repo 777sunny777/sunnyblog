@@ -1,0 +1,303 @@
+---
+layout: default
+title: ES6 Demos(三) Functions(函数)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">Demo1: 函数参数带默认值的写法</p>
+            <pre>
+                //ES5中比较流行的带默认值的写法：
+                function makeRequestES5(url, timeout, callback) {
+                    timeout = (typeof timeout !== "undefined") ? timeout : 2000;
+                    callback = (typeof callback !== "undefined") ? callback : function() {};
+                    // 函数的剩余部分
+
+                }
+                //a. ES6 中的参数默认值
+                function makeRequestES6(url, timeout = 2000, callback = function() {} ) {
+                    // 函数的剩余部分
+                    console.log(url);
+                    console.log(timeout);
+                }
+
+                //ES6 会认为 url 参数是必须的。而拥有默认值的两个参数都被认为是可选的。
+                makeRequestES6('sunny/');
+                // sunny/
+                // 2000
+                makeRequestES6('sunny/', 500);
+                // sunny/
+                // 500
+                makeRequestES6('sunny/', undefined); //undefined说明无传参,默认值生效
+                // sunny/
+                // 2000
+                makeRequestES6('sunny/', null); //null是有效传参
+                // sunny/
+                // null            
+            </pre>
+            <p class="my-p my-h">Demo2: arguments对象始终反映的是初始调用状态,参数默认值不算arguments对象的长度</p>
+            <pre>
+                // 非严格模式
+                function mixArgs(first, second = "b") {
+                    console.log(arguments.length); // 1, 因为mixArgs("a")调用的时候只传了一个参数
+                    console.log(first === arguments[0]); // true, 其中first和arguments[0]都是a
+                    console.log(second === arguments[1]); //false, 其中second为b，arguments[1]初始传入的是undefined
+                    first = "c";
+                    second = "d";
+
+                    //arguments 对象始终反映的是初始调用状态
+                    console.log(first === arguments[0]); //false, first is c, but arguments[0] is a
+                    console.log(second === arguments[1]); //false, second is d, but arguments[1] is undefined
+                }
+                mixArgs("a");                        
+            </pre>          
+            <p class="my-p my-h">Demo3: 参数默认值可以是一个表达式，并且可以将前面的参数作为后面参数的默认值</p>
+            <pre>
+                function getValue(value) {
+                    return value + 5;
+                }
+                function add(first, second = getValue(first)) {
+                    return first + second;
+                }
+                console.log(add(1, 1)); // 2
+                console.log(add(1)); // 7            
+            
+            </pre>          
+            <p class="my-p my-h">Demo4: 参数默认值的暂时性死区(TDZ)</p>
+            <pre>
+                function add1(first, second = first) {
+                    return first + second;
+                }
+                console.log(add1(1, 1)); // 2
+                console.log(add1(1)); // 2
+
+
+                function add2(first = second, second) {
+                    return first + second;
+                }
+                console.log(add2(1, 1)); // 2
+                console.log(add2(undefined, 1)); // error: second is not defined
+
+                //这个TDZ和let/const的TDZ是一回事，同一级别作用域中， 在let，const声明变量之前访问它，就会有TDZ上面的两个function等同于如下：
+
+                //add1(1)： 
+                let first = 1;
+                let second = first; // first传递给second的时候已经声明了
+
+                //add2(undefined, 1):
+                let first = second; // second传递给first的时候还没有声明，TDZ
+                let second = 1;             
+            
+            </pre>         
+            <p class="my-p my-h">Demo5: 剩余参数(rest parameter ...)</p>
+            <p class="my-p">剩余参数（ rest parameter ）由三个点（ ... ）与一个紧跟着的具名参数指定，它会是包含传递给函数的其余参数的一个数组，名称中的“剩余”也由此而来</p>
+            <pre>
+                function pick(object, ...keys) {
+                    let result = Object.create(null);
+                    for (let i = 0, len = keys.length; i < len; i++) {
+                        result[keys[i]] = object[keys[i]];
+                    }
+                    return result;
+                }
+            </pre> 
+            <p class="my-p">...keys是剩余参数，由三个点（ ... ）与一个紧跟着的具名参数（keys）指定</p>
+            <p class="my-p">keys 是一个包含所有在 object 之后的参数的剩余参数（这与包含所有参数的 arguments 不同，后者会连第一个参数都包含在内）。</p>
+            <pre>
+                //剩余参数受到两点限制:
+                1.一是函数只能有一个剩余参数，并且它必须被放在最后
+                2.剩余参数不能在对象字面量的 setter 属性中使用
+                set name(...value) {
+                    // 一些操作
+                }            
+            </pre> 
+            <p class="my-p my-h">Demo6: 函数构造器的增强能力</p>
+            <pre>
+                //ES5:
+                var add = new Function("first", "second", "return first + second");
+                console.log(add(1, 1)); // 2
+
+                //ES6可以为Function 构造器提供默认参数和剩余参数
+                var add = new Function("first", "second = first", "return first + second");
+                console.log(add(1, 1)); // 2
+                console.log(add(1)); // 2
+
+                var pickFirst = new Function("...args", "return args[0]");
+                console.log(pickFirst(1, 2)); // 1
+                //就我个人而言，我建议尽量少用这样的方式去定义函数           
+            
+            </pre>  
+            
+            <p class="my-p my-h">Demo7: 扩展运算符</p>
+            <p class="my-p">与剩余参数关联最密切的就是扩展运算符。剩余参数允许你把多个独立的参数合并到一个数组中；而扩展运算符则允许将一个数组分割，并将各个项作为分离的参数传给函数。</p>
+            <pre>
+                var array1 = [3,6,9,1];
+                Math.max(array1); //print NaN，你不能直接传一个数组进去，必须是多个参数
+
+                //ES5 获取最大值
+                let values = [25, 50, 75, 100]
+                console.log(Math.max.apply(Math, values)); // 100
+
+                // 利用apply劫持Math.max方法传入数组中的值进行比较计算，apply第二个参数本身就是一个数组
+                // http://777sunny777.github.io/sunnyblog/basic/2017/02/13/40.html
+
+                //ES6 
+                let values = [25, 50, 75, 100]
+                // 等价于 console.log(Math.max(25, 50, 75, 100));
+                console.log(Math.max(...values)); // 100            
+            
+            </pre>  
+            <p class="my-p my-h">Demo8: ES6 的名称属性</p>
+            <pre>
+                //ES6 给所有函数添加了name属性
+                function doSomething() { }
+                console.log(doSomething.name); //doSomething
+                //名称属性的特殊情况
+                var doSomething22 = function doSomething2() { };
+                console.log(doSomething22.name); //doSomething2, doSomething2的优先级高于doSomething22
+
+                var doSomething3 = function() { };
+                console.log(doSomething3.bind().name); // bound doSomething3, 绑定产生的函数拥有原函数的名称，并总会附带 "bound" 前缀
+                console.log((new Function()).name); // anonymous, 而使用 Function 构造器创建的函数，其名称属性为 "anonymous"
+            </pre>  
+            <p class="my-p">需要注意的是，函数的 name 属性值未必会关联到同名变量。 name 属性是为了在调试时获得有用的相关信息，所以不能用 name 属性值去获取对函数的引用。</p>
+            
+            <p class="my-p my-h">Demo9: 判断函数如何被调用</p>
+            <pre>
+                //ES5, 最流行的方式是使用instanceof
+                function Person(name) {
+                    if (this instanceof Person) {
+                        this.name = name; // 使用 new
+                    } else {
+                        throw new Error("You must use new with Person.")
+                    }
+                }
+                var person = new Person("Nicholas");
+                var notAPerson = Person("Nicholas"); // error: You must use new with Person.
+                var notAPerson2 = Person.call(person, "Michael"); // it's work without new
+
+                //ES6, 用new.target 元属性
+                function Person(name) {
+                    if (typeof new.target !== "undefined") {
+                        this.name = name; // 使用 new
+                    } else {
+                        throw new Error("You must use new with Person.")
+                    }
+                }
+                var person = new Person("Nicholas");
+                var notAPerson = Person.call(person, "Michael"); // 出错！
+            </pre>  
+            <p class="my-p">使用 new.target 而非 this instanceof Person ， Person 构造器会在未使用 new 调用时正确地抛出错误。在函数之外使用 new.target 会有语法错误</p>
+            
+            <p class="my-p my-h">Demo10: 决定何时使用块级函数</p>
+            <p class="my-p">ES6严格模式下： 块级函数与 let 函数表达式相似，在执行流跳出定义所在的代码块之后，函数定义就会被移除。关键区别在于：块级函数会被提升到所在代码块的顶部；而使用 let 的函数表达式则不会。</p>
+            <pre>
+                "use strict";
+                if (true) {
+
+                    //除了块级这个概念，其他和ES5一致的，函数表达式没有声明提前，函数声明有声明提前
+                    //console.log(typeof doSomething); // error:　doSomething is not defined (TDZ)
+
+                    let doSomething = function () {
+                        console.log('successful!')
+                    }
+                    console.log(typeof doSomething); //function
+                    doSomething();
+
+                }
+                console.log(typeof doSomething); //undefined
+            </pre>  
+            <p class="my-p">ES6 在非严格模式下同样允许使用块级函数，但行为有细微不同。块级函数的作用域会被提升到所在函数或全局环境的顶部，而不是代码块的顶部。</p>
+            <p class="my-p my-h">Demo11: 箭头函数</p>
+            <p class="my-p my-h">a: 箭头函数语法</p>
+            <pre>
+                var 函数名 = (参数区) => {函数体}； 
+
+                //1.单参数
+                var reflect = value => value;
+                // 有效等价于：
+                var reflect = function(value) {
+                    return value;
+                };
+
+                //2.多个参数，要带()
+                var sum = (num1, num2) => num1 + num2;
+                // 有效等价于：
+                var sum = function(num1, num2) {
+                    return num1 + num2;
+                };
+
+                //3.没有参数，要带()
+                var getName = () => "Nicholas";
+                // 有效等价于：
+                var getName = function() {
+                    return "Nicholas";
+                };
+
+                //4.写全函数体
+                var sum = (num1, num2) => {
+                    return num1 + num2;
+                };
+
+                //5.返回的是一个obj，函数体外要加()
+                var getTempItem = id => ({ id: id, name: "Temp" });
+                // 有效等价于：
+                var getTempItem = function(id) {
+                    return {
+                        id: id,
+                        name: "Temp"
+                    };
+                };            
+            </pre>
+            <p class="my-p my-h">b: 不允许重复的具名参数</p>
+            <pre>
+                var testArrow1 = (test1, test1) => {
+                    return test1;
+                };
+                //error: Duplicate parameter name not allowed in this context           
+            
+            </pre>
+            <p class="my-p my-h">c: 创建立即调用函数表达式</p>
+            <pre>
+                var testArrow2 = ((test1, test2) => {
+                    return test1;
+                })(1, 2);
+
+                console.log( testArrow2 ); // 1
+
+                //使用传统函数时， (function(){/*函数体*/})(); 与 (function(){/*函数体*/}()); 这两种方式都是可行的。
+                //但若使用箭头函数，则只有下面的写法是有效的： (() => {/*函数体*/})();        
+            </pre>
+            <p class="my-p my-h">d: 不能更改this</p>
+            <p class="my-p">意味着箭头函数内部的 this 值只能通过查找作用域链来确定。如果箭头函数被包含在一个非箭头函数内，那么 this 值就会与该函数的相等；否则，this 值就会是全局对象（在浏览器中是 window ，在 nodejs 中是 global ）</p>
+            <p class="my-p">由于箭头函数的 this 值由包含它的函数决定，因此不能使用 call() 、 apply()或 bind() 方法来改变其 this 值。</p>
+            <p class="my-p my-h">e: 不能被使用 new 调用, 没有原型</p>
+            <pre>
+                var MyType = () => {},
+                object = new MyType(); // 错误：你不能对箭头函数使用 'new'        
+            </pre>
+            <p class="my-p my-h">f: 箭头函数与数组, 可优化的匿名函数写法</p>
+            <pre>
+                var result = values.sort(function(a, b) {
+                    return a - b;
+                });
+                //使用了箭头函数的更简洁版本：
+                var result = values.sort((a, b) => a - b);        
+            </pre>
+            <p class="my-p">能使用回调函数的数组方法（例如 sort() 、 map() 与 reduce() 方法），都能从箭头函数的简洁语法中获得收益，它将看似复杂的需求转换为简单的代码。</p>
+            <p class="my-p my-h">g: 没有 arguments 绑定</p>
+            <pre>
+                //尽管箭头函数没有自己的 arguments 对象，但仍然能访问包含它的函数的 arguments 对象
+                function createArrowFunctionReturningFirstArg() {
+                    return () => arguments[0];
+                }         
+            </pre>              
+            <p class="my-p my-h">h: 尾调用优化(暂略)</p>
+            <p class="my-p">尾调用优化允许某些函数的调用被优化，以保持更小的调用栈、使用更少的内存，并防止堆栈溢出。当能进行安全优化时，它会由引擎自动应用。不过你可以考虑重写递归函数，以便能够利用这种优化。</p>
+           
+            
+            </div><!-- /.blog-main -->
+    </div>
+</div>
