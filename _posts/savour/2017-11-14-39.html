@@ -1,0 +1,202 @@
+---
+layout: default
+title: ES6 Demos(四) Expanded Object Functionality(扩展的对象功能)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">Demo1: 键/值对同名写一个</p>
+            <pre>
+                //ES5
+                function createPerson(name, age) {
+                    return {
+                        name: name,
+                        age: age
+                    };
+                }
+                var person = createPerson('sunny', 13);
+                console.log( person );
+
+                //ES6
+                function createPerson2(name, age) {
+                    return {
+                        name,
+                        age
+                    };
+                }
+                var person2 = createPerson2('sunny777', 13);
+                console.log( person2 );         
+            </pre>
+            
+            <p class="my-p my-h">Demo2: 方法简写</p>
+            <pre>
+                //ES5
+                var person = {
+                    name: "Nicholas",
+                    sayName: function() {
+                        console.log(this.name);
+                    }
+                };
+                //ES6, React里面经常有这样的写法sayName前面不需要有key
+                //这种速记语法也被称为方法简写语法（ concise method syntax ）
+                var person = {
+                    name: "Nicholas",
+                    sayName() {
+                        console.log(this.name);
+                    }
+                };      
+            </pre>
+
+            <p class="my-p my-h">Demo3: 增加了可以计算的属性名</p>
+            <pre>
+                var suffix = " name";
+                var person = {
+                    ["first" + suffix]: "Nicholas",
+                    ["last" + suffix]: "Zakas"
+                };
+                console.log(person["first name"]); // "Nicholas"
+                console.log(person["last name"]); // "Zakas          
+            </pre>
+
+            <p class="my-p my-h">Demo4: 新的方法</p>
+            <pre>
+                Object.is() 方法
+
+                console.log(+0 == -0); // true
+                console.log(+0 === -0); // true
+                console.log(Object.is(+0, -0)); // false
+                console.log(NaN == NaN); // false
+                console.log(NaN === NaN); // false
+                console.log(Object.is(NaN, NaN)); // true
+                console.log(5 == 5); // true
+                console.log(5 == "5"); // true
+                console.log(5 === 5); // true
+                console.log(5 === "5"); // false
+                console.log(Object.is(5, 5)); // true
+                console.log(Object.is(5, "5")); // false
+
+                // 在许多情况下， Object.is() 的结果与 === 运算符是相同的，仅有的例外是：它会认为
+                // +0 与 -0 不相等，而且 NaN 等于 NaN 。不过仍然没必要停止使用严格相等运算符，选
+                // 择 Object.is() ，还是选择 == 或 === ，取决于代码的实际情况。
+
+                Object.assign() 方法 (有点难，暂略)            
+            </pre>
+            
+            <p class="my-p my-h">Demo5: 重复的对象字面量属性</p>
+            <pre>
+                "use strict";
+                var person = {
+                    name: "Nicholas",
+                    name: "Greg" // 在 ES6 严格模式中不会出错
+                };
+                console.log(person.name); // "Greg"        
+            </pre>
+
+            <p class="my-p my-h">Demo6: 改变了自有属性的枚举顺序(影响小，暂略)</p>
+            <p class="my-p my-h">Demo7: 更强大的原型</p>
+            <p class="my-p">修改对象的原型, ES6 添加 Object.setPrototypeOf() 方法</p>
+            <pre>
+                let person = {
+                    getGreeting() {
+                        return "Hello";
+                    }
+                };
+                let dog = {
+                    getGreeting() {
+                        return "Woof";
+                    }
+                };
+                // 原型为 person
+                let friend = Object.create(person);
+                console.log(friend.getGreeting()); // "Hello"
+                console.log(Object.getPrototypeOf(friend) === person); // true
+                // 将原型设置为 dog
+                Object.setPrototypeOf(friend, dog);
+                console.log(friend.getGreeting()); // "Woof"
+                console.log(Object.getPrototypeOf(friend) === dog); // true          
+            </pre>
+            <p class="my-p">ES6 引入super, 它是指向当前对象的原型的一个指针</p>
+            <pre>
+                let friend1 = {
+                    getGreeting() { //写的方法之内
+                        return super.getGreeting() + ", hi!";
+                        //这个super指的是去调用friend的原型中的getGreeting方法
+                    }
+                };
+
+                // 你能使用 super 引用来调用对象原型上的任何方法，只要这个引用是位于简写的方法之内。
+                // 试图在方法简写之外的情况使用 super 会导致语法错误
+                let friend2 = {
+                    getGreeting: function() {  //function是键值对，里面不能用super
+
+                    // error： 'super' keyword unexpected here
+                    return super.getGreeting() + ", hi!";
+                    }
+                };
+
+                //对于多级继承super总是可以找到根源，不管中间继承了多少级
+                let person3 = {
+                    getGreeting() {
+                        return "Hello";
+                    }
+                };
+                // 原型为 person
+                let friend3 = {
+                    getGreeting() {
+                        return super.getGreeting() + ", hi!";
+                    }
+                };
+
+                Object.setPrototypeOf(friend3, person3); //friend3的原型设置为person3
+
+                // 原型为 friend
+                let relative3 = Object.create(friend3); //relative3的原型初始设置为friend3
+
+                console.log(person3.getGreeting()); // "Hello"
+                console.log(friend3.getGreeting()); // "Hello, hi!"
+                console.log(relative3.getGreeting()); // "Hello, hi!" 
+                //即使relative3的原型是friend3，但super可以直接找到person3，不管有多少对象继承了此方法
+
+            </pre>            
+            
+            <p class="my-p my-h">Demo8: ES6 则正式做出了定义：方法是一个拥有 [[HomeObject]] 内部属性的函数，此内部属性指向该方法所属的对象。</p>
+            <p class="my-p">个人认为需要记住的有两个：</p>
+            <p class="my-p">1.普通函数不是方法</p>
+            <p class="my-p">2.普通函数不能用super，能用super的一定是方法/p>
+            <pre>
+                let person = {
+                    // 方法
+                    getGreeting() {
+                        return "Hello";
+                    }
+                };
+
+                // 并非方法
+                function shareGreeting() {
+                    return "Hi!";
+                }
+
+                //下面这个friend2是不是方法？ 我觉的是方法，但是不能用super
+                let friend2 = {
+                    getGreeting: function() {  //function是键值对，里面不能用super
+
+                    // error： 'super' keyword unexpected here
+                    return super.getGreeting() + ", hi!";
+                    }
+                };          
+            </pre>
+            
+            <p class="my-p my-h">总结:</p>
+            <p class="my-p">1.JS是基于对象的， ES6 对它进行了一些有益改进，让它更易用并且更加强大。</p>
+            <p class="my-p">2.ES6 为对象字面量做了几个改进。速记法属性定义能够更轻易地将作用域内的变量赋值给对象的同名属性；需计算属性名允许你将非字面量的值指定为属性的名称，就像此前在其他场合的用法那样；方法简写让你在对象字面量中定义方法时能省略冒号和 function 关键字，从而减少输入的字符数； ES6 还舍弃了对象字面量中重复属性名的检查，意味着你可以在一个对象字面量中书写两个同名属性，而不会抛出错误。</p>
+            <p class="my-p">3.Object.assign() 方法使得一次性更改单个对象的多个属性变得更加容易，这在你使用混入模式时非常有用。 Object.is() 方法对任何值都会执行严格相等比较，当在处理特殊的 JS 值时，它有效成为了 === 的一个更安全的替代品。</p>
+            <p class="my-p">4.对象自有属性的枚举顺序在 ES6 中被明确定义了。在枚举属性时，数字类型的键总是会首先出现，并按升序排列，此后是字符串类型的键，最后是符号类型的键，后两者都分别按添加顺序排列。</p>
+            <p class="my-p">5.感谢 ES6 的 Object.setPrototypeOf() 方法，现在能够在对象已被创建之后更改它的原型了。</p>
+            <p class="my-p">6.最后，你能用 super 关键字来调用对象原型上的方法，所调用的方法会被设置好其内部的this 绑定，以自动使用该 this 值来进行工作。</p>
+            
+        </div><!-- /.blog-main -->
+    </div>
+</div>
