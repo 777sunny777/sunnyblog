@@ -1,0 +1,279 @@
+---
+layout: default
+title: ES6 Demos(五) Destructuring for Easier Data Access(解构：更方便的数据访问)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.对象解构</p>
+            
+            <p class="my-p my-h">Demo1-1: ES6对象解构基本语法 </p>
+            <pre>
+                //对象解构语法在赋值语句的左侧使用了对象字面量
+                let node = {
+                    type: "Identifier",
+                    name: "foo"
+                };
+                let { type, name } = node;
+                console.log(type); // "Identifier"
+                console.log(name); // "foo"
+
+
+                let { type, name } = node; 结构方式中，左边叫对象字面两，右边叫初始化器
+                这个语句等同于如下：
+                let type = node.type;
+                let name = node.name;
+                //还是赋值给了局部变量的                      
+            </pre>
+            <p class="my-p my-h">Demo1-2: 如何给已存在的变量赋新值？</p>
+            <pre>
+                let type = "Literal";
+                let name = 5;
+
+                //...
+
+                let node = {
+                    type: "Identifier",
+                    name: "foo"
+                };
+
+                // 使用解构来分配不同的值
+                ({ type, name } = node); //给已存在的变量赋新值
+                //要注意这个地方一定要在外面加一个()
+
+                console.log(type); // "Identifier"
+                console.log(name); // "foo"                       
+            </pre>
+            <p class="my-p my-h">Demo1-3: 如果变量和对象中的键值对应不上会怎样？ 如何给对不上的变量一个默认值？</p>
+            <pre>
+                let node = {
+                    test1: 'test1',
+                    test2: 777
+                };
+
+                let {test1, test2, test3} = node;
+
+                console.log(test1) // test1
+                console.log(test2) // 777
+                console.log(test3) //undefined
+
+                //可见test3对不上，其值就为undefined
+
+                //如果对不上的时候希望给一个默认值
+
+
+                let {test1, test2, test3 = 'sunny' } = node;
+
+                console.log(test1) // test1
+                console.log(test2) // 777
+                console.log(test3) // sunny                       
+            </pre>
+            <p class="my-p my-h">Demo1-4: 如果想用一个不一样的名字呢？</p>
+            <pre>
+                let node = {
+                    type: "Identifier",
+                    name: "foo"
+                };
+                let { type: localType, name: localName } = node;
+                console.log(localType); // "Identifier"
+                console.log(localName); // "foo"                       
+            </pre>
+            <p class="my-p my-h">Demo1-5: 如何给对不上的变量别名后添加默认值？</p>
+            <pre>
+                let node = {
+                    type: "Identifier"
+                };
+                let { type: localType, name: localName = "bar" } = node;
+
+                console.log(localType); // "Identifier"
+                console.log(localName); // "bar"                       
+            </pre>
+            <p class="my-p my-h">Demo1-6:如何获取嵌套对象中的值？</p>
+            <pre>
+                let node = {
+                    type: "Identifier",
+                    name: "foo",
+                    loc: {
+                        start: {
+                            line: 1,
+                            column: 1
+                        },
+                        end: {
+                            line: 1,
+                            column: 4
+                        }
+                    }
+                };
+
+                let { loc: { start }} = node;
+                let { loc: { start: localStart }} = node; //你也可以给嵌套的对象一个变量别名
+                let { loc: { mid: localMid = 222 }} = node; //
+
+                console.log(localMid); // 222                       
+            </pre>
+            
+            <p class="my-p my-h">2.数组解构，数组结构和对象结构大体一样</p>
+            <p class="my-p my-h">Demo2-1: 数组解构基本语法</p>
+            <pre>
+                let colors = [ "red", "green", "blue" ];
+                let [ firstColor, secondColor ] = colors;
+
+                console.log(firstColor); // "red"
+                console.log(secondColor); // "green"
+
+                //只想获取数组中的第三个元素
+                let colors = [ "red", "green", "blue" ];
+                let [ , , thirdColor ] = colors;
+
+                console.log(thirdColor); // "blue"                       
+            </pre>
+            
+            <p class="my-p my-h">Demo2-2: 如何给已存在的变量赋新值？</p>
+            <pre>
+                let colors = [ "red", "green", "blue" ],
+                    firstColor = "black",
+                    secondColor = "purple";
+
+                [ firstColor, secondColor ] = colors; //与对象解构不同，不必将表达式包含在圆括号内
+
+                console.log(firstColor); // "red"
+                console.log(secondColor); // "green"                       
+            </pre>
+            <p class="my-p my-h">Demo2-3: 数组解构赋值有一个非常独特的用例，能轻易地互换两个变量的值</p>
+            <pre>
+                // 在 ES6 中互换值
+                let a = 1,
+                    b = 2;
+
+                [ a, b ] = [ b, a ];
+
+                console.log(a); // 2
+                console.log(b); // 1                       
+            </pre>
+            <p class="my-p my-h">Demo2-4: 数组解构赋值同样允许在数组任意位置指定默认值。当指定位置的项不存在、或其值为undefined</p>
+            <pre>
+                let colors = [ "red" ];
+                let [ firstColor, secondColor = "green" ] = colors;
+
+                console.log(firstColor); // "red"
+                console.log(secondColor); // "green"                       
+            </pre>
+            <p class="my-p my-h">Demo2-5: 嵌套的解构</p>
+            <pre>
+                let colors = [ "red", [ "green", "lightgreen" ], "blue" ];
+                // 随后
+                let [ firstColor, [ secondColor ] ] = colors;
+
+                console.log(firstColor); // "red"
+                console.log(secondColor); // "green"                       
+            </pre>
+            <p class="my-p my-h">Demo2-6: 剩余项(特有)</p>
+            <pre>
+                let colors = [ "red", "green", "blue" ];
+                let [ firstColor, ...restColors ] = colors;
+                console.log(firstColor); // "red"
+
+                console.log(restColors.length); // 2
+                console.log(restColors[0]); // "green"
+                console.log(restColors[1]); // "blue"                      
+            </pre>
+            <p class="my-p my-h">Demo2-7: 利用剩余项克隆数组</p>
+            <pre>
+                // 在 ES5 中克隆数组
+                var colors = [ "red", "green", "blue" ];
+                var clonedColors = colors.concat();
+                console.log(clonedColors); //"[red,green,blue]"
+
+
+                // 在 ES6 中克隆数组 (学习这个技巧)
+                let colors = [ "red", "green", "blue" ];
+                let [ ...clonedColors ] = colors;
+                console.log(clonedColors); //"[red,green,blue]"                       
+            </pre>
+            <p class="my-p my-h">3.混合解构</p>
+            <pre>
+                let node = {
+                    type: "Identifier",
+                    name: "foo",
+                    loc: {
+                        start: {
+                            line: 1,
+                            column: 1
+                        },
+                        end: {
+                            line: 1,
+                            column: 4
+                        }
+                    },
+                    range: [0, 3]
+                };
+
+                let {
+                    loc: { start },
+                    range: [ startIndex ]
+                } = node;
+                //左边的对象字面量是可以混合嵌套的，我们可以只取到node的局部，赋值给变量而不需要遍历node的整个结构
+
+                console.log(start.line); // 1
+                console.log(start.column); // 1
+                console.log(startIndex); // 0                       
+            </pre>
+            
+            <p class="my-p my-h">4.参数解构</p>
+            <pre>
+                //这是一个带默认值的参数结构方式
+
+                function setCookie(name, value,
+                    {
+                        secure = false,
+                        path = "/",  //添加默认值是很好的习惯
+                        domain = "example.com",
+                        expires = new Date(Date.now() + 360000000)
+                    } = {} //这个默认值是必须的，如果没有结构的时候就会出现 {t1, t2} = undefined 的情况会报错
+
+                ) {
+                    // console.log(secure);
+                    // console.log(path);
+                    // console.log(domain);
+                    // console.log(expires);
+                }
+
+                setCookie("type", "js", {
+                    secure: true,
+                    expires: 60000
+                });
+
+
+                //多说一句，这个参数结构类似于如下：
+
+                let node = {
+                    secure: true,
+                    expires: 60000
+                };
+
+                let {
+                    secure = false,
+                    path = "/",  //添加默认值是很好的习惯
+                    domain = "example.com",
+                    expires = new Date(Date.now() + 360000000)
+                } = node;
+
+                console.log(secure);
+                console.log(path);
+                console.log(domain);
+                console.log(expires);
+
+                //以及函数默认值的集合
+
+                function test1(c1, c2, c3 = 777 ){
+                    console.log(c3)
+                }
+                test1(555, 666)                       
+            </pre>
+            
+         </div><!-- /.blog-main -->
+    </div>
+</div>
