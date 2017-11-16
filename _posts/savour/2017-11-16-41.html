@@ -1,0 +1,67 @@
+---
+layout: default
+title: ES6 Demos(六) Symbols and Symbol Properties(符号与符号属性)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">总体上感觉这章的用处还没有完善，所以暂时只记录如下几个知识点</p>
+            
+            <p class="my-p">1.Symbol是ES6新引入的原始数据类型，之前的原始数据类型有五个： string，number，boolean，null，undefined</p>
+            <p class="my-p">2.下面是摘自阮一峰的ES6引入Symbol的原因：ES5 的对象属性名都是字符串，这容易造成属性名的冲突。比如，你使用了一个他人提供的对象，但又想为这个对象添加新的方法（mixin 模式），新方法的名字就有可能与现有方法产生冲突。如果有一种机制，保证每个属性的名字都是独一无二的就好了，这样就从根本上防止属性名的冲突。这就是 ES6 引入Symbol的原因。</p>
+            <p class="my-p">3.Symbol，表示独一无二的值</p>
+
+            <p class="my-p my-h">Demo1: 作为属性名的Symbol</p>
+            <pre>
+                let mySymbol = Symbol();
+
+                //使用 Symbol 值定义属性时，Symbol 值必须放在方括号之中。
+                //如果s不放在方括号中，该属性的键名就是字符串s，而不是s所代表的那个 Symbol 值
+
+                let a = {
+                  [mySymbol]: 'Hello!'
+                };
+
+                console.log( a[mySymbol] ) //Hello!
+                //a.[mySymbol] 或 a.[mySymbol]都是不行的
+
+
+                a.test1 = 'test1';
+                console.log( a.test1 )
+
+                a.mySymbol = 'add mySymbol';
+                console.log( a.mySymbol ) //'add mySymbol', 这种方式不是Symbol ，是string
+
+                a.test1 = 'add test1';
+                console.log( a.test1 ) // add test1, 此时的test1已经被覆盖了
+
+
+                let mySymbol2 = Symbol();
+                a[mySymbol2] = 'add Symbol2';
+                console.log( a[mySymbol2] ) //add Symbol2, 这种方式是新加一个Symbol
+
+                console.log( a )
+                //由于每一个 Symbol 值都是不相等的，这意味着 Symbol 值可以作为标识符，用于对象的属性名，就能保证不会出现同名的属性。这对于一个对象由多个模块构成的情况非常有用，能防止某一个键被不小心改写或覆盖。
+
+                //你可以体会一下，obj中Symbol()的值有两个，但是都是不同的，你就不能相互覆盖了
+
+                // {
+                //     mySymbol: "add mySymbol",
+                //     test1: "add test1",
+                //     Symbol(): "Hello!",
+                //     Symbol(): "add Symbol2"
+                // }
+
+                console.log( typeof mySymbol )  //symbol
+                console.log( typeof mySymbol2 ) //symbol
+                console.log( mySymbol === mySymbol2 ) //false
+
+                //所以你可以像mySymbol2那样添加属性或方法，而不用担心被覆盖或覆盖别人            
+            </pre>
+            
+         </div><!-- /.blog-main -->
+    </div>
+</div>
