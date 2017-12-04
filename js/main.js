@@ -58,7 +58,7 @@ $(function () {
                 }, {
                     name: '2018',
                     y: 0,
-                    drilldown: '2017'
+                    drilldown: '2018'
                 }]
             }],
             drilldown: {
