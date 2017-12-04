@@ -1,0 +1,266 @@
+---
+layout: default
+title: ES6 Demos(八) Iterators and Generators(迭代器与生成器)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+
+            <p class="my-p my-h">Demo1: 何为迭代器？</p>
+            <p class="my-p">迭代器是被设计专用于迭代的对象，带有特定接口</p>
+            <pre>
+                //在 ES5 中创建一个迭代器
+
+                function createIterator(items) {
+                    var i = 0;
+                    return {
+                        next: function() {
+                            var done = (i >= items.length);
+                            var value = !done ? items[i++] : undefined;
+                            return {
+                                done: done,
+                                value: value
+                            };
+                        }
+                    };
+                }
+
+                var iterator = createIterator([1, 2, 3]);
+
+                console.log(iterator.next()); // "{ value: 1, done: false }"
+                console.log(iterator.next()); // "{ value: 2, done: false }"
+                console.log(iterator.next()); // "{ value: 3, done: false }"
+                console.log(iterator.next()); // "{ value: undefined, done: true }"
+
+                // 之后的所有调用
+                console.log(iterator.next()); // "{ value: undefined, done: true }"                
+            </pre>
+
+            <p class="my-p my-h">Demo2: 何为生成器？</p>
+            <p class="my-p">生成器（ generator ）是能返回一个迭代器的函数。生成器函数由放在 function 关键字之后的一个星号（ * ）来表示，并能使用新的 yield 关键字。</p>
+            <pre>
+                //Demo1是ES5创建的一个迭代器，在ES6中提供了生成器， 用于生成迭代器
+
+                // 生成器
+                function *createIterator() {
+                    yield 1;
+                    yield 2;
+                    yield 3;
+                }
+
+                // 生成器能像正规函数那样被调用，但会返回一个迭代器
+                let iterator = createIterator();
+
+                console.log(iterator.next().value); // 1
+                console.log(iterator.next().value); // 2
+                console.log(iterator.next().value); // 3
+                console.log(iterator.next()); // "{ value: undefined, done: true }"
+
+
+                //yield 关键字只能用在生成器内部，用于其他任意位置都是语法错误，即使在生成器内部的函数中也不行
+
+
+                function *createIterator(items) {
+                    items.forEach(function(item) {
+                        // 语法错误 Uncaught SyntaxError: Unexpected identifier
+                        yield item + 1;
+                    });
+                }                
+            </pre>           
+  
+            <p class="my-p my-h">Demo3: 生成器函数表达式 </p>
+            <pre>
+                //除了用函数声明，还可用函数表达式来定义生成器，不能将箭头函数创建为生成器。
+
+                let createIterator = function *(items) {
+                    for (let i = 0; i < items.length; i++) {
+                        yield items[i];
+                    }
+                };
+
+                let iterator = createIterator([1, 2, 3]);
+                console.log(iterator.next()); // "{ value: 1, done: false }"
+                console.log(iterator.next()); // "{ value: 2, done: false }"
+                console.log(iterator.next()); // "{ value: 3, done: false }"
+                console.log(iterator.next()); // "{ value: undefined, done: true }"
+
+                // 之后的所有调用
+                console.log(iterator.next()); // "{ value: undefined, done: true }"
+
+
+
+                //也可以将生成器定义为对象的方法
+                var o = {
+                    createIterator: function *(items) {
+                        for (let i = 0; i < items.length; i++) {
+                            yield items[i];
+                        }
+                    }
+                };                
+            </pre>
+            
+            <p class="my-p my-h">Demo4: for-of 循环 </p>
+            <p class="my-p">ES6 中，所有的集合对象（数组、 Set 与 Map ）以及字符串都是可迭代对象，因此它们都被指定了默认的迭代器。默认的迭代器可与for-of循环结合使用，好处于for对比，不需要考虑下标溢出的问题在不可迭代对象、 null 或 undefined 上使用 for-of 语句，会抛出错误。</p>
+            <pre>
+                let values = [1, 2, 3];
+                for (var num of values) {
+                    console.log(num);
+                }
+
+                console.log(num);
+
+                //输出： 1,2,3,3
+
+
+                for (var i = 0; i < values.length; i++) {
+                    console.log( values[i] );
+                };
+
+                console.log( values[i] );
+
+                //输出： 1,2,3,undefined                
+            </pre>   
+            
+            <p class="my-p my-h">Demo5: 访问默认迭代器</p>
+            <pre>
+                //你可以使用 Symbol.iterator 来访问对象上的默认迭代器
+
+
+                let values = [1, 2, 3];
+                let iterator = values[Symbol.iterator]();
+                console.log(iterator.next()); // "{ value: 1, done: false }"
+                console.log(iterator.next()); // "{ value: 2, done: false }"
+                console.log(iterator.next()); // "{ value: 3, done: false }"
+                console.log(iterator.next()); // "{ value: undefined, done: true }"
+                //此代码获取了 values 数组的默认迭代器，并用它来迭代数组中的项。
+
+
+                //你可以使用它来检测一个对象是否能进行迭代
+
+                function isIterable(object) {
+                    return typeof object[Symbol.iterator] === "function";
+                }
+                console.log(isIterable([1, 2, 3])); // true
+                console.log(isIterable("Hello")); // true
+                console.log(isIterable(new Map())); // true
+                console.log(isIterable(new Set())); // true
+                console.log(isIterable(new WeakMap())); // false
+                console.log(isIterable(new WeakSet())); // false                
+            </pre>
+            
+            <p class="my-p my-h">Demo6: 内置的迭代</p>
+            <p class="my-p">1.集合的迭代器，ES6 具有三种集合对象类型：数组、 Map 与 Set 。这三种类型都拥有如下的迭代器，有助于探索它们的内容：</p>
+            <p class="my-p">entries() ：返回一个包含键值对的迭代器；</p>
+            <p class="my-p">values() ：返回一个包含集合中的值的迭代器；</p>
+            <p class="my-p">keys() ：返回一个包含集合中的键的迭代器。</p>
+            <pre>
+                // 你可以调用上述方法之一来提取集合中的迭代器。
+
+                let colors = [ "red", "green", "blue" ];
+                let tracking = new Set([1234, 5678, 9012]);
+                let data = new Map();
+                data.set("title", "Understanding ES6");
+                data.set("format", "ebook");
+
+                for (let entry of colors.entries()) {
+                    console.log(entry);
+                }
+                for (let entry of tracking.entries()) {
+                    console.log(entry);
+                }
+                for (let entry of data.entries()) {
+                    console.log(entry);
+                }
+
+                //调用 console.log() 输出了以下内容：
+
+                [0, "red"]
+                [1, "green"]
+                [2, "blue"]
+                [1234, 1234]
+                [5678, 5678]
+                [9012, 9012]
+                ["title", "Understanding ES6"]
+                ["format", "ebook"]                
+            </pre>
+            
+            <p class="my-p my-h">Demo7: 迭代器高级功能</p>
+            <pre>
+                //1.传递参数给迭代器
+
+                function *createIterator() {
+                    let first = yield 1;
+                    let second = yield first + 2; // 4 + 2
+                    yield second + 3; // 5 + 3
+                }
+
+                let iterator = createIterator();
+                console.log(iterator.next()); // "{ value: 1, done: false }"
+                console.log(iterator.next(4)); // "{ value: 6, done: false }"
+                console.log(iterator.next(5)); // "{ value: 8, done: false }"
+                console.log(iterator.next()); // "{ value: undefined, done: true }"
+
+
+                //2.生成器的 Return 语句
+
+                function *createIterator() {
+                    yield 1;
+                    return;
+                    yield 2;
+                    yield 3;
+                }
+
+                let iterator = createIterator();
+
+                console.log(iterator.next()); // "{ value: 1, done: false }"
+                console.log(iterator.next()); // "{ value: undefined, done: true }"
+
+                // 此代码中的生成器在一个 yield 语句后跟随了一个 return 语句。这个 return 表明将不
+                // 会再有任何值，也因此剩余的 yield 语句就不会再执行（它们是不可到达的）。
+
+                //你也可以指定一个返回值，会被用于最终返回的结果对象中的 value 字段。例如：
+
+                function *createIterator() {
+                    yield 1;
+                    return 42;
+                }
+                let iterator = createIterator();
+                console.log(iterator.next()); // "{ value: 1, done: false }"
+                console.log(iterator.next()); // "{ value: 42, done: true }"
+                console.log(iterator.next()); // "{ value: undefined, done: true }"
+
+
+                //3.生成器委托
+
+                function *createNumberIterator() {
+                    yield 1;
+                    yield 2;
+                }
+                function *createColorIterator() {
+                    yield "red";
+                    yield "green";
+                }
+                function *createCombinedIterator() {
+                    yield *createNumberIterator();
+                    yield *createColorIterator();
+                    yield true;
+                }
+
+                var iterator = createCombinedIterator();
+
+                console.log(iterator.next()); // "{ value: 1, done: false }"
+                console.log(iterator.next()); // "{ value: 2, done: false }"
+                console.log(iterator.next()); // "{ value: "red", done: false }"
+                console.log(iterator.next()); // "{ value: "green", done: false }"
+                console.log(iterator.next()); // "{ value: true, done: false }"
+                console.log(iterator.next()); // "{ value: undefined, done: true }"
+
+                //4.异步任务运行 (暂略，promise 提供了更强有力的方式来调度异步任务)               
+            </pre>
+
+         </div><!-- /.blog-main -->
+    </div>
+</div>
