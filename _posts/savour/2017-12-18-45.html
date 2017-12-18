@@ -1,0 +1,129 @@
+---
+layout: default
+title: ES6 Demos(十) Improved Array Capabilities(增强的数组功能)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">Demo1: 创建数组，ES6 新增了 Array.of() 与 Array.from() 方法</p>
+            <p class="my-p my-h">Demo1-1： Array.of() 方法</p>
+            <p class="my-p">Array.of方法类似于使用数组字面量写法,但是避免了Array写法上的混乱</p>
+            <p class="my-p">Array写法上的混乱,其实我觉得也还好，主要是传new Array(2)这种数值的时候，他会解析成array的length而非array的项</p>
+            <pre>            
+
+                let items = new Array(2);
+                console.log(items.length); // 2
+                console.log(items[0]); // undefined
+                console.log(items[1]); // undefined
+
+                items = new Array("2");
+                console.log(items.length); // 1
+                console.log(items[0]); // "2"
+
+                items = new Array(1, 2);
+                console.log(items.length); // 2
+                console.log(items[0]); // 1
+                console.log(items[1]); // 2
+
+                items = new Array(3, "2");
+                console.log(items.length); // 2
+                console.log(items[0]); // 3
+                console.log(items[1]); // "2"
+
+                //Array.of() 方法会把所有传入都解析为array的项
+                
+                let items = Array.of(1, 2);
+                console.log(items.length); // 2
+                console.log(items[0]); // 1
+                console.log(items[1]); // 2
+
+                items = Array.of(2);
+                console.log(items.length); // 1
+                console.log(items[0]); // 2
+
+                items = Array.of("2");
+                console.log(items.length); // 1
+                console.log(items[0]); // "2"
+
+            </pre>
+            <p class="my-p my-h">Demo1-2： Array.from() 方法</p>
+            <p class="my-p">Array.from()主要用于类数组对象向数组的转换，类数组对象主要是arguments还有就是html获取的对象</p>
+            <p class="my-p">Array.from有三个参数:</p>
+            <p class="my-p">1.待处理的类数组</p>
+            <p class="my-p">2.映射方式</p>
+            <p class="my-p">3.用于指定 this，而无须调用 bind() 方法、或用其他方式去指定 this 值</p>
+            <pre>
+                  function translate() {
+                      return Array.from(arguments, (value) => value + 1);
+                  }
+
+                  let numbers = translate(1, 2, 3);
+                  console.log(numbers); // [2, 3, 4]
+
+
+                  let helper = {
+                      diff: 1,
+
+                      add(value) {
+                          return value + this.diff;
+                      }
+                  };
+
+                  function translate() {
+                      return Array.from(arguments, helper.add, helper);
+                  }
+
+                  let numbers = translate(1, 2, 3);
+                  console.log(numbers); // [2, 3, 4]
+            </pre>
+            <p class="my-p my-h">Demo2: 所有数组上的新方法</p>
+            
+            <p class="my-p my-h">Demo2-1: find() 与 findIndex() 方法</p>
+            <p class="my-p">find() 与 findIndex() 方法均接受两个参数：一个回调函数、一个可选值用于指定回调函数内部的 this 。该回调函数可接收三个参数：数组的某个元素、该元素对应的索引位置、以及该数组自身，这与 map() 和 forEach() 方法的回调函数所用的参数一致。该回调函数应当在给定的元素满足你定义的条件时返回 true ，而 find() 与 findIndex() 方法均会在回调函数第一次返回 true 时停止查找。</p>
+            <p class="my-p">二者唯一的区别是： find() 方法会返回匹配的值，而 findIndex() 方法则会返回匹配位置的索引。</p>
+            <pre>
+                let numbers = [25, 30, 35, 40, 45];
+
+                console.log(numbers.find(n => n > 33)); // 35
+                console.log(numbers.findIndex(n => n > 33)); // 2
+            </pre>
+            <p class="my-p">find() 与 findIndex() 方法在查找满足特定条件的数组元素时非常有用。但若想查找特定值，则使用 indexOf() 与 lastIndexOf() 方法会是更好的选择。</p>
+            <p class="my-p my-h">Demo2-2: fill()方法</p>
+            <p class="my-p">fill() 方法能使用特定值填充数组中的一个或多个元素</p>
+            <p class="my-p">第一个参数是要填入的值，第二个参数是填充的起始位置，第三个参数是结束位置参数（不包括结束位置的那个元素)</p>
+            <pre>
+                let numbers = [1, 2, 3, 4];
+                numbers.fill(1);
+                console.log(numbers.toString()); // 1,1,1,1
+
+                let numbers = [1, 2, 3, 4];
+                numbers.fill(1, 2);
+                console.log(numbers.toString()); // 1,2,1,1
+                numbers.fill(0, 1, 3);
+                console.log(numbers.toString()); // 1,0,0,1
+            </pre>
+
+            <p class="my-p my-h">Demo2-3: copyWithin() 方法</p>
+            <p class="my-p">copyWithin() 方法允许你在数组内部复制自身元素</p>
+            <p class="my-p">三个参数: 1.从什么位置开始进行填充.2.被用来复制的数据的起始位置索引.3.指定了复制停止的位置（不包含该位置自身）</p>
+            <pre>
+                let numbers = [1, 2, 3, 4];
+                // 从索引 2 的位置开始粘贴
+                // 从数组索引 0 的位置开始复制数据
+                numbers.copyWithin(2, 0);
+                console.log(numbers.toString()); // 1,2,1,2
+
+                let numbers = [1, 2, 3, 4];
+                // 从索引 2 的位置开始粘贴
+                // 从数组索引 0 的位置开始复制数据
+                // 在遇到索引 1 时停止复制
+                numbers.copyWithin(2, 0, 1);
+                console.log(numbers.toString()); // 1,2,1,4
+            </pre>
+            <p class="my-p my-h">Demo3: 类型化数组（暂略，不常用）</p>
+         </div><!-- /.blog-main -->
+    </div>
+</div>
