@@ -1,0 +1,90 @@
+---
+layout: default
+title: ES6 Demos(十二) Proxies and the Reflection API(代理与反射接口)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">Proxy 用于修改某些操作的默认行为，等同于在语言层面做出修改，所以属于一种“元编程”（meta programming），即对编程语言进行编程。</p>
+            <p class="my-p">Proxy 可以理解成，在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写。</p>
+            <p class="my-p">Proxy 支持的拦截操作一览，一共 13 种,下面主要说下这三种的简单demo</p>
+            <p class="my-p">get(target, propKey, receiver)：拦截对象属性的读取，比如proxy.foo和proxy['foo']。</p>
+            <p class="my-p">set(target, propKey, value, receiver)：拦截对象属性的设置，比如proxy.foo = v或proxy['foo'] = v，返回一个布尔值。</p>
+            <p class="my-p">has(target, propKey)：拦截propKey in proxy的操作，返回一个布尔值。</p>
+            
+            <p class="my-p my-h">Demo1: get</p>
+            <p class="my-p">get方法用于拦截某个属性的读取操作，可以接受三个参数，依次为目标对象、属性名和 proxy 实例本身（即this关键字指向的那个对象），其中最后一个参数可选。</p>
+            <pre>   
+                var person = {
+                  name: "张三"
+                };
+
+                var proxy = new Proxy(person, {
+                  get: function(target, property) {
+                    if (property in target) {
+                      return target[property];
+                    } else {
+                      throw new ReferenceError( property + "不存在！");
+                    }
+                  }
+                });
+
+                proxy.name // "张三"
+                proxy.age // Uncaught ReferenceError: age不存在！
+            </pre>
+            
+            <p class="my-p my-h">Demo2: set</p>
+            <p class="my-p">set方法用来拦截某个属性的赋值操作，可以接受四个参数，依次为目标对象、属性名、属性值和 Proxy 实例本身，其中最后一个参数可选。</p>
+            <pre>   
+                // 假定Person对象有一个age属性，该属性应该是一个不大于 200 的整数，
+                // 那么可以使用Proxy保证age的属性值符合要求。
+
+                let validator = {
+                  set: function(obj, prop, value) {
+                    if (prop === 'age') {
+                      if (!Number.isInteger(value)) {
+                        throw new TypeError('The age is not an integer');
+                      }
+                      if (value > 200) {
+                        throw new RangeError('The age seems invalid');
+                      }
+                    }
+
+                    // 对于满足条件的 age 属性以及其他属性，直接保存
+                    obj[prop] = value;
+                  }
+                };
+
+                let person = new Proxy({}, validator);
+
+                person.age = 100;
+                person.age // 100
+                person.age = 300 // test.js:47 Uncaught RangeError: The age seems invalid
+            </pre>   
+            
+            <p class="my-p my-h">Demo3: has</p>
+            <p class="my-p">has方法用来拦截HasProperty操作，即判断对象是否具有某个属性时，这个方法会生效。典型的操作就是in运算符。</p>
+            <pre>   
+                //下面的例子使用has方法隐藏某些属性，不被in运算符发现。
+
+                var handler = {
+                  has (target, key) {
+                    if (key[0] === '_') {
+                      return false;
+                    }
+                    return key in target;
+                  }
+                };
+
+                var target = { _prop: 'foo', prop: 'foo' };
+                var proxy = new Proxy(target, handler);
+
+                '_prop' in proxy // false
+            </pre>            
+            
+         </div><!-- /.blog-main -->
+    </div>
+</div>
