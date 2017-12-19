@@ -1,0 +1,234 @@
+---
+layout: default
+title: ES6 Demos(十三) Encapsulating Code With Modules(用模块封装代码)
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">建议还可以看下如下这篇：<a href="http://777sunny777.github.io/sunnyblog/savour/2017/02/14/30.html" target="_blank">JavaScript模块化方式：AMD, CommonJS和ES Harmony</a></p>
+            <p class="my-p">这篇文章主要讲的就是ES Harmony(ES6)的模块化方法</p>
+            <p class="my-p">这里面要补充一个重要内容（可能是一个意思，只是对动态的理解不一样）： AMD可以动态的进行导入</p>
+            <pre>
+                define(function ( require ) {
+                    var isReady = false, foobar;
+
+                    // note the inline require within our module definition
+                    require(["foo", "bar"], function ( foo, bar ) {
+                        isReady = true;
+                        foobar = foo() + bar();
+                    });
+
+                    // we can still return a module
+                    return {
+                        isReady: isReady,
+                        foobar: foobar
+                    };
+                });
+
+
+                // export 与 import 都有一个重要的限制，那就是它们必须被用在其他语句或表达式的外部。
+                // 不能动态导入导出绑定
+
+                if (flag) {
+                    export flag; // 语法错误
+                }
+
+                function tryImport() {
+                    import flag from "./example.js"; // 语法错误
+                }
+
+                // 其实我觉得ES6也可以做如下操作： 这个和AMD可以动态的进行导入不是说的一个意思么(再理解)
+
+                import { sum } from "./example.js";
+                import { magicNumber } from "./example.js";
+                console.log(sum(1, magicNumber)); // 8
+
+                import { multiply } from "./example.js";
+                console.log(multiply(1, 2)); // 2
+            </pre>
+            
+            <p class="my-p my-h">Demo1: 何为模块</p>
+            <p class="my-p">我之前的一篇文章对于模块化的理解是： 模块化是针对不同功能进行划分的一系列松耦合的模块，对于模块的标准，他至少符合如下三条：</p>
+            <p class="my-p">1.封闭性,模块中定义的变量，函数，类不会自动添加到全局作用域中，这个就是不会进行全局变量污染</p>
+            <p class="my-p">2.新模块开发可以依赖其他已有模块</p>
+            <p class="my-p">3.新模块开发后可以支持其他模块的开发</p>
+
+            <p class="my-p my-h">Demo2: 基本的导出 export </p>
+            <p class="my-p"></p>
+            <pre>   
+                // 导出数据
+                export var color = "red";
+                export let name = "Nicholas";
+                export const magicNumber = 7;
+
+                //导出的函数声明与类声明必须要有名称。你不能使用这种语法来导出匿名函数或匿名类，
+                //除非使用了 default 关键字
+
+                // 导出函数
+                export function sum(num1, num2) {
+                    return num1 + num2;
+                }
+
+                // 导出类
+                export class Rectangle {
+                    constructor(length, width) {
+                        this.length = length;
+                        this.width = width;
+                    }
+                }
+
+                // 此函数为模块私有
+                function subtract(num1, num2) {
+                    return num1 - num2;
+                }
+
+                // 定义一个函数……
+                function multiply(num1, num2) {
+                    return num1 * num2;
+                }
+
+                // ……稍后将其导出
+                export { multiply };            
+            </pre> 
+            
+            
+            <p class="my-p my-h">Demo3: 基本的导入 import </p>
+            <pre>   
+                //导入语句的基本形式
+                import { 需要导入的标识符 } from "需导入的标识符的来源模块";
+                import { identifier1, identifier2 } from "./example.js";
+                //导入绑定的列表看起来与对象解构相似，但实则并无关联
+
+
+                //注意你如果在chrome下测试要将script的type="module" 而不是用"text/javascript"
+
+                // 导入单个绑定
+                import { sum } from "./example.js";
+                //要确保在导入的文件名前面使用 / 、 ./ 或 ../ ，以便在浏览器与 Node.js 之间保持良好兼容性。
+
+                console.log(sum(1, 2)); // 3
+
+                sum = 1; // error: Uncaught TypeError: Assignment to constant variable
+                //当从模块导入了一个绑定时，该绑定表现得就像使用了 const 的定义。
+                //这意味着你不能再定义另一个同名变量（包括导入另一个同名绑定），
+                //也不能在对应的 import 语句之前使用此标识符（也就是要受暂时性死区限制），更不能修改它的值。
+
+
+                // 导入多个绑定
+                import { sum, multiply, magicNumber } from "./example.js";
+
+                console.log(sum(1, magicNumber)); // 8
+
+                console.log(multiply(1, 2)); // 2
+
+
+                // 完全导入一个模块
+                import * as example from "./example.js";
+                // 这种导入格式被称为命名空间导入（ namespace import ），
+                // 这是因为该 example 对象并不存在于 example.js 文件中，
+                // 而是作为一个命名空间对象被创建使用，其中包含了example.js 的所有导出成员。
+                console.log(example.sum(1, example.magicNumber)); // 8
+
+                console.log(example.multiply(1, 2)); // 2
+
+
+                // 无论你对同一个模块使用了多少次 import 语句，该模块都只会被执行一次
+
+                import { sum } from "./example.js";
+                import { multiply } from "./example.js";
+                import { magicNumber } from "./example.js";
+                // 尽管此处的模块使用了三个 import 语句，但 example.js 只会被执行一次。
+
+
+                //导入绑定的一个微妙怪异点
+
+                //假设你想要使用以下模块
+                export var name = "Nicholas";
+                export function setName(newName) {
+                    name = newName;
+                }
+
+                import { name, setName } from "./example.js";
+
+                console.log(name); // "Nicholas"
+
+                setName("Greg");
+                //调用 setName("Greg") 会回到导出 setName() 的模块内部，并在那里执行，从而将 name 设置为 "Greg" 。
+                console.log(name); // "Greg"
+
+                name = "Nicholas"; // error: Uncaught TypeError: Assignment to constant variable.            
+            </pre>              
+            
+            <p class="my-p my-h">Demo4: 重命名导出与导入</p>
+            <pre>   
+                export { sum as add }; //导出重命名
+                import { add as sum } from "./example.js"; //导入重命名
+            </pre>              
+            
+            <p class="my-p my-h">Demo5: 模块的默认值</p>
+            <pre>   
+                // 模块的默认值（default value ）是使用 default 关键字所指定的单个变量、函数或类，
+                // 而你在每个模块中只能设置一个默认导出，将 default 关键字用于多个导出会是语法错误。
+
+                //导出默认值
+                1
+                export default function(num1, num2) {
+                    return num1 + num2;
+                }
+
+                2
+                function sum(num1, num2) {
+                    return num1 + num2;
+                }
+
+                export default sum;
+
+                3
+                function sum(num1, num2) {
+                    return num1 + num2;
+                }
+
+                export { sum as default };
+
+
+                //导入默认值
+                import sum from "./example.js";
+                //注意此处并未使用花括号
+
+                import sum, { color } from "./example.js";
+                // 逗号将默认的本地名称与非默认的名称分隔开，后者仍旧被花括号所包裹。
+                // 要记住在 import语句中默认名称必须位于非默认名称之前。
+
+                import { default as sum, color } from "example";            
+            </pre>              
+            
+            
+            <p class="my-p my-h">Demo6: 绑定的再导出</p>
+            <pre>   
+                import { sum } from "./example.js";
+                export { sum }
+                //或
+                export { sum } from "./example.js";            
+            </pre>              
+            
+            <p class="my-p my-h">Demo7: 无绑定的导入</p>
+            <p class="my-p">诸如 Array 与 Object 之类的内置对象的共享定义在模块内部是可访问的，并且对于这些对象的修改会反映到其他模块中。</p>
+            <p class="my-p">比如你在example中对Array.prototype.pushAll定义了一个方法，你就不需要导出，直接：</p>
+            <pre>   
+              import "./example.js";            
+            </pre>              
+
+            <p class="my-p my-h">Demo8: 加载模块</p>
+            <pre>   
+                &lt;script type="module" src="module.js"&gt;&lt;/script&gt;
+                &lt;script type="module"&gt; 总是表现得像是已经应用了 defer属性。
+            </pre>  
+            <p class="my-p"> defer 属性是加载脚本文件时的可选项，但在加载模块文件时总是自动应用的。</p>
+            <p class="my-p">async 属性也能同样被应用到模块上。在 <script type="module"> 上使用 async 会导致模块的执行行为与脚本相似</p>
+            
+         </div><!-- /.blog-main -->
+    </div>
+</div>
