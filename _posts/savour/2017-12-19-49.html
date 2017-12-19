@@ -1,0 +1,45 @@
+---
+layout: default
+title: ES6完成以及理解ES7(ES2016)持续更新
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">感谢永远的大神Nicholas C. Zakas，感谢sagittarius-rev的翻译</p>
+            <p class="my-p">ES6从开始学习到今天告一段落，历时两个月多一点，知识点有很多，第一遍只能是抓大放小，我还需要不多完善，总的来看我觉得ES6未来的发展会使得前端框架不再重要，或是说，可以使得目前杂乱且众多的框架统一起来，code的编写永远应该是write less，do more的。</p>
+            <p class="my-p">ES6 的开发消耗了大约四年时间，此后 TC-39 小组决定不再接受如此长的开发过程，他们改用年度周期来发布语言的新特性，以确保语言特性能尽快发展。因此 ES6 也被称为ES2015 ，而 ES7 也正式被称为 ES2016 。</p> 
+            <p class="my-p">对于ES发展，我们应该持续关注的站点</p>
+            <p class="my-p">http://babeljs.io/docs/plugins/preset-es2017/</p>
+            
+            <p class="my-p my-h">Demo1：Math的新方法（ES6）</p>
+            <pre>
+                Math.acosh(x) ：返回 x 的反双曲余弦值；
+                Math.asinh(x) ：返回 x 的反双曲正弦值；
+                Math.atanh(x) ：返回 x 的反双曲正切值；
+                Math.clz32(x) ：返回 x 的 32 位整型二进制表达形式起始处 0 的个数；
+                Math.cosh(x) ：返回 x 的双曲余弦值；
+                Math.expm1(x) ：返回 e - 1 的值；
+                Math.fround(x) ：返回最接近 x 的单精度浮点数；
+                Math.hypot(...values) ：返回参数平方和的平方根；
+                Math.imul(x, y) ：返回两个参数真正的 32 位乘法运算结果；
+                Math.log1p(x) ：返回 1 + x 的自然对数；
+                Math.log10(x) ：返回 x 的常用对数（即以 10 为底）；
+                Math.log2(x) ：返回 x 的二进制对数（即以 2 为底）；
+                Math.sinh(x) ：返回 x 的双曲正弦值；
+                Math.tanh(x) ：返回 x 的双曲正切值；
+                Math.trunc(x) ：移除浮点型数值小数点后的数字，以返回一个整型值。
+
+                Math.cbrt(x) ：返回 x 的立方根；
+                Math.sign(x) ： x 为负数时返回 -1 ， +0 与 -0 返回 0 ，正数则返回 1 ；
+
+                console.log( Math.cbrt(27) ) //3
+                console.log( Math.sign(-7) ) //-1
+                console.log( Math.sign(99) ) //+1            
+            </pre>
+            
+         </div><!-- /.blog-main -->
+    </div>
+</div>
