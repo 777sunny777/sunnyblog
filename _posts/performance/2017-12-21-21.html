@@ -1,0 +1,70 @@
+---
+layout: default
+title: requestAnimationFrame计时器带来的性能优化
+category: performance
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">setTimeOut/setInterval来定时都不够精准，除了浏览器自身的时间误差之外，还要考虑队列的等待时间。window.requestAnimationFrame是帧同步的，重绘触发，所以会有极高的流畅度，尤其在做动画移动的时候。</p>
+            <pre>
+                等同于如下：
+                setInterval(function() {
+                  // animiate something
+                }, 1000/60);
+                浏览器受限于显示器的重绘频率，每秒60帧。      
+            </pre>
+            <p class="my-p my-h">用window.requestAnimationFrame相比setTimeOut/setInterval带来的性能优化如下</p>
+            <p class="my-p">1.不需要设置时间间隔，浏览器会进行最优化。The browser can optimize it, so animations will be smoother</p>
+            <p class="my-p">2.动画不会在不需重绘的tab上触发，可以降低CPU的使用率（还没有找到合适的demo来验证这句话，我的理解是display none的时候没有重绘，动画会停止，但是事实上并没有,我在第二个例子上进行了验证，定时器还是在执行，但是也有可能我的方式不对，有理解误差）Animations in inactive tabs will stop, allowing the CPU to chill</p>
+            <p class="my-p">3.这个应该是说省电，是从移动端角度来考虑的。More battery-friendly</p>
+            <p class="my-p">但是不管如何，它依旧是在移动端js做动画移动的首选计时器。</p>
+            <pre>
+                举个栗子：
+
+                $(document).ready(function() {    
+                    var date = new Date(),
+                        timer = date.getTime(),
+                        endTimer = timer + 5*1000,
+                        globalID = null;
+
+                    function updateTimer (){
+                        globalID = window.requestAnimationFrame(updateTimer);
+                        if ( timer <= endTimer ) {
+                            $('h1').text( new Date() );
+                            timer = (new Date()).getTime();
+                        }else{
+                            window.cancelAnimationFrame(globalID);
+                        };
+                    }
+
+                    window.requestAnimationFrame(updateTimer);
+
+                });
+            </pre>
+
+             <pre>
+                  再举个重绘触发的例子看看,这个例子是可以的
+
+                  $(document).ready(function() {    
+
+                      var widthRandom = null, globalID = null;
+
+                      function updateWidth (){ 
+                          widthRandom = Math.floor(Math.random()*90+10);
+                          globalID = window.requestAnimationFrame(updateWidth);
+                          $('.test').css('width', widthRandom+'%');
+                      }
+                      window.requestAnimationFrame(updateWidth);
+                  });            
+            </pre>          
+            <p class="my-p">参考文档：</p>
+            <p class="my-p"><a href="https://css-tricks.com/using-requestanimationframe/" target="_blank">Using requestAnimationFrame</a></p>
+            <p class="my-p"><a href="http://777sunny777.github.io/sunnyblog/performance/2015/04/19/12.html" target="_blank">Web app的性能瓶颈</a></p>
+            
+            
+            </div><!-- /.blog-main -->
+    </div>
+</div>
