@@ -1,0 +1,47 @@
+---
+layout: default
+title: Flux和Redux思路流程上的差别
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">两年多以前我曾经写过一篇blog叫<a href="http://777sunny777.github.io/sunnyblog/savour/2015/07/09/16.html" target="_blank">我在学习flux过程中的一点理解</a>，这篇文章中分析过Flux在处理react的各个component组件间通信的时候，他的基本流程以及各个部分的功能。最近看了一下Redux，很惭愧现在才学习Redux尽管它2015年就已经出现了。因为之前学习过Flux，所以Redux我可以很快的理解，所以把我目前对于Redux的理解记录下来。当然，如果要熟练运用Redux我可能还需要继续深入学习几天，所以后续还会有更多关于Redux的blog。</p>
+            <p class="my-p my-h">1.关于Flux</p>
+            <img src="/sunnyblog/img/flux-flow.png" class="codeimg">
+            <p class="my-p">这是Flux经典的流程图，简单来说：1.用户在view上操作产生action。2.action通过dispatcher发送给store。3.store根据action的type找到需要更改的state更新它并产生一个change事件。4.view监听store的change事件并进行自身的update。</p>
+            <p class="my-p">这里面要注意的一点是store是多个，应该是根据组件的关联性划分的，因为是多个，所以在store中查找对应state变化的语句不会很多，也比较方便管理。</p>
+            <p class="my-p my-h">2.关于Redux</p>
+            <img src="/sunnyblog/img/redux-flow.jpg" class="codeimg">
+            <p class="my-p"></p>
+            
+            
+            redux 的dispatcher写在了store中，增加了一个reducers的概念，
+和flux不同的是，他不用dispatch给很多store，这就没有了分发过多性能的压力
+这部分性能问题转嫁到了switch，case的代码查找中去了
+他只有一个store，这个store是一个state的集合。创建store的时候往往要和reducers联系起来
+
+reducers是一个纯函数，也就是说输入结构和输出结果保持一致，主要是用来输出更新的state的
+整个redux的流程是
+
+用户和view交互产生了action，通过store.dispatch发送给store，
+通过store 把初始的state状态以及action传给reducers，返回更新的state的状态
+在view 中通过store.subscribe(listener);来监听状态的改变，并且通过store.getState();来得到当前的状态，然后setstate来更新view
+            
+
+
+            <p class="my-p my-h"></p>
+            
+            
+            
+            
+            
+            
+
+
+
+         </div><!-- /.blog-main -->
+    </div>
+</div>
