@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Flux和Redux思路流程上的差别
+title: Flux和Redux思路上的差别
 category: savour
 ---
 <div class="row">
@@ -15,33 +15,10 @@ category: savour
             <p class="my-p">这里面要注意的一点是store是多个，应该是根据组件的关联性划分的，因为是多个，所以在store中查找对应state变化的语句不会很多，也比较方便管理。</p>
             <p class="my-p my-h">2.关于Redux</p>
             <img src="/sunnyblog/img/redux-flow.jpg" class="codeimg">
-            <p class="my-p"></p>
-            
-            
-            redux 的dispatcher写在了store中，增加了一个reducers的概念，
-和flux不同的是，他不用dispatch给很多store，这就没有了分发过多性能的压力
-这部分性能问题转嫁到了switch，case的代码查找中去了
-他只有一个store，这个store是一个state的集合。创建store的时候往往要和reducers联系起来
-
-reducers是一个纯函数，也就是说输入结构和输出结果保持一致，主要是用来输出更新的state的
-整个redux的流程是
-
-用户和view交互产生了action，通过store.dispatch发送给store，
-通过store 把初始的state状态以及action传给reducers，返回更新的state的状态
-在view 中通过store.subscribe(listener);来监听状态的改变，并且通过store.getState();来得到当前的状态，然后setstate来更新view
-            
-
-
-            <p class="my-p my-h"></p>
-            
-            
-            
-            
-            
-            
-
-
-
+            <p class="my-p">redux 的dispatcher写在了store中，增加了一个reducers的概念，和flux不同的是，他不用dispatch给很多store，这就没有了分发过多性能的压力。这部分性能问题转嫁到了switch，case的代码查找中去了。他只有一个store，这个store是一个state的集合。创建store的时候往往要和reducers联系起来。</p>
+            <p class="my-p">reducers是一个纯函数，也就是说输入结构和输出结果保持一致，主要是用来输出更新的state的。</p>
+            <p class="my-p my-h">整个redux的流程是：1.用户和view交互产生了action。2.通过store.dispatch发送给store。3.通过store 把初始的state状态以及action传给reducers，返回更新的state的状态。4.在view 中通过store.subscribe(listener);来监听状态的改变，并且通过store.getState();来得到当前的状态，然后setstate来更新view</p>
+            <p class="my-p">和Flux相比，reducers从flux的store中提取出来了，dispatch合并到了store中去，只有一个store，不需要给store增加额外的js事件监听库。并且他还提供了一个react-redux的框架。</p>
          </div><!-- /.blog-main -->
     </div>
 </div>
