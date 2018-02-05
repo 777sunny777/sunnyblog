@@ -8,15 +8,135 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p">假设有这样一种情况，A，B之间通过flux共享数据，</p>
+            <p class="my-p">假设有这样一种情况，A，B之间通过flux共享数据，A先通过ajax获取异步数据，render完成后在把数据传递给B，B再进行render。</p>
+            <p class="my-p">总体来说，在react components中处理ajax数据通信的问题，可以先用promise封装一个ajax通用方法。promise相当于为异步操作的结果准备的一个占位符，他有三种状态：pending/fulfiiled/rejected, 所有的promise 对象都有then方法，你可以从中操作成功或失败后的action。在componentDidMount中触发promise在then方法获取数据之后，做一个dispatch，然后setState ComponentA，dispatch给store后，trigger change事件然后在ComponentB的监听事件中setState 从而更新ComponentB。 </p>
+            <p class="my-p">下面会举一个简单的例子</p>
+            <p class="my-p">1 test.json</p>
+            <pre>
+                {
+                    "message": "done"
+                }
+            </pre>
+            <p class="my-p">2 testAjax-store.js</p>
+            <pre>
+                import MicroEvent from '../utils/microevent';
+                import Dispatcher from '../dispatcher/dispatcher';
+
+                let testAjaxStore = {
+                    message: 'start'
+                };
+
+                MicroEvent.mixin( testAjaxStore );
+
+                testAjaxStore.dispatchToken = Dispatcher.register(payload => {
+                    switch (payload.actionType) {
+                        case "ajaxAction":
+                            testAjaxStore.message = payload.content;
+                            testAjaxStore.trigger('change');
+                            break;
+                    }
+                });
+
+                export default testAjaxStore;
+            <pre>
+            <p class="my-p">3 testAjax.js (简单来写，我把两个view写在了一起)</p>
+            <pre>
+                import React from 'react';
+                import ReactDOM from 'react-dom';
+                import $ from 'jquery';
+
+                import Dispatcher from './dispatcher/dispatcher';
+                import AjaxStore from './stores/testAjax-store';
+
+                //先用promise封装一个ajax通用方法
+                function getAjax(url, data = '' ){
+                    return new Promise( (resolve, reject) =&gt; {
+                        $.ajax({
+                            url: url,
+                            type: 'get',
+                            dataType: 'json',
+                            data: data,
+                        })
+                        .done(function(data) {
+                            resolve(data);
+                        })
+                        .fail(function(error) {
+                            reject(error);
+                        });
+                    })
+                };
+
+                class ComponentA extends React.Component {
+                    constructor(props) {
+                        super(props);
+                        this.state = {
+                            message: AjaxStore.message
+                        };
+                    }
+
+                    componentDidMount() {
+                        //获取数据之后，做一个dispatch，然后setState ComponentA
+                        getAjax('./test.json').then( (data) =&gt; {
+                            Dispatcher.dispatch({
+                                actionType: 'ajaxAction',
+                                content: data.message,
+                            });
+                            this.setState({'message': data.message}) 
+                        });
+                    }
+
+                    render(){
+                        return(
+                            &lt;h1&gt;
+                                { this.state.message }
+                            &lt;/h1&gt;
+                        )
+                    }
+                }
+
+                class ComponentB extends React.Component {
+                    constructor(props) {
+                        super(props);
+                        this.state = {
+                            message: AjaxStore.message
+                        }
+                    }
+
+                    componentDidMount(){
+                        //监听事件中setState 从而更新ComponentB
+                        AjaxStore.bind('change', ()=&gt;{
+                            this.setState({'message': AjaxStore.message}) 
+                        });
+                    }
+
+                    render(){
+                        return(
+                            &lt;h1&gt;
+                                { this.state.message }
+                            &lt;/h1&gt;
+                        )
+                    }
+                }
+
+                class ComponentPage extends React.Component {
+                    render(){
+                        return(
+                            &lt;div&gt;
+                                &lt;ComponentA /&gt;
+                                &lt;ComponentB /&gt;
+                            &lt;/div&gt;
+                        )
+                    }
+                }
+
+                ReactDOM.render(
+                  &lt;ComponentPage /&gt;,
+                  document.getElementById('six')
+                );
+            </pre>
             
             
-            
-            <p class="my-p"></p>
-            <p class="my-p"></p>
-            <p class="my-p"></p>
-            <p class="my-p"></p>
-            <p class="my-p"></p>
+
          </div><!-- /.blog-main -->
     </div>
 </div>
