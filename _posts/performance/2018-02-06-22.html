@@ -1,0 +1,38 @@
+---
+layout: default
+title: Chrome DevTools- Performance monitor
+category: performance
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">介绍一个chrome新推出的页面性能测试工具：<a href="https://hospodarets.com/chrome-devtools-performance-monitor" target="_blank">Chrome DevTools- Performance monitor</a></p>         
+            <p class="my-p my-h">下面是调出performance-monitor的步骤，因为它现在还是一个试验版的测试工具</p>
+            <pre>
+                This is available in Chrome stable and to get the “Performance Monitor”:
+
+                Open “chrome://flags/#enable-devtools-experiments” URL
+                Activate the “Developer Tools experiments” flag
+                Press “Relaunch now” to restart Chrome
+                Open Chrome DevTools (CMD/CTRL + SHIFT + I)
+                Open DevTools “Setting” -> “Experiments” tab
+                Press SHIFT 6 times (sorry 😜) to show the hidden features
+                Check the “Performance Monitor” checkbox
+                Close and open DevTools (CMD/CTRL + SHIFT + I twice)
+                Press “Esc” to open the additional panel with tabs
+                Choose the “Performance monitor” in the drawer
+                Enable/disable the metrics via click
+                Enjoy the “Performance Monitor” if you get here
+            
+            </pre>
+
+            <p class="my-p">你可以通过它来测试很多项页面性能</p>
+            
+            <p class="my-p">1.“Layouts / sec” and “Style recalcs / sec”, 这两个属性是chrome自带的Performance没有的，你可以通过他们实时的测试css的paint和layout的性能问题。</p>
+            <p class="my-p">2.一些常规的性能参数比如CPU的利用率，js heap size，Dom nodes的个数，js 事件监听的个数， documents和frames的个数</p>
+            <p class="my-p">总之,如果对比页面的性能好坏，这个工具应该是比较专业的。</p>
+            </div><!-- /.blog-main -->
+    </div>
+</div>
