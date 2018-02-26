@@ -1,0 +1,74 @@
+---
+layout: default
+title: 年前总结的一些react相关的架构层面的问题
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p my-h">1.React好的学习站点</p>
+            <p class="my-p"><a href="https://vincenthou.github.io/2017/08/21/%E6%B7%B1%E5%85%A5React%E6%8A%80%E6%9C%AF%E6%A0%88/" target="_blank">深入React技术栈</a></p>
+            <p class="my-p"><a href="https://reactcheatsheet.com/" target="_blank">React Cheat Sheet</a></p>
+            <p class="my-p"><a href="https://github.com/chantastic/reactpatterns.com#stateless-function" target="_blank">react patterns</a></p>
+            <p class="my-p"><a href="https://github.com/planningcenter/react-patterns" target="_blank">react-patterns</a></p>
+   
+            <p class="my-p my-h">2.用redux来解决dispatcher过多的性能问题</p>
+            <p class="my-p">用React+Flux思想有一个问题是说dispatch会将action传递给所有的store，这里面如果store过多的话就会有性能问题，redux的思想可以来解决这个问题，因为他的store只用一个，它是所有共享的state的集合，redux将分发过多带来的性能问题转化为了switch/case的代码查找问题，提高了性能。</p>
+            <pre>
+                flux flow的步骤是：
+                1.用户和view交互产生action，
+                2.action通过dispatch传递给所有的store，
+                3.store通过action的type来找到变化的state近而更新它并触发change事件
+                4.view监听到对应store的change事件，获取这时的state并更新view
+
+                Redux flow的步骤是：
+                1.用户和view交互产生action，
+                2.action通过store.dispatch来传递给store
+                3.store将state的初始状态以及action作为输入参数给reducers, 然后reducers会返回更新后的state
+                4.view通过store.subscribe(listener)监听到改变，通过store.getState来获取最新的state，然后更新view           
+            </pre>
+            
+            <p class="my-p my-h">3.如何在多个组件中处理异步的action(promise)</p>
+            <p class="my-p">首先在全局用promise来封装一下ajax，promise相当于一个异步操作结果的占位符，他有三种状态：pending/fulfilled/reject 所有的promise对象都有then方法，用来操作成功或失败的回掉</p>
+            <p class="my-p">其次，在componentDidMount中调用这个promise方法并在成功的then函数中获取data，先发dispatch给需要的组件，然后setstate自身</p>
+            <p class="my-p">对应的组件在收到state更改的change事件之后，触发setstate</p>
+            
+            <p class="my-p my-h">4.chrome提供了性能测试工具，提高页面性能的方式</p>
+            <p class="my-p">chrome最新提供了一个devtool叫performance monitor，和chrome自带的performance功能相比，多了一个layout/sec and style recals/sec 当然还会检测js heap size/node 的个数/events的个数/documents和frame的个数等等</p>
+            <p class="my-p">我们知道前端性能有两大瓶颈，一个是dom频繁操作引起的重排和重绘，另一个就是http请求</p>
+            <p class="my-p">这个工具可以很好的检测重排和重绘的页面性能，dom和js相当于两个岛屿，假设他们之间有一座收费的桥，每一次dom操作相当于从js到dom交一次过桥费。所以要尽量将计算在js这边处理，减少频繁的交互，举个例子，在批量修改样式的时候可以向将相关的dom隐藏，批量处理完成之后在显示，因为隐藏的元素不在render tree中所以避免的大量操作。</p>
+            <p class="my-p">对于http请求，减少不必要的请求（合并js），通过压缩gzip来减少http的长度，引用CDN减少物理距离等等。</p>
+            
+            <p class="my-p my-h">5.React的生命周期</p>
+            <pre>
+                第一次渲染时候
+                componentWillMount： 在render前调用，可以在其中改变state的初始条件
+                componentDidMount： 在render后调用，可以在这里面进行ajax的调用，set Timer，get refs
+                componentWillUnmount: 在component删除的时候调用，可以clean Timer
+
+                触发更新时候
+                shouldComponentUpdate(nextProps, nextState)： forceUpdate的时候不会调用，唯一可以阻止rerender的API，return false；
+                componentWillReceiveProps(nextProps)： 可以修改props
+                componentWillUpdate(nextProps, nextState): setState无效，在componentWillReceiveProps之后执行
+                componentDidUpdate(prevProps, prevState): 可以在此获取页面渲染前的props和state状态
+            </pre>
+            
+            <p class="my-p my-h">5.React的design步骤</p>
+            <pre>
+                1.拆分单组件，一个组件中只做一件事
+                2.建立组件中，增加props
+                3.找到最小的state，可以从父级传入的不是，可以计算得来的不是，不变的不是
+                4.放置state，找最近的公共父组件
+                5.添加事件触发回掉函数，setState并更新组件           
+            </pre>
+            
+            <p class="my-p my-h">6.作用域链和原型链</p>
+            <p class="my-p">作用域链关注的是函数可访问的几个作用域的调用顺序，一般来讲局部变量存在于作用域链的起始位置，全局变量在最末端。</p>
+            <p class="my-p">一个好的经验是全局变量如果多次调用，最好提前赋值给局部变量，这样会节省作用域链中查找的时间。with可以改变作用域链。</p>
+            <p class="my-p">原型链关注的是对象成员的继承关系，属性和方法在原型链中的位置越深，访问的速度就越慢。</p>
+
+         </div><!-- /.blog-main -->
+    </div>
+</div>
