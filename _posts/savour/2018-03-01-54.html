@@ -1,0 +1,52 @@
+---
+layout: default
+title: webpack4 coming
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">前天晚上在微信上看到了webpack更新到v4的消息，正好我最近的项目在用，又碰巧v3在Uglify的时候一直报错而不得解（这个错貌似也很有名，我把链接放在下面）,经过一系列的研究决定更新为v4，恰巧看到一篇文章：<a href="https://www.valentinog.com/blog/webpack-4-tutorial/" target="_blank">Webpack 4 Tutorial: from 0 Conf to Production Mode</a>，解决了我想压缩文件的问题。更好的是，我原有的想法就是在开发的时候不要压缩文件在上线的时候把文件压缩，webpack4完美且极其简单的解决了我这个需求，所以我决定结合这篇文章和我的初体验说说v4的优点。</p>
+            <p class="my-p"><a href="https://github.com/webpack/webpack/issues/2972" target="_blank">SyntaxError: Unexpected token: name (xxxxxx) from Uglify plugin</a></p>
+            
+            <p class="my-p my-h">1.webpack 4 as a zero configuration module bundler</p>
+            <p class="my-p">这个貌似是目前的趋势了，所有的module bundler都在追求zero configuration，你不需要设置文件入口出口（目前v4已经实现），你甚至不需要设置loader，plugins（还未实现），只是简单的run几个指令性的npm script就可以了。</p>
+            <p class="my-p">说实话我是不太喜欢这种方式的，这其实让程序员很没有成就感，配置configuration本身就是一种乐趣和对美的追求，更是对前端框架整体的一种思考。</p>
+            
+            <p class="my-p my-h">2.production and development mode</p>
+            <pre>
+                "scripts": {
+                  "dev": "webpack --mode development",
+                  "build": "webpack --mode production"
+                }
+                npm run dev/npm run build
+            </pre>
+            <p class="my-p">webpack4的mode完美的解决了我的需求，在这一点上对configuration的简化是极其爽快的，但是我们也是可以自己配置的，我之前在v2的时候采用的方式是z做两个config文件，一个用于dev，一个用于production。</p>
+                  "scripts": {
+                    "dev": "webpack --config webpack.config-dev.js",
+                    "build": "webpack --config webpack.config-pro.js"
+                  }
+                区别在于一个加Uglify一个不加
+            
+            <p class="my-p my-h">3.transpiling Javascript ES6 with Babel</p>
+            <p class="my-p">目前的版本理论上loader为了增加灵活性还是需要配置的，但是v4也提供了指令</p>
+            <pre>
+                At this point we have 2 options for configuring babel-loader:
+                1.using a configuration file for webpack
+                2.using --module-bind in your npm scripts
+                
+                "scripts": {
+                    "dev": "webpack --mode development --module-bind js=babel-loader",
+                    "build": "webpack --mode production --module-bind js=babel-loader"
+                }
+                不建议这么写，最好还是写在config中，这样你可以清楚的知道他的path，presets，test等等配置项
+            </pre>
+            
+            <p class="my-p my-h">4.setting up webpack 4 with React</p>
+            <p class="my-p">目前貌似还没有react相关的指令，如果配置的话和之前的v3版本一致。</p>
+
+         </div><!-- /.blog-main -->
+    </div>
+</div>
