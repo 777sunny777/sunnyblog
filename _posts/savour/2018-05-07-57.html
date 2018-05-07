@@ -9,7 +9,7 @@ category: savour
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
             <p class="my-p"><a href="https://github.com/facebook/react-devtools" target="_blank">react-devtools官方推荐调试工具github地址</a></p>
-            <p class="my-p">这篇主要讨论一下react v16.3.2版本下的一下基本编码注意事项(Quick Start),主要涉及jsx，elements，components，props，state，event，Conditional Rendering，keys，form(controlled and uncontrolled), state lift up and composition。其中form我会单独拿出一个blog来详细讲，state lift up是一个state设计理念，我之前的blog有分析过，剩下的内容我都会在这篇blog中进行记录。主要是根据官方文档和自己coding中遇到的问题进行的总结。</p>
+            <p class="my-p">这篇主要讨论一下react v16.3.2版本下的一下基本编码注意事项(Quick Start),主要涉及jsx，elements，components，props，state，event，Conditional Rendering，keys，form(controlled and uncontrolled), state lift up and composition。其中keys,form我会单独拿出一个blog来详细讲，state lift up是一个state设计理念，我之前的blog有分析过，剩下的内容我都会在这篇blog中进行记录。主要是根据官方文档和自己coding中遇到的问题进行的总结。</p>
             <p class="my-p my-h">1.jsx</p>
             <p class="my-p">1).React用component的概念将markup和logic放在一个文件，这个文件的类型推荐jsx。</p>
             <p class="my-p">2).Jsx是js的语法扩展，里面包含了js和html两种编码风格。任何的js表达式（不包含if，for等语句）都可以在{}中嵌入jsx语法。</p>
@@ -30,9 +30,139 @@ category: savour
                  // This is safe:
                  const element = &lt;h1&gt;{title}&lt;/h1&gt;;
             </pre>
+            <p class="my-p my-h">2.elements</p>
+            <p class="my-p">1).Elements are the smallest building blocks of React apps. element是组成component的基本单位，就类似一个tag</p>
+            <pre>
+                const element = &lt;h1&gt;Hello, world&lt;/h1&gt;;
+            </pre>
+            <p class="my-p my-h">3.components</p>
+            <p class="my-p">1).Components let you split the UI into independent, reusable pieces, and think about each piece in isolation. 我的感觉react single component是划分页面UI的基本单位，要尽量保持“只做一件事”的原则。 </p>
+            <p class="my-p">2).Components类似于js中的function,他们接收参数（props），return一段React elements出来</p>
+            <p class="my-p">3).目前比较流行的是ES6的class来定义components，但是原则上function也可以定义</p>
+            <pre>
+                    //以下两种是一致的
+                    function Welcome(props) {
+                      return &lt;h1&gt;Hello, {props.name}&lt;/h1&gt;;
+                    }
 
-            
-            
+                    class Welcome extends React.Component {
+                        render() {
+                            return &lt;h1&gt;Hello, {this.props.name}&lt;/h1&gt;;
+                        }
+                    }
+            </pre>
+            <p class="my-p">4).A good rule of thumb is that if a part of your UI is used several times (Button, Panel, Avatar), or is complex enough on its own (App, FeedStory, Comment), it is a good candidate to be a reusable component.我的感觉是只要项目前期规划是react框架，就应该尽量将组件react化。</p>
+            <p class="my-p my-h">4.props</p>
+            <p class="my-p">1).Props are Read-Only. All React components must act like pure functions with respect to their props.（components是不可以修改props的）</p>
+            <p class="my-p my-h">5.state</p>
+            <p class="my-p">1).There are three things you should know about setState().</p>
+            <pre>
+                    1)Do Not Modify State Directly
+                    // Wrong
+                    this.state.comment = 'Hello';
+                    // Correct
+                    this.setState({comment: 'Hello'});
+                    //the only place where you can assign this.state is the constructor.
+
+                    2)State Updates May Be Asynchronous(不要直接用{isToggleOn: this.state.isToggleOn})
+                    this.setState(prevState => ({
+                      isToggleOn: !prevState.isToggleOn
+                    }));
+
+                    3)State Updates are Merged (setState谁就updated谁，其他的state属性保持不变)
+                    //The merging is shallow, so this.setState({comments}) leaves this.state.posts intact, but completely replaces this.state.comments.
+            </pre>
+            <p class="my-p">2).parent的state可以作为props传给子组件</p>
+            <p class="my-p my-h">6.event</p>
+            <p class="my-p">1).Handling events with React elements is very similar to handling events on DOM elements. There are some syntactic differences</p>
+            <pre>
+                    1).React events are named using camelCase, rather than lowercase.
+                    2).With JSX you pass a function as the event handler, rather than a string.
+                        //Html 
+                        &lt;button onclick="activateLasers()"&gt;
+                            Activate Lasers
+                        &lt;/button&gt;
+                        //React 注意1),2)两条
+                        &lt;button onClick={activateLasers}&gt;
+                            Activate Lasers
+                        &lt;/button&gt;
+                    3)Another difference is that you cannot return false to prevent default behavior in React. 
+                        //You must call preventDefault explicitly.(return false不能阻止默认事件在react中，但是在一般js中是可以的)
+            </pre>
+            <p class="my-p">2).Passing Arguments to Event Handlers</p>
+            <pre>
+                //testHandler中参数，第一个是data，第二个才是event
+                testHandler(data, e){
+                    e.preventDefault();
+                    console.log(e);
+                    console.log('============');
+                    console.log(data); //7
+                    this.setState(prevState => ({
+                        flag: !prevState.flag
+                    }));
+                }
+                ...
+                return...
+                &lt;button onClick={this.testHandler.bind(this, 7)}&gt;button&lt;/button&gt;
+            </pre>
+            <p class="my-p my-h">7.Conditional Rendering</p>
+            <p class="my-p">1).Inline If with Logical && Operator.It works because in JavaScript, true && expression always evaluates to expression, and false && expression always evaluates to false. Therefore, if the condition is true, the element right after && will appear in the output. If it is false, React will ignore and skip it.</p>
+            <p class="my-p">2).Inline If-Else with Conditional Operator. condition ? true : false.</p>
+            <p class="my-p">3).Preventing Component from Rendering. In rare cases you might want a component to hide itself even though it was rendered by another component. To do this return null instead of its render output.</p>
+            <pre>
+                { this.state.flag ? (&lt;div &gt;error&lt;/div &gt;): null }
+            </pre>
+            <p class="my-p my-h">8.keys(另写blog)</p>
+            <p class="my-p my-h">9.form(另写blog)</p>
+            <p class="my-p my-h">10.state lift up.</p>
+            <p class="my-p">1).见<a href="http://777sunny777.github.io/sunnyblog/savour/2015/10/26/19.html" target="_blank">React组件编写步骤（从UI到jsx实现）</a></p>
+            <p class="my-p my-h">11.composition</p>
+            <p class="my-p">Composition这块我觉得主要是讲了react构造组件的几个基本技巧。</p>
+            <p class="my-p">1).构造未知组件占位方法, 利用props.children</p>
+            <pre>
+                ...
+                function Navigation(props){
+                    return(
+                        &lt;ul className={'navigation ' + props.position}&gt;
+                            {props.children}
+                        &lt;/ul&gt;
+                    )
+                }
+                function MultipleNavigation(props){
+                    return(
+                        &lt;div&gt;
+                            &lt;ul className='navigation-left'&gt;
+                                {props.left}
+                            &lt;/ul&gt;
+                            &lt;ul className='navigation-right'&gt;
+                                {props.right}
+                            &lt;/ul&gt;
+                        &lt;/div&gt;
+                    )
+                }
+                ...
+                return...
+                    &lt;Navigation position="left"&gt;
+                        &lt;li&gt;left-item1&lt;/li&gt;
+                        &lt;li&gt;left-item2&lt;/li&gt;
+                        &lt;li&gt;left-item3&lt;/li&gt;
+                        &lt;li&gt;left-item4&lt;/li&gt;
+                    &lt;/Navigation>
+                    &lt;Navigation position="right"&gt;
+                        &lt;li&gt;right-item1&lt;/li&gt;
+                        &lt;li&gt;right-item2&lt;/li&gt;
+                        &lt;li&gt;right-item3&lt;/li&gt;
+                        &lt;li&gt;right-item4&lt;/li&gt;
+                    &lt;/Navigation&gt;
+            </pre>
+            <p class="my-p">2).构造未知组件占位方法, 有时候你需要多个占位，那就需要充分利用props</p>
+            <pre>
+            ...
+                &lt;MultipleNavigation left='' right='' /&gt;
+            ...
+            </pre>
+            <p class="my-p">3).构造一个通用组件的时候，尽量将非通用属性(包括test，function，class等等)都通过props来表示，要记住的是Remember that components may accept arbitrary props, including primitive values, React elements, or functions.</p>
+
          </div><!-- /.blog-main -->
     </div>
 </div>
