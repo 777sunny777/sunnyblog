@@ -1,0 +1,202 @@
+---
+layout: default
+title: React form
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">Form在react中应用和其他DOM结构的主要区别是它分为controlled components和uncontrolled components</p>
+            <p class="my-p my-h">1.uncontrolled components</p>
+            <p class="my-p">Uncontrolled inputs are like traditional HTML form inputs. You can then get their value using a ref, 需要通过如下ref的写法在event中获取value的值</p>
+            <pre>
+                import React from 'react';
+                import ReactDom from 'react-dom';
+
+                class Forms extends React.Component {
+                    constructor(props) {
+                        super(props);
+                        this.handleUncontrolledSubmit = this.handleUncontrolledSubmit.bind(this);
+                    }
+
+                    handleUncontrolledSubmit(event) {
+                        event.preventDefault();
+
+                        // const name = this._name.value;
+                        // console.log(name);
+
+                        // console.log(this._testCheckbox1.checked);
+                        // console.log(this._testCheckbox1.value);
+                        // console.log(this._testCheckbox2.checked);
+                        // console.log(this._testCheckbox2.value);
+
+                        console.log(this._testRadio1.checked);
+                        console.log(this._testRadio1.value);
+                        console.log(this._testRadio2.checked);
+                        console.log(this._testRadio2.value);
+
+
+                        if( this.fileInput.files[0] !== undefined ){
+                            const fileName = this.fileInput.files[0].name;
+                            console.log(fileName);
+                        }
+                    }
+
+                    render(){
+                        return(
+                            &lt;div&gt;
+                                &lt;form onSubmit={ this.handleUncontrolledSubmit}&gt;
+                                    &lt;input type="text" name="testString" defaultValue="111" ref={input =&gt; this._name = input} /&gt;&lt;br /&gt;
+                                    {
+                                        //在不可控模式下：
+                                        //input的值如果是''这个值是可编辑的
+                                        //input如果value="111"是一个特定值的话,是不可编辑的
+                                        //如果你希望在有默认值的时候也是可以编辑，需要将value替换为defaultValue
+                                    }
+                                    &lt;input type="file" ref={ input =&gt; this.fileInput = input } /&gt;
+                                    {
+                                        //上传文件在react中还是用非受控元素
+                                    }&lt;br /&gt;
+                                    &lt;input type="checkbox" name="testCheckbox" value="1" ref={input =&gt; this._testCheckbox1 = input} defaultChecked={false} /&gt;
+                                    &lt;input type="checkbox" name="testCheckbox" value="2" ref={input =&gt; this._testCheckbox2 = input} defaultChecked={true} /&gt;&lt;br /&gt;
+                                    {
+                                        //在不可控模式下，可多选的checkbox
+                                        //如果需要ajax提交，就像上面这么写，如果只是表单提交就像传统的html那么写就可以
+                                        //radio一样的
+                                    }
+                                    &lt;input type="radio" name="testRadio" value="1" ref={input =&gt; this._testRadio1 = input} defaultChecked={false} /&gt;
+                                    &lt;input type="radio" name="testRadio" value="2" ref={input =&gt; this._testRadio2 = input} defaultChecked={true} /&gt;&lt;br /&gt;
+
+                                    &lt;select name="testSelect"&gt;
+                                        &lt;option value="option1"&gt;option1&lt;/option&gt;
+                                        &lt;option value="option2"&gt;option2&lt;/option&gt;
+                                        &lt;option value="option3"&gt;option3&lt;/option&gt;
+                                        &lt;option value="option4"&gt;option4&lt;/option&gt;
+                                    &lt;/select&gt;&lt;br /&gt;
+                                    &lt;textarea name="testTextarea"&gt;
+                                        here uncontrolled
+                                    &lt;/textarea&gt;&lt;br /&gt;
+                                    &lt;button type="submit"&gt;submit&lt;/button&gt;
+                                &lt;/form&gt;
+                            &lt;/div&gt;
+                        );
+                    }
+                }
+                export { Forms as default };
+
+            </pre>
+
+            <p class="my-p my-h">2.controlled components</p>
+            <p class="my-p">A controlled input accepts its current value as a prop, as well as a callback to change that value. 一个受控的form元素他的value值是被react所控制的</p>
+            <pre>
+                    // &lt;input value={someValue} onChange={handleChange} / &gt;
+                    //举一个input, textarea, and select 多个受控form元素在一个form的例子
+            </pre>
+            <pre>
+                import React from 'react';
+                import ReactDom from 'react-dom';
+
+                class Forms extends React.Component {
+                    constructor(props) {
+                        super(props);
+                        this.state = {
+                            testString: '',
+                            testRadio: {
+                                sss: true,
+                                ttt: false
+                            },
+                            testCheckbox: {
+                                sss: true,
+                                ttt: false
+                            },
+                            testSelect: 'option3',
+                            testTextarea: 'here controlled'
+                        };
+                        this.handleChange = this.handleChange.bind(this);
+                        this.handleControlledSubmit = this.handleControlledSubmit.bind(this);
+                    }
+
+                    handleChange(event) {
+                        const target = event.target;
+                        const value = target.value;
+                        const name = target.name;
+
+                        // setState之前可以对value做规则格式验证等等
+                        // [name]是ES6提供的可计算的属性名的功能
+                        // http://777sunny777.github.io/sunnyblog/savour/2017/11/14/39.html
+                        if( target.type === 'checkbox' ){
+                            this.setState((prevState, props) => {
+                                let checkboxObj = prevState[name];
+                                checkboxObj[value] = target.checked;
+                                return { [name]: checkboxObj };
+                            });
+                        }else if( target.type === 'radio' ){
+                            this.setState((prevState, props) => {
+                                let radioObj = prevState[name];
+                                radioObj = JSON.parse(JSON.stringify(radioObj).replace("true","false"));
+                                radioObj[value] = target.checked;
+                                return { [name]: radioObj };
+                            });            
+                        }else{
+                            this.setState({
+                                [name]: value
+                            });
+                        }
+                    }
+
+                    handleControlledSubmit(event) {
+                        event.preventDefault();
+                        console.log(this.state);
+                    }
+
+                    render(){
+                        return(
+                            &lt;div &gt;       
+                                &lt;form onSubmit={ this.handleControlledSubmit } &gt;
+                                    &lt;input type="text" name="testString" value={this.state.testString} onChange={this.handleChange} / &gt;&lt;br / &gt;
+                                    {
+                                        //name会在state中定义，所以input上不需要name属性了,但是为了统一一个change方法来处理所以增加一个name属性
+                                        //在可控模式下：
+                                        //input的值value={null} 如果是null，undefined这两个值的话，都是可编辑的
+                                    }
+                                    &lt;input type="checkbox" name="testCheckbox" value="sss" checked={this.state.testCheckbox.sss} onChange={this.handleChange} / &gt;
+                                    &lt;input type="checkbox" name="testCheckbox" value="ttt" checked={this.state.testCheckbox.ttt} onChange={this.handleChange} / &gt;&lt;br / &gt;
+
+                                    &lt;input type="radio" name="testRadio" value="sss" checked={this.state.testRadio.sss} onChange={this.handleChange} / &gt;
+                                    &lt;input type="radio" name="testRadio" value="ttt" checked={this.state.testRadio.ttt} onChange={this.handleChange} / &gt;&lt;br / &gt;
+                                    {
+                                        //我目前的感觉checkbox和radio是没有必要用受控组件的
+                                    }
+
+                                    &lt;select name="testSelect" value={this.state.testSelect} onChange={this.handleChange}  &gt;
+                                        &lt;option value="option1" &gt;option1&lt;/option &gt;
+                                        &lt;option value="option2" &gt;option2&lt;/option &gt;
+                                        &lt;option value="option3" &gt;option3&lt;/option &gt;
+                                        &lt;option value="option4" &gt;option4&lt;/option &gt;
+                                    &lt;/select &gt;&lt;br / &gt;
+                                    {
+                                       //You can pass an array into the value attribute, allowing you to select multiple options in a select tag:
+                                       //&lt;select multiple={true} value={['B', 'C']} &gt; 
+                                    }
+                                    &lt;textarea name="testTextarea" value={this.state.testTextarea} onChange={this.handleChange} / &gt;&lt;br / &gt;
+                                    {
+                                        //&lt;input type="text" &gt;, &lt;textarea &gt;, and &lt;select &gt; all work very similarly - they all accept a value attribute that you can use to implement a controlled component.
+                                    }
+                                    &lt;button type="submit" &gt;submit&lt;/button &gt;
+                                &lt;/form &gt;
+                            &lt;/div &gt;
+                        );
+                    }
+                }
+
+                export { Forms as default };
+            </pre>
+            <p class="my-p my-h">3.如何选择</p>
+            <p class="my-p">并没有说受控元素一定不好，ref一定是差的。一般来讲,对form中元素如果需要实时验证，submit需要条件提交，需要提交特定形式等等才需要受控元素。如果只是表单提交没有什么限制，用非受控元素会更简单。</p>
+            <p class="my-p">参考：官网推荐<a href="https://goshakkk.name/controlled-vs-uncontrolled-inputs-react/" target="_blank">Controlled and uncontrolled form inputs in React don't have to be complicated</a></p>
+
+         </div><!-- /.blog-main -->
+    </div>
+</div>
