@@ -1,0 +1,38 @@
+---
+layout: default
+title: React Quick Start 2018
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p"><a href="https://github.com/facebook/react-devtools" target="_blank">react-devtools官方推荐调试工具github地址</a></p>
+            <p class="my-p">这篇主要讨论一下react v16.3.2版本下的一下基本编码注意事项(Quick Start),主要涉及jsx，elements，components，props，state，event，Conditional Rendering，keys，form(controlled and uncontrolled), state lift up and composition。其中form我会单独拿出一个blog来详细讲，state lift up是一个state设计理念，我之前的blog有分析过，剩下的内容我都会在这篇blog中进行记录。主要是根据官方文档和自己coding中遇到的问题进行的总结。</p>
+            <p class="my-p my-h">1.jsx</p>
+            <p class="my-p">1).React用component的概念将markup和logic放在一个文件，这个文件的类型推荐jsx。</p>
+            <p class="my-p">2).Jsx是js的语法扩展，里面包含了js和html两种编码风格。任何的js表达式（不包含if，for等语句）都可以在{}中嵌入jsx语法。</p>
+            <p class="my-p">3).jsx本身也是一个js表达式，所以jsx可以嵌入在if，for的js语句中</p>
+            <pre>
+                    function getGreeting(user) {
+                      if (user) {
+                        return &lt;h1&gt;Hello, {formatName(user)}!&lt;/h1&gt;;
+                      }
+                      return &lt;h1&gt;Hello, Stranger.&lt;/h1&gt;;
+                    }
+            </pre>
+            <p class="my-p">4).在同一个属性中，比如className，要么用className={},要么用className="xxx",不能className="{}",但是可以className={''}</p>
+            <p class="my-p">5).Jsx中的tag一定要有/&gt;</p>
+            <p class="my-p">6).jsx可以防御注入攻击</p>
+            <pre>
+                 const title = response.potentiallyMaliciousInput;
+                 // This is safe:
+                 const element = &lt;h1&gt;{title}&lt;/h1&gt;;
+            </pre>
+
+            
+            
+         </div><!-- /.blog-main -->
+    </div>
+</div>
