@@ -1,0 +1,85 @@
+---
+layout: default
+title: React Keys
+category: savour
+---
+<div class="row">
+    <div class="col-sm-12 blog-main">
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ page.title }}</h2>
+            <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
+            <p class="my-p">react要求在动态添加例如多个li的元素的时候，添加一个特殊属性key，这个主要是从react的diff算法特性上考虑的。</p>
+            <p class="my-p my-h">1.添加key</p>
+            <pre>
+                    function NumberList(props){
+                         const number = props.number;
+                         const listItems = number.map((number)=>{
+                             &lt;li key={number.toString()}&gt;
+                                 {number}
+                             &lt;/li&gt;
+                         });
+                         return (
+                             &lt;ul&gt;{listItems}&lt;/ul&gt;
+                         );
+                    }
+
+                    const numbers = [1, 2, 3, 4, 5];
+                    ReactDOM.render(
+                       &lt;NumberList numbers={numbers} /&gt;,
+                       document.getElementById('root')
+                    );
+
+                    //NumberList是components的function的写法，也可以写成class
+            </pre>
+            <p class="my-p">1):key的选择最好是固定的，在组件内要求是唯一的，但是不要求全局唯一</p>
+            <p class="my-p">2):不推荐用index作为key，因为index可能是会变化的</p>
+            <p class="my-p">3):key要添加在map的逻辑中，而不应该添加在不循环的子组件中(A good rule of thumb is that elements inside the map() call need keys.)</p>
+            <p class="my-p">4):可以像上面一样把listItems提取出来赋值给变量，也可以直接写在ul中，添加在{}里面就可以了</p>
+            
+            <p class="my-p my-h">2.Reconciliation</p>
+            <p class="my-p">Reconciliation是react通过diffing算法后rerender的过程的专有名词，简单来说react对比前后两个render tree的高效方式主要基于两点：</p>
+            <p class="my-p">1):如果elements的根元素类型不同，就替换elements. 如果类型一样属性不一样就只换属性</p>
+            <pre>
+                    // This will destroy the old Counter and remount a new one.
+                    &lt;div&gt;
+                        &lt;Counter /&gt;
+                    &lt;/div&gt;
+                    
+                    &lt;span&gt;
+                        &lt;Counter /&gt;
+                    &lt;/span&gt;
+
+                    // By comparing these two elements, React knows to only modify the className on the underlying DOM node.
+                    &lt;div className="before" title="stuff" /&gt;
+                    &lt;div className="after" title="stuff" /&gt;
+            </pre>
+            <p class="my-p">2):有些子元素前后两次render的顺序不一样但实际没有变化，developer会加一个key元素作为提示</p>
+            <pre>
+                    //没有添加key的时候，前后两次会使得性能变差
+                     &lt;ul&gt;
+                       &lt;li&gt;Duke&lt;/li&gt;
+                       &lt;li&gt;Villanova&lt;/li&gt;
+                     &lt;/ul&gt;
+
+                     &lt;ul&gt;
+                       &lt;li&gt;Connecticut&lt;/li&gt;
+                       &lt;li&gt;Duke&lt;/li&gt;
+                       &lt;li&gt;Villanova&lt;/li&gt;
+                     &lt;/ul&gt;
+                    
+                    // 添加之后react的diffing性能提升
+                    &lt;ul&gt;
+                       &lt;li key="2015"&gt;Duke&lt;/li&gt;
+                       &lt;li key="2016"&gt;Villanova&lt;/li&gt;
+                    &lt;/ul&gt;
+
+                    &lt;ul&gt;
+                       &lt;li key="2014"&gt;Connecticut&lt;/li&gt;
+                       &lt;li key="2015"&gt;Duke&lt;/li&gt;
+                       &lt;li key="2016"&gt;Villanova&lt;/li&gt;
+                    &lt;/ul&gt;
+            </pre>
+           
+         </div><!-- /.blog-main -->
+    </div>
+</div>
