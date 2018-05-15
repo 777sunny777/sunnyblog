@@ -8,8 +8,115 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
+            <p class="my-p">Static type checkers like Flow and TypeScript identify certain types of problems before you even run your code. They can also improve developer workflow by adding features like auto-completion. For this reason, we recommend using Flow or TypeScript instead of PropTypes for larger code bases.因为react本身是有PropTypes来进行类型检测的，但是官网推荐在大型项目中使用TypeScript进行静态类型检测。我觉得主要是由于这个语言开发的完整性角度来考虑，它提供了不只是一个类型检测，有很多后端开发的概念，比如接口（Interfaces）、泛型（Generics）、类（Classes）、枚举类型（Enums）。这些概念可以完整的支持一套大型代码的类型系统，增强可读性和可维护性。</p>
+            <p class="my-p my-h">1).什么是TypeScript</p>
+            <p class="my-p">个人觉得react官网解释的非常好了。TypeScript is a programming language developed by Microsoft. It is a typed superset of JavaScript, and includes its own compiler. Being a typed language, Typescript can catch errors and bugs at build time, long before your app goes live。主要的几点有：1.它是微软开发的。2.它是js的类型超集，并且有自己的编译器，这个决定了我们可以直接将js后缀改为ts，并且可以在编译的时候进行类型检测并报错。说白了，TS就是一个主要用于大型项目类型检测的语言，它提供了一套完善的概念来支持代码的类型检测。</p>
+            
+            <p class="my-p my-h">2).如何结合react+webpack安装使用(前提是webpack,react都已经安装好了)</p>
+            <p class="my-p"><strong>a.npm install --save-dev @types/react @types/react-dom</strong></p>
+            <p class="my-p">That @types/ prefix means that we also want to get the declaration files for React and React-DOM. Usually when you import a path like "react", it will look inside of the react package itself; however, not all packages include declaration files, so TypeScript also looks in the @types/react package as well. You’ll see that we won’t even have to think about this later on.</p>
+            <p class="my-p"><strong>b.npm install --save-dev typescript awesome-typescript-loader source-map-loader</strong></p>
+            <p class="my-p">awesome-typescript-loader helps Webpack compile your TypeScript code using the TypeScript’s standard configuration file named tsconfig.json. source-map-loader uses any sourcemap outputs from TypeScript to inform webpack when generating its own sourcemaps. This will allow you to debug your final output file as if you were debugging your original TypeScript source code.</p>
+            <p class="my-p"><strong>c.create a tsconfig.json</strong></p>
+            <pre>
+                    {
+                        "compilerOptions": {
+                            "lib": ["dom", "es2016"],
+                            "outDir": "./tscBuild/",
+                            "sourceMap": true,
+                            "noImplicitAny": true,
+                            "module": "commonjs",
+                            "target": "ES5",
+                            "jsx": "react",
+                            "allowJs": true
+                        },
+                        "include": [
+                            "./tscSrc/*"
+                        ]
+                    }   
+            </pre>
+            <p class="my-p"><strong>d.create two TSC style components</strong></p>
+            <pre>
+                import * as React from "react";
+                import * as ReactDOM from "react-dom";
+
+                import { Hello } from "./tts-hello";
+
+                export class Tts extends React.Component {
+                    render(){
+                        return(
+                            &lt;div&gt;
+                                &lt;Hello compiler="TypeScript" framework="React" /&gt;
+                                &lt;hr /&gt;
+                                &lt;Hello compiler="TypeScript" framework="React" isClick={true} /&gt;
+                            &lt;/div&gt;
+                        )
+                    }
+                }
+
+                ReactDOM.render(
+                    &lt;Tts/&gt;,
+                    document.getElementById("r2018")
+                );
+            
+            </pre>
+            <pre>
+                 import * as React from "react";
+
+                export interface HelloProps {
+                    compiler: string;
+                    framework: string;
+                    isClick?: boolean;
+                }
+
+                export class Hello extends React.Component&lt;HelloProps, {count: number}gt; {
+                    constructor(props: HelloProps) {
+                        super(props);
+                        this.h1ClickHandler = this.h1ClickHandler.bind(this);
+                        this.state = {
+                            count: 0
+                        }
+                    }
+                    h1ClickHandler(){
+                        this.setState({
+                            count:　this.state.count+1
+                        });
+                    }
+                    render() {
+                        return (
+                            &lt;divgt;
+                                &lt;h1 onClick={ this.props.isClick?this.h1ClickHandler:null } gt;Hello from {this.props.compiler} and {this.props.framework}!&lt;/h1gt;
+                                &lt;divgt;{ this.state.count }&lt;/divgt;
+                            &lt;/divgt;
+                        ); 
+                    }
+                }           
+            
+            </pre>            
+            <p class="my-p"><strong>e.add webpack config and run</strong></p>
+            <pre>
+                  { 
+                    test: /\.tsx?$/, 
+                    loader: "awesome-typescript-loader",
+                    include: [
+                      path.resolve(DEV_PATH, 'js/modules/')
+                    ]
+                  },{
+                    enforce: "pre",
+                    test: /\.js$/, 
+                    loader: "source-map-loader" 
+                  }
+            </pre>
+
+            <p class="my-p my-h">3).参考手册</p>
+            <pre>
+                //第一个链接学习TypeScript非常好
+                //https://ts.xcatliu.com/
+                //http://www.typescriptlang.org/docs/handbook/react-&-webpack.html
+                //https://reactjs.org/docs/static-type-checking.html
+            </pre>
+            
+            
         </div><!-- /.blog-main -->
     </div>
 </div>
