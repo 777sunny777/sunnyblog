@@ -8,8 +8,78 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
+            <p class="my-p my-h">1.Context</p>
+            <p class="my-p">Context provides a way to pass data through the component tree without having to pass props down manually at every level. 主要是为了解决props多级传递的问题，最好用于一些global的变量</p>
+            <p class="my-p">创建方法是const ThemeContext = React.createContext('light'); 提供Provider 设值和Consumer 取值两个接口</p>         
+            <pre>
+                // Context lets us pass a value deep into the component tree
+                // without explicitly threading it through every component.
+                // Create a context for the current theme (with "light" as the default).
+                const ThemeContext = React.createContext('light');
+
+                class App extends React.Component {
+                  render() {
+                    // Use a Provider to pass the current theme to the tree below.
+                    // Any component can read it, no matter how deep it is.
+                    // In this example, we're passing "dark" as the current value.
+                    return (
+                      &lt;ThemeContext.Provider value="dark"&gt;
+                        &lt;Toolbar /&gt;
+                      &lt;/ThemeContext.Provider&gt;
+                    );
+                  }
+                }
+
+                // A component in the middle doesn't have to
+                // pass the theme down explicitly anymore.
+                function Toolbar(props) {
+                  return (
+                    &lt;div&gt;
+                      &lt;ThemedButton /&gt;
+                    &lt;/div&gt;
+                  );
+                }
+
+                function ThemedButton(props) {
+                  // Use a Consumer to read the current theme context.
+                  // React will find the closest theme Provider above and use its value.
+                  // In this example, the current theme is "dark".
+                  return (
+                    &lt;ThemeContext.Consumer&gt;
+                      {theme => &lt;Button {...props} theme={theme} /&gt;}
+                    &lt;/ThemeContext.Consumer&gt;
+                  );
+                }            
+            </pre>
+            
+            <p class="my-p my-h">2.Fragments</p>
+            <p class="my-p">A common pattern in React is for a component to return multiple elements. Fragments let you group a list of children without adding extra nodes to the DOM.</p>  
+            <pre>
+                    render() {
+                      return (
+                        &lt;React.Fragment&gt;
+                          &lt;ChildA /&gt;
+                          &lt;ChildB /&gt;
+                          &lt;ChildC /&gt;
+                        &lt;/React.Fragment&gt;
+                      );
+                    }
+            </pre>
+            
+            <p class="my-p my-h">3.Portals(暂略)</p>
+            
+            <p class="my-p my-h">4.Error Boundaries</p>
+            <p class="my-p">A JavaScript error in a part of the UI shouldn’t break the whole app. To solve this problem for React users, React 16 introduces a new concept of an “error boundary”.</p>  
+            <p class="my-p">Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed. </p> 
+            
+            <p class="my-p my-h">5.Web Components</p>
+            <pre>
+                    //https://www.w3cplus.com/web-components/why-web-components-are-important.html
+                    //https://www.webcomponents.org/
+                    //https://github.com/webcomponents
+            </pre>
+            <p class="my-p">Web Components 通过一种标准化的非侵入的方式封装一个组件，每个组件能组织好它自身的 HTML 结构、CSS 样式、JavaScript 代码，并且不会干扰页面上的其他代码。页面可以安全的引用这个组件. Web Components和React Components和React可以相互在内部嵌套使用，甚至可以转化。</p>   
+            
         </div><!-- /.blog-main -->
     </div>
 </div>
