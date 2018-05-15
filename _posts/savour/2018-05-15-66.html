@@ -1,6 +1,6 @@
 ---
 layout: default
-title: React frequently asked questions
+title: React frequently asked questions(持续更新2018-05-15)
 category: savour
 ---
 <div class="row">
@@ -8,8 +8,144 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
+            
+            <p class="my-p my-h">1.ajax</p>
+            <pre>
+                import $ from 'jquery';
+
+                const FAQ_GLOBAL = {};
+                FAQ_GLOBAL.fetch = (url, type = 'get', data = {} ) => {
+                    return new Promise( (resolve, reject) => {
+                        $.ajax({
+                            url: url,
+                            type: type,
+                            dataType: 'json',
+                            data: data,
+                            cache: false
+                        })
+                        .done(function(resdata) {
+                            resolve(resdata);
+                        })
+                        .fail(function(error) {
+                            reject(error);
+                        });
+                    });
+                };
+
+                export { FAQ_GLOBAL as default };
+            </pre>
+            <pre>
+                import React from 'react';
+                import ReactDOM from 'react-dom';
+                import FAQ_GLOBAL from './faq-global';
+
+                class FAQ extends React.Component {
+                    constructor(props) {
+                        super(props);
+                    }
+
+                    componentDidMount() {
+                        //1.AJAX and APIs
+                        FAQ_GLOBAL.fetch('./test.json', 'get', {'author': 'sheldon'}).then( (data) =&gt; {
+                            console.log(data);
+                        }, (error)=>{
+                            console.log(error);
+                        });
+                    }
+
+                    render(){
+                        return(
+                            &lt;React.Fragment&gt;
+                                ... ...
+                            &lt;/React.Fragment&gt;
+                        )
+                    }
+                }
+
+                ReactDOM.render(
+                    &lt;FAQ /&gt;,
+                    document.getElementById('r2018')
+                );
+            
+            </pre>
+            
+            
+            <p class="my-p my-h">2.How do I pass a parameter to an event handler or callback?</p>
+            <pre>
+                &lt;div onClick={this.clickhandler.bind(this,7)} data-id={8} &gt;click me!&lt;/div&gt;
+                ...
+                ...
+                clickhandler(data, e){
+                    //2.How do I pass a parameter to an event handler or callback?
+                    //通过bind data和 data-id两种方式可以向event中传值
+                    console.log('data：'+ data);
+                    console.log('e.id:'+ e.target.dataset.id);
+                }
+            
+            </pre>
+            
+            <p class="my-p my-h">3.How can I prevent a function from being called too quickly or too many times in a row?</p>
+            <p class="my-p">导入import throttle from 'lodash.throttle';和 import debounce from 'lodash.debounce';</p>            
+            <pre>
+                import React from 'react';
+                import ReactDOM from 'react-dom';
+                import throttle from 'lodash.throttle';
+                import debounce from 'lodash.debounce';
+
+                class FAQ extends React.Component {
+                    constructor(props) {
+                        super(props);
+                        this.clickhandler = this.clickhandler.bind(this);
+                        //3.throttling
+                        this.handleClick = this.handleClick.bind(this);
+                        //每5秒触发一次
+                        this.handleClickThrottled = throttle(this.handleClick, 5000);
+                        //3.debouncing
+                        this.handleChange = this.handleChange.bind(this);
+                        //延迟1秒再触发
+                        this.emitChangeDebounced = debounce(this.handleChange, 1000);
+                    }
+
+                    handleClick(){
+                        console.log('throttling');
+                    }
+
+                    handleChange(e){
+                        console.log('debouncing');
+                    }
+
+                    componentWillUnmount() {
+                        this.handleClickThrottled.cancel();
+                        this.emitChangeDebounced.cancel();
+                    }
+
+                    render(){
+                        return(
+                            &lt;React.Fragment&gt;
+                                &lt;p onClick={this.handleClickThrottled} &gt;3-1)throttling: sample changes based on a time based frequency&lt;/p&gt;
+                                &lt;p onClick={this.emitChangeDebounced} &gt;3-2)debouncing: publish changes after a period of inactivity&lt;/p&gt;
+                            &lt;/React.Fragment&gt;
+                        )
+                    }
+                }
+
+                ReactDOM.render(
+                    &lt;FAQ /&gt;,
+                    document.getElementById('r2018')
+                );
+            
+            </pre>
+            
+            
+            <p class="my-p my-h">4.Can I do animations in React?</p>
+            <pre>
+                // React Transition Group
+                // https://reactcommunity.org/react-transition-group/
+                // react-motion
+                // https://github.com/chenglou/react-motion
+            </pre>
+            
+            
         </div><!-- /.blog-main -->
     </div>
 </div>
