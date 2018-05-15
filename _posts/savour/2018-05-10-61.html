@@ -8,8 +8,106 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
+            <p class="my-p">Typechecking With PropTypes中主要学习到的是react自带的（在v15.5后额外分出来了）PropTypes属性的用法，以及transform-class-properties对默认属性的写法优化</p>
+            <p class="my-p my-h">1.add PropTypes package</p>
+            <pre>
+                //参考链接
+                //https://reactjs.org/docs/typechecking-with-proptypes.html
+                //https://www.npmjs.com/package/prop-types
+                //https://babeljs.io/docs/plugins/transform-class-properties/
+
+                import React from 'react';
+                import ReactDOM from 'react-dom';
+                
+                //首先注意这里面要先引用
+                //React.PropTypes has moved into a different package since React v15.5. 
+                //Please use the prop-types library instead.
+                import PropTypes from 'prop-types';
+
+                //定义一个子组件，用来测试
+                function TestPropTypes(props){
+                    return (
+                        &lt;div&gt;
+                            &lt;div&gt;Hello, {props.name}&lt;/div&gt;
+                            &lt;div&gt;total, {props.total}&lt;/div&gt;
+                            {props.children}
+                        &lt;/div&gt;
+                    )
+                }
+
+                //添加好默认属性，当然你也可以不添加
+                // Specifies the default values for props:
+                TestPropTypes.defaultProps = {
+                  name: 'Stranger',
+                  total: 0
+                };
+
+                //propTypes来定义类型以及是否必须
+                TestPropTypes.propTypes = {
+                  name: PropTypes.string.isRequired,
+                  total: PropTypes.number.isRequired,
+                  //children: PropTypes.element.isRequired //Requiring Single Child
+                };
+
+                class TypeCheckProps extends React.Component {
+                    constructor(props) {
+                        super(props);
+                    }
+                    render(){
+                        return(
+                            &lt;div&gt;
+                                {
+                                    //这个地方开始调用传值，如果出错会warning
+                                }
+                                &lt;TestPropTypes name={'Sheldon'} total={7} &gt;
+                                    &lt;h4&gt;they are children!&lt;/h4&gt;
+                                &lt;/TestPropTypes&gt;
+                                &lt;TestPropTypes /&gt;
+                            &lt;/div&gt;
+                        )
+                    }
+                }
+
+                export { TypeCheckProps as default };
+            
+            </pre>
+            <p class="my-p my-h">2.transform-class-properties</p>
+            <pre>
+                
+                //如果你希望将defaultProps写到class里面就需要在webpack中配置transform-class-properties
+            
+                //If you are using a Babel transform like transform-class-properties , 
+                //you can also declare defaultProps as static property within a React component class.
+                class Greeting extends React.Component {
+                  static defaultProps = {
+                    name: 'stranger'
+                  }
+
+                  render() {
+                    return (
+                      &lt;div&gt;Hello, {this.props.name}&lt;/div&gt;
+                    )
+                  }
+                }
+
+                Greeting.propTypes = {
+                  name: PropTypes.string.isRequired
+                };            
+            </pre>
+            <pre>
+                {
+                    test: /\.jsx?$/,
+                    loader: 'babel-loader',
+                    include: [
+                      path.resolve(DEV_PATH, 'js/modules/')
+                    ],
+                    query: {
+                      presets: ['es2017', 'es2015', 'env', 'react'],
+                      plugins: ['transform-class-properties']
+                    }
+                  }
+            </pre>
+            
         </div><!-- /.blog-main -->
     </div>
 </div>
