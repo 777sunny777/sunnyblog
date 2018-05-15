@@ -8,8 +8,121 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
+            <p class="my-p">Refs provide a way to access DOM nodes or React elements created in the render method. 正常React数据流中，父组件通过props与其子组件进行交互，子组件的re-render需要改变父组件向其传的props值。ref主要有两个功能，一个是获取DOM nodes(主要用于非控的form组件)，一个是在父组件中获取子组件的方法（你可以理解成是父组件中的action触发了其某一个子组件的UI变化，而你不希望其他子组件也变化，其实这个时候如果需求频繁，更好的方法是用flux）</p>
+            <p class="my-p">refs不建议滥用的原因是它不符合传统的react数据流动规则，比如state触发</p>
+            <p class="my-p">ref有两创建方法：Creating Refs和Callback Refs. 而根据ref是放置在DOM上还是Class component上，决定了ref的取值</p>
+            <p class="my-p">下面是学习时的测试源码</p>
+            <pre>
+                    import React from 'react';
+                    import ReactDOM from 'react-dom';
+
+                    class Test2 extends React.Component {
+                        constructor(props) {
+                            super(props);
+                            this.textInput2 = React.createRef();
+                            this.focusTextInput2 = this.focusTextInput2.bind(this);
+                        }
+                        focusTextInput2(){
+                            //Note: we're accessing "current" to get the DOM node
+                            this.textInput2.current.focus();
+                        }
+                        render() {
+                            return (
+                                &lt;input type="text" ref={this.textInput2} /&gt;
+                            );
+                        }
+                    }
+
+                    class RefsTest extends React.Component {
+                        constructor(props) {
+                            super(props);
+                            this.textInput1 = React.createRef();
+                            this.focusTextInput1 = this.focusTextInput1.bind(this);
+                            this.textInput2 = React.createRef();
+                        }
+                        focusTextInput1(){
+                            //Note: we're accessing "current" to get the DOM node
+                            //获取DOM nodes
+                            this.textInput1.current.focus();
+                        }
+
+                        componentDidMount() {
+                            //在父组件中获取子组件的方法
+                            this.textInput2.current.focusTextInput2();
+                        }
+
+                        render(){
+                            return(
+                                &lt;div&gt;
+                                    &lt;div&gt;
+                                        {
+                                            //1)Creating Refs and Adding a Ref to a DOM Element
+                                        }
+                                        &lt;input type="text" ref={this.textInput1} /&gt;
+                                        &lt;button onClick={this.focusTextInput1}&gt;Focus the text input1&lt;/button&gt;
+                                        {
+                                            //2)Creating Refs and Adding a Ref to a Class Component
+                                        }
+                                        &lt;Test2 ref={this.textInput2} /&gt;
+                                        {
+                                            //Refs and Functional Components. You may not use the ref attribute on functional components because they don’t have instances
+                                            //But, You can use the ref attribute inside a functional component
+                                        }
+                                    &lt;/div&gt;
+                                    {                    
+                                        //还有一种callback refs的方法是直接ref = { element => this.textInput = element }
+                                        //在this.textInput.focus();的时候注意不需要用到current了
+
+                                        class CustomTextInput extends React.Component {
+                                          constructor(props) {
+                                            super(props);
+
+                                            this.textInput = null;
+
+                                            this.setTextInputRef = element => {
+                                              this.textInput = element;
+                                            };
+
+                                            this.focusTextInput = () => {
+                                              // Focus the text input using the raw DOM API
+                                              if (this.textInput) this.textInput.focus();
+                                            };
+                                          }
+
+                                          componentDidMount() {
+                                            // autofocus the input on mount
+                                            this.focusTextInput();
+                                          }
+
+                                          render() {
+                                            // Use the `ref` callback to store a reference to the text input DOM
+                                            // element in an instance field (for example, this.textInput).
+                                            return (
+                                              &lt;div&gt;
+                                                &lt;input
+                                                  type="text"
+                                                  ref={this.setTextInputRef}
+                                                /&gt;
+                                                &lt;input
+                                                  type="button"
+                                                  value="Focus the text input"
+                                                  onClick={this.focusTextInput}
+                                                /&gt;
+                                              &lt;/div&gt;
+                                            );
+                                          }
+                                        }
+                                    }
+                                &lt;/div&gt;
+                            )
+                        }
+                    }
+
+                    export { RefsTest as default };
+            
+            </pre>
+            
+        
         </div><!-- /.blog-main -->
     </div>
 </div>
