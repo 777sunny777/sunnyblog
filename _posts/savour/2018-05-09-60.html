@@ -8,8 +8,73 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
+            <p class="my-p">JSX In Depth主要是记录一些jsx编码时候要注意到的一些问题，之前我的两个blog：<a href="http://777sunny777.github.io/sunnyblog/savour/2018/05/07/57.html" target="_blank">React Quick Start 2018</a>和<a href="http://777sunny777.github.io/sunnyblog/savour/2015/10/22/18.html" target="_blank">React学习笔记</a>也说过一部分jsx的问题。</p>
+            <p class="my-p">下面是我在JSX In Depth中的测试代码，在后面我会总结出来</p>
+            <pre>
+                //React Must Be in Scope
+                import React from 'react';
+                import ReactDOM from 'react-dom';
+
+                //Using Dot Notation for JSX Type
+                //考虑组件分组的时候使用
+                const MyComponents = {
+                  DatePicker: function DatePicker(props) {
+                    return &lt;div onClick={props.onClick} &gt;Imagine a {props.color} datepicker here.&lt;/div&gt;;
+                  },
+                  TextInput: function TextInput(props){
+                    //if you want a value like false, true, null, or undefined to appear in the output, 
+                    //you have to convert it to a string first
+                    return &lt;div onClick={props.onClick} &gt;this is { String(props.sum) } text input.&lt;/div&gt;
+                  } 
+                }
+
+                class JsxInDepth extends React.Component {
+                    constructor(props) {
+                        super(props);
+                        this.clickEventHandler = this.clickEventHandler.bind(this);
+                    }
+                    clickEventHandler(e){
+                        console.log(e.target.textContent);
+                    }
+                    render(){
+                        const self = this;
+                        //这个地方一定是和分组配合使用的，这两个地方都应该是import进来的
+                        const propsList = {
+                            TextInput: {
+                                sum: 2,
+                                onClick: self.clickEventHandler
+                            }
+                        }
+                        return(
+                            &lt;div&gt;
+                                &lt;h1&gt;1.JSX In Depth&lt;/h1&gt;
+                                {
+                                    //User-Defined Components Must Be Capitalized
+                                }
+                                &lt;MyComponents.DatePicker color="blue" onClick={ this.clickEventHandler } /&gt;
+                                {
+                                    //if you already have props as an object, and you want to pass it in JSX, 
+                                    //you can use ... as a “spread” operator to pass the whole props object. 
+                                }
+                                &lt;MyComponents.TextInput {...propsList.TextInput} /&gt;
+                                {
+                                    //Wrong! JSX type can't be an expression.
+                                    //return &lt;components[props.storyType] story={props.story} /&gt;;
+                                }
+                            &lt;/div&gt;
+                        )
+                    }
+                }
+
+                export { JsxInDepth as default };
+
+            </pre>
+            <p class="my-p my-h">1.JSX文件中必须引用import React from 'react';(this blog)</p>
+            <p class="my-p my-h">2.同一大组中对其组件分组可以考虑用Dot Notation, 加上配合使用的propsList，两者都可以用import传递进来。（this blog）</p>
+            <p class="my-p my-h">3.自定义的组件必须在引用的时候首字母大写（this）</p>
+            <p class="my-p my-h">4.you can use ... as a “spread” operator to pass the whole props object（this）</p>
+            <p class="my-p my-h">5.JSX type can't be an expression.like components[props.storyType] (this) </p>
+            
         </div><!-- /.blog-main -->
     </div>
 </div>
