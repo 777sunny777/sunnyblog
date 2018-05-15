@@ -8,8 +8,54 @@ category: savour
         <div class="blog-post">
             <h2 class="blog-post-title">{{ page.title }}</h2>
             <p class="blog-post-meta">{{ page.date | date_to_string }}</p>
-            <p class="my-p"></p>
-            <p class="my-p my-h"></p>
+            <p class="my-p">这里面主要记录一些react写法上的优化点</p>
+            <p class="my-p my-h">1)Virtualize Long Lists</p>
+            <p class="my-p">针对react中过长的list做的插件：https://bvaughn.github.io/react-virtualized/#/components/List </p>
+            
+            
+            <p class="my-p my-h">2)shouldComponentUpdate</p>
+            <p class="my-p">If you know that in some situations your component doesn’t need to update, you can return false from shouldComponentUpdate instead, to skip the whole rendering process, including calling render() on this component and below.</p>
+            
+            <p class="my-p my-h">React.PureComponent</p>
+            <p class="my-p">有一个参考文档： https://60devs.com/pure-component-in-react.html</p>
+            <p class="my-p">如果将Component换成PureComponent确实可以大大提升react的代码性能，这里边会自动进行shouldComponentUpdate的检测并减少这部分代码量，在props和state不发生变化的情况下，不会产生render。有一个问题是，这里边的对比只是一个shallow comparison，所以某些情况下props或state发生了变化但是没有re-render</p>
+            <pre>
+                    //关键是this.setState({words: words});要写成this.setState(prevState =&gt; ({ words: [...prevState.words, 'marklar'] }));
+                    //生成一个新的数组赋值给words而不是用原有的引用。
+
+                    class ListOfWords extends React.PureComponent {
+                      render() {
+                        return &lt;div&gt;{this.props.words.join(',')}&lt;/div&gt;;
+                      }
+                    }
+
+                    class WordAdder extends React.Component {
+                      constructor(props) {
+                        super(props);
+                        this.state = {
+                          words: ['marklar']
+                        };
+                        this.handleClick = this.handleClick.bind(this);
+                      }
+
+                      handleClick() {
+                        // This section is bad style and causes a bug
+                        const words = this.state.words;
+                        words.push('marklar');
+                        this.setState({words: words});
+                      }
+
+                      render() {
+                        return (
+                          &lt;div&gt;
+                            &lt;button onClick={this.handleClick} /&gt;
+                            &lt;ListOfWords words={this.state.words} /&gt;
+                          &lt;/div&gt;
+                        );
+                      }
+                    }
+            </pre>
+            
         </div><!-- /.blog-main -->
     </div>
 </div>
